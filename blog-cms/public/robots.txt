@@ -1,0 +1,4 @@
+User-agent: *
+Allow: *.htm$
+Disallow: /*.jpg
+Disallow: /*.png

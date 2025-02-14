@@ -1,0 +1,84 @@
+/* 覆盖 Lato 字体定义 */
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 400;
+  src: local('-apple-system');
+}
+
+@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 700;
+  src: local('-apple-system');
+}
+
+@font-face {
+  font-family: 'Lato';
+  font-style: italic;
+  font-weight: 400;
+  src: local('-apple-system');
+}
+
+@font-face {
+  font-family: 'Lato';
+  font-style: italic;
+  font-weight: 700;
+  src: local('-apple-system');
+}
+
+/* 完全覆盖 semantic-ui 的字体设置，使用系统字体 */
+body,
+button,
+input,
+optgroup,
+select,
+textarea,
+.ui.button,
+.ui.text.container,
+.ui.header,
+.ui.input>input,
+.ui.list .list>.item .header,
+.ui.list>.item .header,
+.ui.steps .step .title,
+.ui.form input:not([type]),
+.ui.form input[type="date"],
+.ui.form input[type="datetime-local"],
+.ui.form input[type="email"],
+.ui.form input[type="number"],
+.ui.form input[type="password"],
+.ui.form input[type="search"],
+.ui.form input[type="tel"],
+.ui.form input[type="time"],
+.ui.form input[type="text"],
+.ui.form input[type="file"],
+.ui.form input[type="url"],
+.ui.menu,
+.ui.message .header,
+.ui.cards>.card>.content>.header,
+.ui.card>.content>.header,
+.ui.items>.item>.content>.header {
+  /* 使用系统默认字体栈 */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+    "Noto Color Emoji" !important;
+}
+
+/* 确保所有 semantic-ui 组件都使用这个字体设置 */
+.ui.header,
+.ui.button,
+.ui.text,
+.ui.input,
+.ui.menu,
+.ui.dropdown,
+.ui.list,
+.ui.message,
+.ui.card,
+.ui.feed,
+.ui.item {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+    "Noto Color Emoji" !important;
+}

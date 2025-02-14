@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.caixiaohu.mapper.VisitLogMapper">
+
+    <resultMap id="log" type="com.caixiaohu.entity.VisitLog">
+        <id property="id" column="id"/>
+        <result property="uuid" column="uuid"/>
+        <result property="uri" column="uri"/>
+        <result property="method" column="method"/>
+        <result property="param" column="param"/>
+        <result property="behavior" column="behavior"/>
+        <result property="content" column="content"/>
+        <result property="remark" column="remark"/>
+        <result property="ip" column="ip"/>
+        <result property="ipSource" column="ip_source"/>
+        <result property="os" column="os"/>
+        <result property="browser" column="browser"/>
+        <result property="deviceType" column="device_type"/>
+        <result property="deviceBrand" column="device_brand"/>
+        <result property="deviceModel" column="device_model"/>
+        <result property="times" column="times"/>
+        <result property="createTime" column="create_time"/>
+        <result property="userAgent" column="user_agent"/>
+    </resultMap>
+
+    <!--查询访问日志-->
+    <select id="getVisitLogListByUUIDAndDate" resultMap="log">
+        select id, uuid, uri, method, param, behavior, content, remark, ip, ip_source, os, browser,
+               device_type, device_brand, device_model, times, create_time, user_agent
+        from visit_log
+        <where>
+            <if test="uuid!=null and uuid!=''">
+                uuid=#{uuid}
+            </if>
+            <if test="startDate!=null and startDate!='' and endDate!=null and endDate!=''">
+                and create_time between #{startDate} and #{endDate}
+            </if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <!--添加访问日志-->
+    <insert id="saveVisitLog" parameterType="com.caixiaohu.entity.VisitLog" useGeneratedKeys="true" keyProperty="id">
+        insert into visit_log (uuid, uri, method, param, behavior, content, remark, ip, ip_source, os, browser,
+                             device_type, device_brand, device_model, times, create_time, user_agent)
+        values (#{uuid}, #{uri}, #{method}, #{param}, #{behavior}, #{content}, #{remark}, #{ip}, #{ipSource}, #{os},
+                #{browser}, #{deviceType}, #{deviceBrand}, #{deviceModel}, #{times}, #{createTime}, #{userAgent})
+    </insert>
+
+    <!--查询昨天的所有访问日志-->
+    <select id="getUUIDAndCreateTimeByYesterday" resultType="com.caixiaohu.model.dto.VisitLogUuidTime">
+        select uuid, create_time as time from visit_log where date(create_time)=date_sub(curdate(), interval 1 day)
+    </select>
+
+    <!--删除访问日志-->
+    <delete id="deleteVisitLogById">
+        delete from visit_log where id=#{id}
+    </delete>
+
+    <!--统计今天的访问日志数量-->
+    <select id="countVisitLogByToday" resultType="java.lang.Integer">
+        select count(*) from visit_log where date(create_time) = curdate()
+    </select>
+</mapper>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.caixiaohu.mapper.CommentReportMapper">
+    
+    <resultMap id="report" type="com.caixiaohu.entity.CommentReport">
+        <id property="id" column="id"/>
+        <result property="commentId" column="comment_id"/>
+        <result property="commentContent" column="comment_content"/>
+        <result property="blogId" column="blog_id"/>
+        <result property="blogTitle" column="blog_title"/>
+        <result property="phone" column="phone"/>
+        <result property="email" column="email"/>
+        <result property="content" column="content"/>
+        <result property="ip" column="ip"/>
+        <result property="ipSource" column="ip_source"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="handleTime" column="handle_time"/>
+        <result property="handleResult" column="handle_result"/>
+        <result property="handleBy" column="handle_by"/>
+    </resultMap>
+
+    <insert id="saveCommentReport" parameterType="com.caixiaohu.entity.CommentReport" useGeneratedKeys="true" keyProperty="id">
+        insert into comment_report (
+            comment_id, 
+            comment_content,
+            blog_id,
+            blog_title,
+            content,
+            email,
+            phone,
+            ip,
+            ip_source,
+            status,
+            create_time
+        ) values (
+            #{commentId},
+            #{commentContent},
+            #{blogId},
+            #{blogTitle},
+            #{content},
+            #{email},
+            #{phone},
+            #{ip},
+            #{ipSource},
+            #{status},
+            #{createTime}
+        )
+    </insert>
+
+    <select id="getCommentReportList" resultMap="report">
+        SELECT r.*
+        FROM comment_report r
+        LEFT JOIN comment c ON r.comment_id = c.id
+        LEFT JOIN blog b ON c.blog_id = b.id
+        ORDER BY r.create_time DESC
+    </select>
+
+    <select id="getCommentReportById" resultMap="report">
+        select * from comment_report where id = #{id}
+    </select>
+
+    <update id="updateCommentReport" parameterType="com.caixiaohu.entity.CommentReport">
+        update comment_report set
+        status = #{status},
+        blog_id = #{blogId},
+        blog_title = #{blogTitle},
+        handle_time = #{handleTime},
+        handle_result = #{handleResult},
+        handle_by = #{handleBy}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCommentReportById">
+        delete from comment_report where id = #{id}
+    </delete>
+
+    <select id="getReportById" resultType="com.caixiaohu.entity.CommentReport">
+        select * from comment_report where id = #{id}
+    </select>
+
+    <update id="updateReportStatusByCommentId">
+        update comment_report 
+        set status = #{status},
+            handle_by = #{handleBy},
+            handle_time = #{handleTime},
+            handle_result = #{handleResult}
+        where comment_id = #{commentId}
+    </update>
+</mapper> 

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.caixiaohu.mapper.CategoryMapper">
+
+    <resultMap id="category" type="com.caixiaohu.entity.Category">
+        <id property="id" column="id"/>
+        <result property="name" column="category_name"/>
+        <result property="blogCount" column="blogs"/>
+        <result property="isDefault" column="is_default"/>
+    </resultMap>
+
+    <!--获取所有分类List-->
+    <select id="getCategoryList" resultMap="category">
+        select id, category_name, is_default from category order by id desc
+    </select>
+
+    <!--获取所有分类List不查询id-->
+    <select id="getCategoryNameList" resultMap="category">
+        select category_name, is_default from category order by id desc
+    </select>
+
+    <!--添加分类-->
+    <insert id="saveCategory" parameterType="com.caixiaohu.entity.Category" useGeneratedKeys="true" keyProperty="id">
+        insert into category (category_name, is_default) values (#{name}, #{isDefault})
+    </insert>
+
+    <!--按id查询分类-->
+    <select id="getCategoryById" resultMap="category">
+        select id, category_name, is_default from category where id=#{id}
+    </select>
+
+    <!--按name查询分类-->
+    <select id="getCategoryByName" resultMap="category">
+        select id, category_name, is_default from category where category_name=#{name}
+    </select>
+
+    <!--按id删除分类-->
+    <delete id="deleteCategoryById">
+        delete from category where id=#{id}
+    </delete>
+
+    <!--更新分类-->
+    <update id="updateCategory">
+        update category set category_name=#{name}, is_default=#{isDefault} where id=#{id}
+    </update>
+
+    <!--获取所有分类List，包含博客数量-->
+    <select id="getCategoryListWithBlogCount" resultMap="category">
+        SELECT c.id, c.category_name, c.is_default, COUNT(b.id) as blogs 
+        FROM category c 
+        LEFT JOIN blog b ON c.id = b.category_id 
+        GROUP BY c.id, c.category_name, c.is_default 
+        ORDER BY c.id DESC
+    </select>
+
+    <!--获取默认分类-->
+    <select id="getDefaultCategory" resultMap="category">
+        select id, category_name, is_default from category where is_default=1 limit 1
+    </select>
+
+    <!--重置所有分类的默认状态-->
+    <update id="resetDefaultCategory">
+        update category set is_default=0
+    </update>
+
+    <!--设置默认分类-->
+    <update id="setDefaultCategory">
+        update category set is_default=1 where id=#{id}
+    </update>
+</mapper>

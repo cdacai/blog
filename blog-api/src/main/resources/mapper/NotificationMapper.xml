@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.caixiaohu.mapper.NotificationMapper">
+    
+    <resultMap id="notification" type="com.caixiaohu.entity.Notification">
+        <id property="id" column="id"/>
+        <result property="type" column="type"/>
+        <result property="sourceId" column="source_id"/>
+        <result property="isRead" column="is_read"/>
+        <result property="createTime" column="create_time"/>
+        <result property="readTime" column="read_time"/>
+    </resultMap>
+
+    <insert id="saveNotification" parameterType="com.caixiaohu.entity.Notification" useGeneratedKeys="true" keyProperty="id">
+        insert into notification (type, source_id, is_read, create_time)
+        values (#{type}, #{sourceId}, #{isRead}, #{createTime})
+    </insert>
+
+    <select id="getUnreadCount" resultType="java.lang.Integer">
+        select count(*) from notification
+        where type = #{type} and is_read = false
+    </select>
+
+    <update id="markReadByType">
+        update notification
+        set is_read = true,
+            read_time = now()
+        where type = #{type} and is_read = false
+    </update>
+
+    <select id="getUnreadNotifications" resultMap="notification">
+        select * from notification
+        where is_read = false
+        order by create_time desc
+    </select>
+</mapper> 
