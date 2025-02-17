@@ -188,20 +188,12 @@ CREATE DATABASE nblog CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ## 注意事项
 
 ### 配置及依赖说明
-- **依赖版本**
-  - Maven 和 NPM 依赖版本固定，请勿随意升级或降级
-  - 确保各组件版本：
-    - JDK: 1.8+
-    - MySQL: 5.7+ (必须使用`utf8mb4`字符集以支持emoji)
-    - Redis: 6.0+
-    - Node.js: 12.x+
-
 - **第三方服务配置**
   - 百度内容审核：需自行申请API密钥，可选开启
   - 又拍云存储：需自行申请账号和配置空间，可选用本地存储
   - 邮箱服务：默认配置QQ邮箱，可切换其他服务商
 
-- **核心配置说明** (`application-dev.properties`)
+- **核心配置说明** (`application-dev.properties`,`application-prd.properties`)
   - 安全相关：
     - 必须修改`token.secretKey`
 
