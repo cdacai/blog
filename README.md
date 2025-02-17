@@ -10,7 +10,7 @@
 
 预览地址：
 - 博客前台：[https://caixiaohu.com](https://caixiaohu.com)
-- 管理后台：[https://set.caixiaohu.com](https://set.caixiaohu.com)
+- 管理后台：[https://set.caixiaohu.com](https://set.caixiaohu.com)（访客用户名：guest，密码：123456）
 
 特色功能：
 - 🔒 支持内容审核，自动过滤违规内容
