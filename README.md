@@ -43,8 +43,6 @@
 
 Spring Boot + Vue 博客系统
 
-自用博客，长期维护，欢迎勘误
-
 ## 技术栈
 
 ### 后端
@@ -76,8 +74,6 @@ Spring Boot + Vue 博客系统
   - prismjs（代码高亮）
 
 ## 功能介绍
-
-本博客基于 [Naccl/NBlog](https://github.com/Naccl/NBlog) 进行二次开发，更加专注于个人技术心得分享。
 
 ### 后端新特性
 | 功能 | 描述 |
