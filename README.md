@@ -18,21 +18,6 @@
 - 📱 全面适配移动端，交互体验优化
 - ⚡️ 文章编辑自动保存，防止意外丢失
 
-## 项目截图
-
-### 博客前台
-![博客首页](./pic/blog1.png)
-![文章详情](./pic/blog2.png)
-![动态](./pic/blog3.png)
-![归档](./pic/blog4.png)
-
-### 后台管理
-![登录首页](./pic/cms1.png)
-![后台管理](./pic/cms2.jpg)
-![撰写界面](./pic/cms3.png)
-![相册管理](./pic/cms4.jpg)
-> 更多功能等待你的探索...
-
 ## 目录
 
 - [简介](#简介)
@@ -42,6 +27,7 @@
 - [功能介绍](#功能介绍)
   - [后端新特性](#后端新特性)
   - [前端优化](#前端优化)
+- [项目截图](#项目截图)
 - [快速开始](#快速开始)
   - [开发环境](#开发环境)
   - [环境配置](#环境配置说明)
@@ -86,7 +72,6 @@ Spring Boot + Vue 博客系统
   - lodash（工具函数）
   - v-viewer（图片预览）
   - prismjs（代码高亮）
-
 
 ## 功能介绍
 
@@ -139,7 +124,24 @@ Spring Boot + Vue 博客系统
     - 替换原有链接
     - 支持快速跳转管理
 
-## 开发环境要求
+## 项目截图
+
+### 博客前台
+![博客首页](./pic/blog1.png)
+![文章详情](./pic/blog2.png)
+![动态](./pic/blog3.png)
+![归档](./pic/blog4.png)
+
+### 后台管理
+![登录首页](./pic/cms1.png)
+![后台管理](./pic/cms2.jpg)
+![撰写界面](./pic/cms3.png)
+![相册管理](./pic/cms4.jpg)
+> 更多功能等待你的探索...
+
+## 快速开始
+
+### 开发环境
 
 ### 基础环境
 - JDK: 1.8+
@@ -162,43 +164,7 @@ Spring Boot + Vue 博客系统
 - MySQL: 5.7+
 - Redis: 6.0+
 
-## 开发环境搭建
-
-1. 创建 MySQL 数据库：
-```sql
-CREATE DATABASE nblog CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-```
-然后执行`/blog-api/nblog.sql`初始化表数据
-
-2. 修改配置信息`/blog-api/src/main/resources/application-dev.properties`
-3. 安装 Redis 并启动
-4. 启动后端服务
-5. 分别在`blog-cms`和`blog-view`目录下执行`npm install`安装依赖
-6. 分别在`blog-cms`和`blog-view`目录下执行`npm run serve`启动前后台页面
-
-
-
-## 注意事项
-
-### 配置及依赖说明
-- **依赖版本**
-  - Maven 和 NPM 依赖版本固定，请勿随意升级或降级
-  - 确保各组件版本：
-    - JDK: 1.8+
-    - MySQL: 5.7+ (必须使用`utf8mb4`字符集以支持emoji)
-    - Redis: 6.0+
-    - Node.js: 12.x+
-
-- **第三方服务配置**
-  - 百度内容审核：需自行申请API密钥，可选开启
-  - 又拍云存储：需自行申请账号和配置空间，可选用本地存储
-  - 邮箱服务：默认配置QQ邮箱，可切换其他服务商
-
-- **核心配置说明** (`application-dev.properties`)
-  - 安全相关：
-    - 必须修改`token.secretKey`
-
-### 环境及配置说明
+### 环境配置说明
 
 #### 环境要求
 - JDK: 1.8+
@@ -221,6 +187,40 @@ CREATE DATABASE nblog CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 - **第三方服务**
   - 百度内容审核：配置`baidu.content.*`（可选）
   - 邮件服务：默认QQ邮箱，可切换其他服务商
+
+### 开发环境搭建
+
+1. 创建 MySQL 数据库：
+```sql
+CREATE DATABASE nblog CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+然后执行`/blog-api/nblog.sql`初始化表数据
+
+2. 修改配置信息`/blog-api/src/main/resources/application-dev.properties`
+3. 安装 Redis 并启动
+4. 启动后端服务
+5. 分别在`blog-cms`和`blog-view`目录下执行`npm install`安装依赖
+6. 分别在`blog-cms`和`blog-view`目录下执行`npm run serve`启动前后台页面
+
+## 注意事项
+
+### 配置及依赖说明
+- **依赖版本**
+  - Maven 和 NPM 依赖版本固定，请勿随意升级或降级
+  - 确保各组件版本：
+    - JDK: 1.8+
+    - MySQL: 5.7+ (必须使用`utf8mb4`字符集以支持emoji)
+    - Redis: 6.0+
+    - Node.js: 12.x+
+
+- **第三方服务配置**
+  - 百度内容审核：需自行申请API密钥，可选开启
+  - 又拍云存储：需自行申请账号和配置空间，可选用本地存储
+  - 邮箱服务：默认配置QQ邮箱，可切换其他服务商
+
+- **核心配置说明** (`application-dev.properties`)
+  - 安全相关：
+    - 必须修改`token.secretKey`
 
 ## 许可证
 
