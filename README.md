@@ -177,11 +177,13 @@ CREATE DATABASE nblog CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 然后执行`/blog-api/nblog.sql`初始化表数据
 
-2. 修改配置信息`/blog-api/src/main/resources/application-dev.properties`
-3. 安装 Redis 并启动
-4. 启动后端服务
-5. 分别在`blog-cms`和`blog-view`目录下执行`npm install`安装依赖
-6. 分别在`blog-cms`和`blog-view`目录下执行`npm run serve`启动前后台页面
+2. 创建配置文件`/blog-api/src/main/resources/application-dev.properties`（生产环境需要创建`application-prd.properties`）
+3. 复制`/blog-api/src/main/resources/application-dev.properties.template`到`application-dev.properties`
+4. 修改替换`application-dev.properties`中的配置信息
+5. 安装 Redis 并启动
+6. 启动后端服务
+7. 分别在`blog-cms`和`blog-view`目录下执行`npm install`安装依赖
+8. 分别在`blog-cms`和`blog-view`目录下执行`npm run serve`启动前后台页面
 
 ## 注意事项
 
