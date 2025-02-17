@@ -6,7 +6,7 @@
 [![MySQL](https://img.shields.io/badge/MySQL-5.7+-blue.svg)](https://www.mysql.com/)
 [![Redis](https://img.shields.io/badge/Redis-6.0+-red.svg)](https://redis.io/)
 
-> 一个基于Spring Boot + Vue的前后端分离博客系统，注重个人技术分享，支持本地图片存储，内置内容审核。
+> 一个基于Spring Boot + Vue的前后端分离博客系统，注重个人技术分享，长期维护，欢迎交流。
 
 预览地址：
 - 博客前台：[https://caixiaohu.com](https://caixiaohu.com)
