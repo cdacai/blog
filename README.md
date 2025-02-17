@@ -143,29 +143,6 @@ Spring Boot + Vue 博客系统
 
 ## 快速开始
 
-### 开发环境
-
-### 基础环境
-- JDK: 1.8+
-- Maven: 3.6+
-- MySQL: 5.7+
-- Redis: 6.0+
-- Node.js: 12.x+
-- NPM: 6.x+
-
-### 推荐开发工具
-- IntelliJ IDEA 2020.1+ (后端)
-- Visual Studio Code (前端)
-- Redis Desktop Manager (缓存管理)
-- Navicat Premium (数据库管理)
-
-### 推荐部署环境
-- CentOS 7.x+
-- Nginx 1.18+
-- JDK: 1.8+
-- MySQL: 5.7+
-- Redis: 6.0+
-
 ### 环境配置说明
 
 #### 环境要求
@@ -174,6 +151,8 @@ Spring Boot + Vue 博客系统
 - Redis: 6.0+
 - Node.js: 12.x+
 - Maven: 3.6+
+- Node.js: 12.x+
+- NPM: 6.x+
 
 #### 核心配置
 - **安全配置**
