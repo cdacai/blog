@@ -465,6 +465,9 @@
 						}
 					]
 				},
+				specialCityCoords: {
+					'南极': [0, -75]  // 只保留南极坐标
+				}
 			}
 		},
 		mounted() {
@@ -495,17 +498,13 @@
 					this.tagOption.series[0].data = res.data.tag.series
 					this.initTagEcharts()
 					//处理访客地图数据
-					this.totalMapData = this.convertData(res.data.cityVisitor)
-					// 处理今日访客数据 - 这里假设今日访客就是当前统计的uv
-					this.todayMapData = this.totalMapData.map(item => ({
-						...item,
-						uv: Math.floor(item.uv * this.uv / this.totalMapData.reduce((sum, curr) => sum + curr.uv, 0))
-					})).filter(item => item.uv > 0)
+					const visitors = res.data.cityVisitor;
+					this.todayMapData = this.convertData(visitors);
 					
 					//设置地图数据
-					this.mapOption.series[0].data = this.todayMapData
-					this.mapOption.series[1].data = this.todayMapData.slice(0, 5)
-					this.initMapEcharts()
+					this.mapOption.series[0].data = this.todayMapData;
+					this.mapOption.series[1].data = this.todayMapData.slice(0, 5);
+					this.initMapEcharts();
 					//渲染一周访问量数据
 					this.visitRecordOption.xAxis.data = res.data.visitRecord.date
 					this.visitRecordOption.series[0].data = res.data.visitRecord.pv
@@ -530,60 +529,105 @@
 				})
 			},
 			initMapEcharts() {
-				this.mapEcharts = echarts.init(this.$refs.mapEcharts)
-				this.mapOption.geo.map = 'world'
-				this.mapOption.geo.zoom = 3.5
-				this.mapOption.geo.center = [105, 38]
-				this.mapOption.geo.roam = true
+				this.mapEcharts = echarts.init(this.$refs.mapEcharts);
+				this.mapOption.geo.map = 'world';
+				
+				// 计算所有访客位置的边界
+				if (this.todayMapData && this.todayMapData.length > 0) {
+					let minLng = Number.MAX_VALUE;
+					let maxLng = Number.MIN_VALUE;
+					let minLat = Number.MAX_VALUE;
+					let maxLat = Number.MIN_VALUE;
+					
+					this.todayMapData.forEach(point => {
+						const lng = point.value[0];
+						const lat = point.value[1];
+						minLng = Math.min(minLng, lng);
+						maxLng = Math.max(maxLng, lng);
+						minLat = Math.min(minLat, lat);
+						maxLat = Math.max(maxLat, lat);
+					});
+					
+					// 计算中心点
+					const centerLng = (minLng + maxLng) / 2;
+					const centerLat = (minLat + maxLat) / 2;
+					
+					// 计算合适的缩放级别
+					let zoom;
+					if (this.todayMapData.length === 1) {
+						// 单点时使用固定的缩放级别，显示更大范围的地图
+						zoom = 5;  // 可以根据需要调整这个值
+					} else {
+						// 多点时计算合适的缩放级别
+						const lngDiff = Math.max(maxLng - minLng, 5);  // 确保最小经度差
+						const latDiff = Math.max(maxLat - minLat, 5);  // 确保最小纬度差
+						zoom = Math.min(
+							360 / Math.max(lngDiff * 2.5, 30),
+							180 / Math.max(latDiff * 2.5, 20)
+						);
+					}
+					
+					this.mapOption.geo.center = [centerLng, centerLat];
+					this.mapOption.geo.zoom = zoom;
+				} else {
+					// 没有数据时默认显示中国
+					this.mapOption.geo.center = [105, 38];
+					this.mapOption.geo.zoom = 3.5;
+				}
+				
+				this.mapOption.geo.roam = true;
 				this.mapOption.geo.scaleLimit = {
 					min: 1,
 					max: 10
-				}
-				this.mapOption.series[0].symbolSize = 8
-				this.mapOption.series[1].symbolSize = 15
+				};
+				this.mapOption.series[0].symbolSize = 8;
+				this.mapOption.series[1].symbolSize = 15;
 				
-				this.mapEcharts.setOption(this.mapOption)
+				this.mapEcharts.setOption(this.mapOption);
 				
 				// 保存初始配置
-				const initialOption = JSON.parse(JSON.stringify(this.mapOption))
+				const initialOption = JSON.parse(JSON.stringify(this.mapOption));
 				
 				// 添加双击事件，支持缩放查看其他区域
 				this.mapEcharts.on('dblclick', (params) => {
-					const currentZoom = this.mapOption.geo.zoom
-					const coordinate = this.mapEcharts.convertFromPixel({geoIndex: 0}, [params.event.offsetX, params.event.offsetY])
+					const currentZoom = this.mapOption.geo.zoom;
+					const coordinate = this.mapEcharts.convertFromPixel({geoIndex: 0}, [params.event.offsetX, params.event.offsetY]);
 					if (coordinate) {
-						this.mapOption.geo.center = coordinate
-						this.mapOption.geo.zoom = currentZoom * 1.5
-						this.mapEcharts.setOption(this.mapOption)
+						this.mapOption.geo.center = coordinate;
+						this.mapOption.geo.zoom = currentZoom * 1.5;
+						this.mapEcharts.setOption(this.mapOption);
 					}
-				})
+				});
 
 				// 监听工具栏事件
 				this.mapEcharts.on('restore', () => {
-					this.mapOption.geo.zoom = initialOption.geo.zoom
-					this.mapOption.geo.center = initialOption.geo.center
-					this.mapEcharts.setOption(this.mapOption)
-				})
+					this.mapOption.geo.zoom = initialOption.geo.zoom;
+					this.mapOption.geo.center = initialOption.geo.center;
+					this.mapEcharts.setOption(this.mapOption);
+				});
 
 				window.addEventListener('resize', () => {
-					this.mapEcharts.resize()
-				})
+					this.mapEcharts.resize();
+				});
 			},
 			convertData(data) {
-				let res = []
+				console.log('Converting visitor data:', data);
+				let res = [];
 				for (let i = 0; i < data.length; i++) {
-					let geoCoord = geoCoordMap[data[i].city]
+					// 先查找特殊城市坐标，如果没有再查找正常城市坐标
+					let geoCoord = this.specialCityCoords[data[i].city] || geoCoordMap[data[i].city];
 					if (geoCoord) {
 						res.push({
 							name: data[i].city,
 							value: [geoCoord[0], geoCoord[1]],
 							uv: data[i].uv
-						})
+						});
 					} else {
-						console.log('未找到坐标的城市:', data[i].city)
+						console.warn('未找到坐标的城市:', data[i].city);
 					}
 				}
-				return res
+				console.log('Converted data:', res);
+				return res;
 			},
 			initVisitRecordEcharts() {
 				this.visitRecordEcharts = echarts.init(this.$refs.visitRecordEcharts)

@@ -173,6 +173,37 @@ public class DashboardServiceImpl implements DashboardService {
 
 	@Override
 	public List<CityVisitor> getCityVisitorList() {
-		return cityVisitorMapper.getCityVisitorList();
+		// 获取今日访客数据
+		List<String> todayIpSources = visitLogMapper.getIpSourcesByToday();
+		System.out.println("Today IP sources: " + todayIpSources);
+		
+		Map<String, Integer> cityVisitorCount = new HashMap<>();
+		
+		// 统计今日各城市访客数
+		for(String ipSource : todayIpSources) {
+			String city;
+			if(ipSource == null || ipSource.trim().isEmpty() || !ipSource.startsWith("中国")) {
+				city = "南极";  // 所有特殊情况统一显示为南极
+			} else {
+				String[] split = ipSource.split("\\|");
+				if(split.length >= 3) {
+					city = split[2];
+				} else {
+					city = "南极";  // 格式不正确的也显示为南极
+				}
+			}
+			cityVisitorCount.merge(city, 1, Integer::sum);
+		}
+		
+		// 转换为CityVisitor列表
+		List<CityVisitor> todayVisitors = new ArrayList<>();
+		for(Map.Entry<String, Integer> entry : cityVisitorCount.entrySet()) {
+			CityVisitor visitor = new CityVisitor();
+			visitor.setCity(entry.getKey());
+			visitor.setUv(entry.getValue());
+			todayVisitors.add(visitor);
+		}
+		
+		return todayVisitors;
 	}
 }

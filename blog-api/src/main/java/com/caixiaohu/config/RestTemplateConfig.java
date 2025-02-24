@@ -39,10 +39,7 @@ public class RestTemplateConfig {
 	 */
 	@Bean
 	public RestTemplate restTemplateByProxy() {
-		SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
-		Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyProperties.getHost(), proxyProperties.getPort()));
-		requestFactory.setProxy(proxy);
-		requestFactory.setConnectTimeout(proxyProperties.getTimeout());
-		return new RestTemplate(requestFactory);
+		// 暂时返回无代理的RestTemplate
+		return new RestTemplate();
 	}
 }

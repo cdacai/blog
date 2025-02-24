@@ -183,8 +183,12 @@
 
     <!--维护 blog_tag 表(删除)-->
     <delete id="deleteBlogTagByBlogId">
-        delete from blog_tag where blog_id=#{blogId}
+        DELETE FROM blog_tag WHERE blog_id = #{blogId}
     </delete>
+
+    <select id="countBlogTagByBlogId" resultType="int">
+        SELECT COUNT(*) FROM blog_tag WHERE blog_id = #{blogId}
+    </select>
 
     <!--维护 blog_tag 表(添加)-->
     <insert id="saveBlogTag">

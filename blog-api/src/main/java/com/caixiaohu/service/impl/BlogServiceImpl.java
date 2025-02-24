@@ -21,6 +21,7 @@ import com.caixiaohu.util.JacksonUtils;
 import com.caixiaohu.util.markdown.MarkdownUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,7 @@ import java.util.Map;
  * @Author: Naccl
  * @Date: 2020-07-29
  */
+@Slf4j
 @Service
 public class BlogServiceImpl implements BlogService {
 	@Autowired
@@ -264,12 +266,22 @@ public class BlogServiceImpl implements BlogService {
 		redisService.deleteByHashKey(RedisKeyConstants.BLOG_VIEWS_MAP, id);
 	}
 
-	@Transactional(rollbackFor = Exception.class)
-	@Override
+	@Transactional
 	public void deleteBlogTagByBlogId(Long blogId) {
-		if (blogMapper.deleteBlogTagByBlogId(blogId) == 0) {
+		// 先检查记录是否存在
+		int count = blogMapper.countBlogTagByBlogId(blogId);
+		if (count == 0) {
+			log.info("博客[{}]没有关联的标签记录，跳过删除", blogId);
+			return;
+		}
+		
+		// 删除关联记录，注意这里不应该判断 rows == 0
+		int rows = blogMapper.deleteBlogTagByBlogId(blogId);
+		if (rows < count) { // 改为判断实际删除数量是否小于预期
+			log.error("删除博客[{}]的标签关联记录不完整，应删除{}条，实际删除{}条", blogId, count, rows);
 			throw new PersistenceException("维护博客标签关联表失败");
 		}
+		log.info("成功删除博客[{}]的{}个标签关联记录", blogId, rows);
 	}
 
 	@Transactional(rollbackFor = Exception.class)

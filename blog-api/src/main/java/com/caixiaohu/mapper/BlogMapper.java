@@ -85,4 +85,12 @@ public interface BlogMapper {
 	Boolean getPublishedByBlogId(Long blogId);
 
 	List<CategoryBlogCount> getCategoryBlogCountList();
+
+	/**
+	 * 根据博客id统计对应的标签数量
+	 * 
+	 * @param blogId 博客id
+	 * @return 标签数量
+	 */
+	int countBlogTagByBlogId(Long blogId);
 }

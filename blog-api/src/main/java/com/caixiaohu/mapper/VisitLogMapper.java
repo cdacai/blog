@@ -25,4 +25,6 @@ public interface VisitLogMapper {
 	int deleteVisitLogById(Long id);
 
 	int countVisitLogByToday();
+
+	List<String> getIpSourcesByToday();
 }

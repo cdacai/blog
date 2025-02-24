@@ -39,6 +39,9 @@ package-lock.json
 # Code changes record
 code_changes_record.txt
 
+#
+application.properties
+
 # 忽略包含实际配置值的环境配置文件
 /blog-api/src/main/resources/application-dev.properties
 /blog-api/src/main/resources/application-prd.properties

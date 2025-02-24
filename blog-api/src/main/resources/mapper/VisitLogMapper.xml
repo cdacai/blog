@@ -61,4 +61,10 @@
     <select id="countVisitLogByToday" resultType="java.lang.Integer">
         select count(*) from visit_log where date(create_time) = curdate()
     </select>
+
+    <!--获取今日IP来源-->
+    <select id="getIpSourcesByToday" resultType="String">
+        select distinct ip_source from visit_log 
+        where date(create_time) = curdate()
+    </select>
 </mapper>
