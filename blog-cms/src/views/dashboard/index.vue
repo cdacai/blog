@@ -91,8 +91,6 @@
 	import 'echarts/map/js/world'
 	import 'echarts/map/js/china'
 	import {getDashboard} from "@/api/dashboard";
-	//城市经纬度数据来自 https://github.com/Naccl/region2coord
-	import geoCoordMap from '@/util/city2coord.json'
 
 	export default {
 		name: "Dashboard",
@@ -498,8 +496,10 @@
 					this.tagOption.series[0].data = res.data.tag.series
 					this.initTagEcharts()
 					//处理访客地图数据
-					const visitors = res.data.cityVisitor;
-					this.todayMapData = this.convertData(visitors);
+					const visitorData = res.data.cityVisitor;
+					console.log('Today visitor data:', visitorData); // 添加日志
+					// 直接使用返回的数据，因为后端已经返回今日数据
+					this.todayMapData = this.convertData(visitorData || []);
 					
 					//设置地图数据
 					this.mapOption.series[0].data = this.todayMapData;
@@ -555,8 +555,16 @@
 					// 计算合适的缩放级别
 					let zoom;
 					if (this.todayMapData.length === 1) {
-						// 单点时使用固定的缩放级别，显示更大范围的地图
-						zoom = 5;  // 可以根据需要调整这个值
+						const point = this.todayMapData[0];
+						if (point.name === '南极') {
+							// 南极点特殊处理
+							this.mapOption.geo.center = [0, -90];
+							zoom = 2;  // 较小的缩放级别以显示更大范围
+						} else {
+							// 其他单点
+							this.mapOption.geo.center = point.value;
+							zoom = 4;  // 适中的缩放级别
+						}
 					} else {
 						// 多点时计算合适的缩放级别
 						const lngDiff = Math.max(maxLng - minLng, 5);  // 确保最小经度差
@@ -565,9 +573,9 @@
 							360 / Math.max(lngDiff * 2.5, 30),
 							180 / Math.max(latDiff * 2.5, 20)
 						);
+						this.mapOption.geo.center = [centerLng, centerLat];
 					}
 					
-					this.mapOption.geo.center = [centerLng, centerLat];
 					this.mapOption.geo.zoom = zoom;
 				} else {
 					// 没有数据时默认显示中国
@@ -614,16 +622,15 @@
 				console.log('Converting visitor data:', data);
 				let res = [];
 				for (let i = 0; i < data.length; i++) {
-					// 先查找特殊城市坐标，如果没有再查找正常城市坐标
-					let geoCoord = this.specialCityCoords[data[i].city] || geoCoordMap[data[i].city];
-					if (geoCoord) {
+					const visitor = data[i];
+					if (visitor.longitude != null && visitor.latitude != null) {
 						res.push({
-							name: data[i].city,
-							value: [geoCoord[0], geoCoord[1]],
-							uv: data[i].uv
+							name: visitor.city,
+							value: [visitor.longitude, visitor.latitude],
+							uv: visitor.uv
 						});
 					} else {
-						console.warn('未找到坐标的城市:', data[i].city);
+						console.warn('城市坐标未找到:', visitor.city);
 					}
 				}
 				console.log('Converted data:', res);

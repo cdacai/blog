@@ -65,6 +65,18 @@
     <!--获取今日IP来源-->
     <select id="getIpSourcesByToday" resultType="String">
         select distinct ip_source from visit_log 
+        where date(create_time) = CONVERT_TZ(CURDATE(), '+00:00', @@session.time_zone)
+    </select>
+
+    <!--根据UUID集合查询今天的访问记录-->
+    <select id="getVisitLogsByUUIDs" resultMap="log">
+        select id, uuid, uri, method, param, behavior, content, remark, ip, ip_source, os, browser,
+               device_type, device_brand, device_model, times, create_time, user_agent
+        from visit_log
         where date(create_time) = curdate()
+        and uuid in
+        <foreach collection="list" item="uuid" open="(" separator="," close=")">
+            #{uuid}
+        </foreach>
     </select>
 </mapper>

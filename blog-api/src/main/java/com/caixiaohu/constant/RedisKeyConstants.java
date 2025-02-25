@@ -55,4 +55,12 @@ public class RedisKeyConstants {
 	 * 分类博客数量key
 	 */
 	public static final String CATEGORY_BLOG_COUNT = "categoryBlogCount";
+	//验证码
+	public static final String USER_CODE_KEY = "userCode:";
+	//城市访客数量
+	public static final String CITY_VISITOR_MAP = "cityVisitorMap";
+	//访问记录
+	public static final String VISIT_RECORD = "visitRecord";
+	//城市坐标
+	public static final String CITY_COORDS_MAP = "cityCoordsMap";
 }

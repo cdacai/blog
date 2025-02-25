@@ -27,4 +27,6 @@ public interface VisitLogMapper {
 	int countVisitLogByToday();
 
 	List<String> getIpSourcesByToday();
+
+	List<VisitLog> getVisitLogsByUUIDs(List<String> uuids);
 }
