@@ -170,15 +170,6 @@ Spring Boot + Vue 博客系统
   - 本地存储：配置`upload.path`和权限
   - 又拍云：配置`bucketName`等信息
 
-- **GeoIP数据库配置**
-  - 必须配置外部GeoIP数据库
-  - 配置`blog.geoip.db.path`指向GeoIP数据库文件
-    - 支持绝对路径：`/opt/blog/data/GeoLite2-City.mmdb`（Linux）或`D:/data/GeoLite2-City.mmdb`（Windows）
-    - 支持相对路径：`./geoip/GeoLite2-City.mmdb`（项目根目录）或`../geoip/GeoLite2-City.mmdb`（与blog-api同级目录）
-    - 系统会自动将相对路径转换为绝对路径，两种方式都可以安全使用
-    - 必须确保该文件存在且应用有权限访问，否则应用将无法启动
-    - 详细部署说明请参考[GeoIP外部部署指南](./deployment-guide/geoip-external-setup.md)
-
 - **第三方服务**
   - 百度内容审核：配置`baidu.content.*`（可选）
   - 邮件服务：默认QQ邮箱，可切换其他服务商
@@ -206,7 +197,6 @@ CREATE DATABASE nblog CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
   - 百度内容审核：需自行申请API密钥，可选开启
   - 又拍云存储：需自行申请账号和配置空间，可选用本地存储
   - 邮箱服务：默认配置QQ邮箱，可切换其他服务商
-  - GeoIP数据库：默认使用内置数据库，建议生产环境配置外部数据库文件（详见[GeoIP外部部署指南](./deployment-guide/geoip-external-setup.md)）
 
 - **核心配置说明** (`application-dev.properties`,`application-prd.properties`)
   - 安全相关：
