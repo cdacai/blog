@@ -200,6 +200,9 @@ public class UpyunStorageServiceImpl implements StorageService {
             image.setUrl(imageUrl);
             image.setSize(file.getSize());
             image.setType(file.getContentType());
+            // 设置上传时间为当前时间戳（秒级）
+            image.setLastModified(String.valueOf(System.currentTimeMillis() / 1000));
+            log.info("上传图片成功：{}，设置时间戳：{}", image.getName(), image.getLastModified());
 
             return image;
         } catch (Exception e) {
@@ -302,7 +305,8 @@ public class UpyunStorageServiceImpl implements StorageService {
 
                     String name = parts[0];
                     String type = parts[1];
-                    long size = parts.length > 3 ? Long.parseLong(parts[2]) : 0;
+                    long size = parts.length > 2 ? Long.parseLong(parts[2]) : 0;
+                    long lastModified = parts.length > 3 ? Long.parseLong(parts[3]) : 0;
 
                     if ("N".equals(type) && isImageFile(name)) {
                         AlbumImage image = new AlbumImage();
@@ -311,9 +315,30 @@ public class UpyunStorageServiceImpl implements StorageService {
                         image.setUrl(upyunUtils.getDomain() + albumPath + "/" + name);
                         image.setSize(size);
                         image.setType(getContentType(name));
+                        // 设置最后修改时间，用于排序
+                        image.setLastModified(String.valueOf(lastModified));
                         images.add(image);
                     }
                 }
+                
+                // 按照最后修改时间倒序排序，最新的图片显示在最前面
+                log.info("对相册[{}]的图片按上传时间倒序排序，共{}张图片", albumName, images.size());
+                images.sort((img1, img2) -> {
+                    long time1 = 0L;
+                    long time2 = 0L;
+                    try {
+                        time1 = Long.parseLong(img1.getLastModified());
+                    } catch (Exception e) {
+                        log.warn("解析图片[{}]时间失败", img1.getName());
+                    }
+                    try {
+                        time2 = Long.parseLong(img2.getLastModified());
+                    } catch (Exception e) {
+                        log.warn("解析图片[{}]时间失败", img2.getName());
+                    }
+                    return Long.compare(time2, time1); // 降序排列，最新的在前面
+                });
+                log.info("相册[{}]图片排序完成", albumName);
             }
 
             return images;
