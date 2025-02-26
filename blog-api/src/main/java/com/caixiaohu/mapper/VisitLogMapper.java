@@ -27,4 +27,10 @@ public interface VisitLogMapper {
 	int countVisitLogByToday();
 
 	List<String> getIpSourcesByToday();
+	
+	/**
+	 * 获取所有IP来源
+	 * @return 所有IP来源列表
+	 */
+	List<String> getAllIpSources();
 }

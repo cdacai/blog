@@ -317,14 +317,14 @@
 									y2: 1,
 									colorStops: [{
 										offset: 0,
-										color: '#1890ff'
+										color: '#ffb980'
 									}, {
 										offset: 1,
-										color: '#0076ff'
+										color: '#ffa75a'
 									}]
 								},
 								shadowBlur: 6,
-								shadowColor: 'rgba(24,144,255,0.3)'
+								shadowColor: 'rgba(255,185,128,0.3)'
 							}
 						},
 						{
@@ -466,7 +466,36 @@
 					]
 				},
 				specialCityCoords: {
-					'南极': [0, -75]  // 只保留南极坐标
+					'南极': [0, -75],
+					'未知': [0, 0],
+					'中国': [105, 35],
+					'美国': [-100, 40],
+					'英国': [0, 55],
+					'法国': [2, 48],
+					'德国': [10, 51],
+					'俄罗斯': [100, 60],
+					'加拿大': [-95, 60],
+					'澳大利亚': [135, -25],
+					'巴西': [-55, -10],
+					'日本': [138, 36],
+					'韩国': [128, 37],
+					'印度': [78, 21],
+					'新加坡': [103.8, 1.3],
+					'马来西亚': [112, 2.5],
+					'泰国': [100, 15],
+					'越南': [108, 16],
+					'菲律宾': [122, 13],
+					'印度尼西亚': [120, -5],
+					'阿联酋': [54, 24],
+					'沙特阿拉伯': [45, 25],
+					'土耳其': [35, 39],
+					'埃及': [30, 27],
+					'南非': [25, -30],
+					'尼日利亚': [8, 10],
+					'肯尼亚': [38, 0],
+					'墨西哥': [-102, 23],
+					'阿根廷': [-65, -35],
+					'智利': [-70, -30]
 				}
 			}
 		},
@@ -501,9 +530,56 @@
 					const visitors = res.data.cityVisitor;
 					this.todayMapData = this.convertData(visitors);
 					
+					//处理累计访客地图数据
+					const allVisitors = res.data.allCityVisitor;
+					if (allVisitors) {
+						console.log('获取到累计访客数据:', allVisitors.length);
+						this.totalMapData = this.convertData(allVisitors);
+					} else {
+						console.warn('未获取到累计访客数据，使用今日数据代替');
+						this.totalMapData = this.todayMapData;
+					}
+					
+					// 处理今日访客数据，按访客数排序
+					const sortedTodayData = [...this.todayMapData].sort((a, b) => b.uv - a.uv);
+			
+					// 过滤掉未知点，只保留一个未知点（如果存在）
+					let filteredTodayData = [];
+					let unknownPoint = null;
+			
+					for (let i = 0; i < sortedTodayData.length; i++) {
+						if (sortedTodayData[i].name === '未知') {
+							if (unknownPoint === null) {
+								unknownPoint = sortedTodayData[i];
+							}
+						} else {
+							filteredTodayData.push(sortedTodayData[i]);
+						}
+					}
+			
+					// 如果有未知点，将其添加到过滤后的数据中
+					if (unknownPoint !== null) {
+						filteredTodayData.push(unknownPoint);
+					}
+			
+					// 获取今日访客前5名（包括中国城市和外国国家）
+					const top5TodayData = [];
+					let count = 0;
+			
+					for (let i = 0; i < filteredTodayData.length && count < 5; i++) {
+						// 排除未知点
+						if (filteredTodayData[i].name !== '未知') {
+							top5TodayData.push(filteredTodayData[i]);
+							count++;
+						}
+					}
+			
+					console.log('今日访客数据总点数:', filteredTodayData.length);
+					console.log('今日访客Top 5:', top5TodayData.map(item => item.name + '(' + item.uv + ')').join(', '));
+			
 					//设置地图数据
-					this.mapOption.series[0].data = this.todayMapData;
-					this.mapOption.series[1].data = this.todayMapData.slice(0, 5);
+					this.mapOption.series[0].data = filteredTodayData;
+					this.mapOption.series[1].data = top5TodayData;
 					this.initMapEcharts();
 					//渲染一周访问量数据
 					this.visitRecordOption.xAxis.data = res.data.visitRecord.date
@@ -647,16 +723,73 @@
 				this.isShowTodayVisitor = !this.isShowTodayVisitor;
 				const currentData = this.isShowTodayVisitor ? this.todayMapData : this.totalMapData;
 				
+				// 按访客数量排序
+				const sortedData = [...currentData].sort((a, b) => b.uv - a.uv);
+				
+				// 过滤掉未知点，只保留一个未知点（如果存在）
+				let filteredData = [];
+				let unknownPoint = null;
+				
+				for (let i = 0; i < sortedData.length; i++) {
+					if (sortedData[i].name === '未知') {
+						if (unknownPoint === null) {
+							unknownPoint = sortedData[i];
+						}
+					} else {
+						filteredData.push(sortedData[i]);
+					}
+				}
+				
+				// 如果有未知点，将其添加到过滤后的数据中
+				if (unknownPoint !== null) {
+					filteredData.push(unknownPoint);
+				}
+				
+				// 获取前5个访客最多的点（不包括未知，但包括中国城市和外国国家）
+				let top5Data = [];
+				let count = 0;
+				
+				for (let i = 0; i < filteredData.length && count < 5; i++) {
+					// 排除未知点
+					if (filteredData[i].name !== '未知') {
+						top5Data.push(filteredData[i]);
+						count++;
+					}
+				}
+				
+				console.log('切换到' + (this.isShowTodayVisitor ? '今日' : '累计') + '访客地图');
+				console.log('总数据点:', filteredData.length);
+				console.log('Top 5数据点:', top5Data.map(item => item.name + '(' + item.uv + ')').join(', '));
+				
 				this.mapEcharts.setOption({
 					title: {
 						text: this.isShowTodayVisitor ? '今日访客地图' : '累计访客地图'
 					},
 					series: [{
-						data: currentData
+						data: filteredData
 					}, {
-						data: currentData.slice(0, 5)
+						data: top5Data
 					}]
 				});
+			},
+			// 判断是否为国家名称（非中国城市）
+			isCountryName(name) {
+				// 中国的省份和城市不算国家
+				if (name.endsWith('省') || name.endsWith('市') || name.endsWith('区') || 
+					name.endsWith('县') || name.endsWith('自治区') || name.endsWith('特别行政区')) {
+					return false;
+				}
+				
+				// 常见国家名称判断
+				const commonCountries = [
+					'美国', '英国', '法国', '德国', '俄罗斯', '加拿大', '澳大利亚', '日本', '韩国', 
+					'印度', '巴西', '墨西哥', '南非', '意大利', '西班牙', '葡萄牙', '瑞士', '瑞典', 
+					'挪威', '芬兰', '丹麦', '荷兰', '比利时', '奥地利', '希腊', '土耳其', '埃及', 
+					'阿根廷', '智利', '新西兰', '新加坡', '马来西亚', '泰国', '越南', '菲律宾', 
+					'印度尼西亚', '阿联酋', '沙特阿拉伯'
+				];
+				
+				return commonCountries.includes(name);
 			},
 		}
 	}

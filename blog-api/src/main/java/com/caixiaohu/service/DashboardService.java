@@ -19,4 +19,10 @@ public interface DashboardService {
 	Map<String, List> getVisitRecordMap();
 
 	List<CityVisitor> getCityVisitorList();
+	
+	/**
+	 * 获取所有历史访客数据
+	 * @return 所有历史访客数据
+	 */
+	List<CityVisitor> getAllCityVisitorList();
 }

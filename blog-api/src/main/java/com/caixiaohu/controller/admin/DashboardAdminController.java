@@ -38,6 +38,8 @@ public class DashboardAdminController {
 		Map<String, List> tagBlogCountMap = dashboardService.getTagBlogCountMap();
 		Map<String, List> visitRecordMap = dashboardService.getVisitRecordMap();
 		List<CityVisitor> cityVisitorList = dashboardService.getCityVisitorList();
+		// 获取累计访客数据
+		List<CityVisitor> allCityVisitorList = dashboardService.getAllCityVisitorList();
 
 		Map<String, Object> map = new HashMap<>(16);
 		map.put("pv", todayPV);
@@ -48,6 +50,7 @@ public class DashboardAdminController {
 		map.put("tag", tagBlogCountMap);
 		map.put("visitRecord", visitRecordMap);
 		map.put("cityVisitor", cityVisitorList);
+		map.put("allCityVisitor", allCityVisitorList);
 		return Result.ok("获取成功", map);
 	}
 }

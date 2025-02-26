@@ -2,6 +2,8 @@ package com.caixiaohu.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 
 import com.caixiaohu.entity.Category;
 import com.caixiaohu.entity.CityVisitor;
@@ -17,7 +19,10 @@ import com.caixiaohu.mapper.VisitRecordMapper;
 import com.caixiaohu.model.vo.CategoryBlogCount;
 import com.caixiaohu.model.vo.TagBlogCount;
 import com.caixiaohu.service.DashboardService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +51,30 @@ public class DashboardServiceImpl implements DashboardService {
 	CityVisitorMapper cityVisitorMapper;
 	//查询最近30天的记录
 	private static final int visitRecordLimitNum = 30;
+	
+	// 国家坐标数据
+	private Map<String, double[]> countryCoordinates;
+	
+	public DashboardServiceImpl() {
+		// 初始化时加载国家坐标数据
+		loadCountryCoordinates();
+	}
+	
+	/**
+	 * 加载国家坐标数据
+	 */
+	private void loadCountryCoordinates() {
+		try {
+			Resource resource = new ClassPathResource("static/country_coordinates.json");
+			InputStream inputStream = resource.getInputStream();
+			ObjectMapper mapper = new ObjectMapper();
+			countryCoordinates = mapper.readValue(inputStream, Map.class);
+			System.out.println("成功加载国家坐标数据，共 " + countryCoordinates.size() + " 条记录");
+		} catch (IOException e) {
+			System.err.println("加载国家坐标数据失败: " + e.getMessage());
+			countryCoordinates = new HashMap<>();
+		}
+	}
 
 	@Override
 	public int countVisitLogByToday() {
@@ -182,14 +211,25 @@ public class DashboardServiceImpl implements DashboardService {
 		// 统计今日各城市访客数
 		for(String ipSource : todayIpSources) {
 			String city;
-			if(ipSource == null || ipSource.trim().isEmpty() || !ipSource.startsWith("中国")) {
-				city = "南极";  // 所有特殊情况统一显示为南极
-			} else {
+			if(ipSource == null || ipSource.trim().isEmpty()) {
+				city = "未知";  // 空IP来源显示为未知
+			} else if(!ipSource.startsWith("中国")) {
+				// 非中国IP，只提取国家信息
 				String[] split = ipSource.split("\\|");
-				if(split.length >= 3) {
-					city = split[2];
+				if(split.length >= 1 && !split[0].trim().isEmpty()) {
+					city = split[0];  // 使用国家名称
 				} else {
-					city = "南极";  // 格式不正确的也显示为南极
+					city = "未知";  // 无法提取国家信息
+				}
+			} else {
+				// 中国IP，提取城市信息
+				String[] split = ipSource.split("\\|");
+				if(split.length >= 3 && !split[2].trim().isEmpty()) {
+					city = split[2];  // 使用城市名称
+				} else if(split.length >= 2 && !split[1].trim().isEmpty()) {
+					city = split[1];  // 使用省份名称
+				} else {
+					city = "中国";  // 无法提取省市信息
 				}
 			}
 			cityVisitorCount.merge(city, 1, Integer::sum);
@@ -205,5 +245,52 @@ public class DashboardServiceImpl implements DashboardService {
 		}
 		
 		return todayVisitors;
+	}
+	
+	@Override
+	public List<CityVisitor> getAllCityVisitorList() {
+		// 获取所有访客数据
+		List<String> allIpSources = visitLogMapper.getAllIpSources();
+		System.out.println("All IP sources count: " + allIpSources.size());
+		
+		Map<String, Integer> cityVisitorCount = new HashMap<>();
+		
+		// 统计所有历史各城市访客数
+		for(String ipSource : allIpSources) {
+			String city;
+			if(ipSource == null || ipSource.trim().isEmpty()) {
+				city = "未知";  // 空IP来源显示为未知
+			} else if(!ipSource.startsWith("中国")) {
+				// 非中国IP，只提取国家信息
+				String[] split = ipSource.split("\\|");
+				if(split.length >= 1 && !split[0].trim().isEmpty()) {
+					city = split[0];  // 使用国家名称
+				} else {
+					city = "未知";  // 无法提取国家信息
+				}
+			} else {
+				// 中国IP，提取城市信息
+				String[] split = ipSource.split("\\|");
+				if(split.length >= 3 && !split[2].trim().isEmpty()) {
+					city = split[2];  // 使用城市名称
+				} else if(split.length >= 2 && !split[1].trim().isEmpty()) {
+					city = split[1];  // 使用省份名称
+				} else {
+					city = "中国";  // 无法提取省市信息
+				}
+			}
+			cityVisitorCount.merge(city, 1, Integer::sum);
+		}
+		
+		// 转换为CityVisitor列表
+		List<CityVisitor> allVisitors = new ArrayList<>();
+		for(Map.Entry<String, Integer> entry : cityVisitorCount.entrySet()) {
+			CityVisitor visitor = new CityVisitor();
+			visitor.setCity(entry.getKey());
+			visitor.setUv(entry.getValue());
+			allVisitors.add(visitor);
+		}
+		
+		return allVisitors;
 	}
 }

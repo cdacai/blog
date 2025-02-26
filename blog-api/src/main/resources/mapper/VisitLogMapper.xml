@@ -67,4 +67,9 @@
         select distinct ip_source from visit_log 
         where date(create_time) = curdate()
     </select>
+
+    <!--获取所有IP来源-->
+    <select id="getAllIpSources" resultType="String">
+        select distinct ip_source from visit_log
+    </select>
 </mapper>
