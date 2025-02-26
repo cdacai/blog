@@ -3,12 +3,10 @@ package com.caixiaohu.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.caixiaohu.constant.RedisKeyConstants;
 import com.caixiaohu.entity.Category;
 import com.caixiaohu.entity.CityVisitor;
 import com.caixiaohu.entity.Tag;
 import com.caixiaohu.entity.VisitRecord;
-import com.caixiaohu.entity.VisitLog;
 import com.caixiaohu.mapper.BlogMapper;
 import com.caixiaohu.mapper.CategoryMapper;
 import com.caixiaohu.mapper.CityVisitorMapper;
@@ -19,14 +17,11 @@ import com.caixiaohu.mapper.VisitRecordMapper;
 import com.caixiaohu.model.vo.CategoryBlogCount;
 import com.caixiaohu.model.vo.TagBlogCount;
 import com.caixiaohu.service.DashboardService;
-import com.caixiaohu.service.RedisService;
-import com.caixiaohu.util.GlobalCityCoordUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @Description: 仪表盘业务层实现
@@ -49,10 +44,6 @@ public class DashboardServiceImpl implements DashboardService {
 	VisitRecordMapper visitRecordMapper;
 	@Autowired
 	CityVisitorMapper cityVisitorMapper;
-	@Autowired
-	RedisService redisService;
-	@Autowired
-	GlobalCityCoordUtils globalCityCoordUtils;
 	//查询最近30天的记录
 	private static final int visitRecordLimitNum = 30;
 
@@ -182,37 +173,37 @@ public class DashboardServiceImpl implements DashboardService {
 
 	@Override
 	public List<CityVisitor> getCityVisitorList() {
-		// 从Redis获取今日访客UUID集合
-		Set<String> uuidSet = redisService.getSetMembers(RedisKeyConstants.IDENTIFICATION_SET);
-		if (uuidSet == null || uuidSet.isEmpty()) {
-			return new ArrayList<>();
-		}
+		// 获取今日访客数据
+		List<String> todayIpSources = visitLogMapper.getIpSourcesByToday();
+		System.out.println("Today IP sources: " + todayIpSources);
 		
-		// 获取这些UUID今天的访问记录
-		List<VisitLog> todayLogs = visitLogMapper.getVisitLogsByUUIDs(new ArrayList<>(uuidSet));
-		
-		Map<String, CityVisitor> cityVisitorMap = new HashMap<>();
+		Map<String, Integer> cityVisitorCount = new HashMap<>();
 		
 		// 统计今日各城市访客数
-		for(VisitLog log : todayLogs) {
-			String ipSource = log.getIpSource();
-			Object[] cityInfo = globalCityCoordUtils.parseCityFromIpSource(ipSource);
-			String city = (String) cityInfo[0];
-			
-			CityVisitor visitor = cityVisitorMap.get(city);
-			if (visitor == null) {
-				visitor = new CityVisitor();
-				visitor.setCity(city);
-				visitor.setUv(1);
-				// 添加经纬度信息
-				visitor.setLongitude((Double) cityInfo[1]);
-				visitor.setLatitude((Double) cityInfo[2]);
-				cityVisitorMap.put(city, visitor);
+		for(String ipSource : todayIpSources) {
+			String city;
+			if(ipSource == null || ipSource.trim().isEmpty() || !ipSource.startsWith("中国")) {
+				city = "南极";  // 所有特殊情况统一显示为南极
 			} else {
-				visitor.setUv(visitor.getUv() + 1);
+				String[] split = ipSource.split("\\|");
+				if(split.length >= 3) {
+					city = split[2];
+				} else {
+					city = "南极";  // 格式不正确的也显示为南极
+				}
 			}
+			cityVisitorCount.merge(city, 1, Integer::sum);
 		}
 		
-		return new ArrayList<>(cityVisitorMap.values());
+		// 转换为CityVisitor列表
+		List<CityVisitor> todayVisitors = new ArrayList<>();
+		for(Map.Entry<String, Integer> entry : cityVisitorCount.entrySet()) {
+			CityVisitor visitor = new CityVisitor();
+			visitor.setCity(entry.getKey());
+			visitor.setUv(entry.getValue());
+			todayVisitors.add(visitor);
+		}
+		
+		return todayVisitors;
 	}
 }

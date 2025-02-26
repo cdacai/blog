@@ -19,11 +19,4 @@ import lombok.ToString;
 public class CityVisitor {
 	private String city;//城市名称
 	private Integer uv;//独立访客数量
-	private Double longitude;//经度
-	private Double latitude;//纬度
-
-	public CityVisitor(String city, Integer uv) {
-		this.city = city;
-		this.uv = uv;
-	}
 }
