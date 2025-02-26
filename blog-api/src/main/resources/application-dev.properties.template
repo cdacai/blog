@@ -86,7 +86,15 @@ upload.upyun.path=/main/tech
 upload.upyun.domain=https://cdn.caixiaohu.com
 
 # 百度内容审核配置
-baidu.content.api-key=${BAIDU_API_KEY}
-baidu.content.secret-key=${BAIDU_SECRET_KEY}
+baidu.content.api-key=your_api_key
+baidu.content.secret-key=your_secret_key
 baidu.content.enabled=true
+# 是否允许疑似内容通过，默认false（不允许通过）
 baidu.content.allow-suspicious=false
+
+# GeoIP数据库路径配置（必须配置）
+# 系统将从此路径加载GeoIP数据库文件，用于IP地址解析
+# 可以使用绝对路径：D:/data/GeoLite2-City.mmdb（Windows）或 /opt/blog/data/GeoLite2-City.mmdb（Linux）
+# 也可以使用相对路径：./geoip/GeoLite2-City.mmdb（相对于应用运行目录）
+# 注意：必须确保该文件存在且应用有权限访问，否则应用将无法启动
+blog.geoip.db.path=./geoip/GeoLite2-City.mmdb

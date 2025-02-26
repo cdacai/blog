@@ -4,13 +4,14 @@ import com.maxmind.geoip2.DatabaseReader;
 import com.maxmind.geoip2.model.CityResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.InetAddress;
+import java.nio.file.Paths;
 
 /**
  * @Description: GeoIP2 服务，用于IP地理位置解析
@@ -21,22 +22,52 @@ import java.net.InetAddress;
 public class GeoIPService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private DatabaseReader reader;
-    private static final String DB_FILE = "geoip/GeoLite2-City.mmdb";
+    
+    // 从配置文件中读取外部数据库文件路径
+    @Value("${blog.geoip.db.path}")
+    private String externalDbPath;
 
     @PostConstruct
     public void init() {
         try {
-            // 从classpath加载数据库文件
-            ClassPathResource resource = new ClassPathResource(DB_FILE);
-            InputStream inputStream = resource.getInputStream();
+            if (externalDbPath == null || externalDbPath.trim().isEmpty()) {
+                throw new IllegalStateException("GeoIP数据库路径未配置，请在配置文件中设置blog.geoip.db.path");
+            }
             
-            // 初始化reader
-            reader = new DatabaseReader.Builder(inputStream).build();
+            // 将相对路径转换为绝对路径
+            File dbFile;
+            if (isAbsolutePath(externalDbPath)) {
+                // 如果已经是绝对路径，直接使用
+                dbFile = new File(externalDbPath);
+                logger.info("使用配置的绝对路径: {}", externalDbPath);
+            } else {
+                // 如果是相对路径，转换为绝对路径
+                String absolutePath = Paths.get(externalDbPath).toAbsolutePath().toString();
+                dbFile = new File(absolutePath);
+                logger.info("将相对路径 {} 转换为绝对路径: {}", externalDbPath, absolutePath);
+            }
             
-            logger.info("GeoIP数据库加载成功");
+            if (!dbFile.exists() || !dbFile.isFile()) {
+                throw new IllegalStateException("GeoIP数据库文件不存在: " + dbFile.getAbsolutePath() + 
+                    "，请确保该文件存在并且应用有权限访问");
+            }
+            
+            // 从外部文件加载
+            reader = new DatabaseReader.Builder(dbFile).build();
+            logger.info("从外部路径加载GeoIP数据库成功: {}", dbFile.getAbsolutePath());
         } catch (IOException e) {
             logger.error("GeoIP数据库加载失败", e);
+            throw new RuntimeException("GeoIP数据库加载失败，应用无法启动", e);
         }
+    }
+    
+    /**
+     * 判断路径是否为绝对路径
+     * @param path 路径字符串
+     * @return 是否为绝对路径
+     */
+    private boolean isAbsolutePath(String path) {
+        return new File(path).isAbsolute();
     }
 
     /**
