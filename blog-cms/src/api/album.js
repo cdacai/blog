@@ -87,4 +87,23 @@ export function deleteAlbum(albumName) {
         method: 'DELETE',
         timeout: ALBUM_REQUEST_TIMEOUT
     })
+}
+
+// 获取隐藏相册列表
+export function getHiddenAlbums() {
+    return request({
+        url: '/album/hidden',
+        method: 'GET',
+        timeout: ALBUM_REQUEST_TIMEOUT
+    })
+}
+
+// 更新相册隐藏状态
+export function updateAlbumVisibility(albumName, hidden) {
+    return request({
+        url: `/album/${albumName}/visibility`,
+        method: 'PUT',
+        data: { hidden },
+        timeout: ALBUM_REQUEST_TIMEOUT * 2
+    })
 } 

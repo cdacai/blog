@@ -3,6 +3,7 @@ package com.caixiaohu.service.storage;
 import com.caixiaohu.config.properties.BlogProperties;
 import com.caixiaohu.model.entity.Album;
 import com.caixiaohu.model.entity.AlbumImage;
+import com.caixiaohu.util.AlbumConfigUtils;
 import com.caixiaohu.util.CloudStorageUtils;
 import com.caixiaohu.util.FileUtils;
 import com.caixiaohu.util.UpyunUtils;
@@ -24,6 +25,9 @@ import java.util.*;
 public class UpyunStorageServiceImpl implements StorageService {
     @Autowired
     private UpyunUtils upyunUtils;
+    
+    @Autowired
+    private AlbumConfigUtils albumConfigUtils;
 
     @Override
     public List<Album> getAlbums() {
@@ -51,6 +55,21 @@ public class UpyunStorageServiceImpl implements StorageService {
                 return Long.compare(time2, time1); // 降序排列，最新的在前面
             });
             log.info("相册排序完成");
+            
+            // 获取隐藏相册列表
+            List<String> hiddenAlbums = albumConfigUtils.getHiddenAlbums();
+            log.info("获取隐藏相册列表，共{}个隐藏相册", hiddenAlbums.size());
+            
+            // 标记隐藏相册
+            for (Album album : albums) {
+                if (hiddenAlbums.contains(album.getName())) {
+                    album.setHidden(true);
+                    log.debug("标记相册[{}]为隐藏", album.getName());
+                } else {
+                    album.setHidden(false);
+                }
+            }
+            
             log.info("=================== 获取相册列表完成，共{}个相册 ===================", albums.size());
             return albums;
         } catch (IOException | UpException e) {
@@ -74,7 +93,9 @@ public class UpyunStorageServiceImpl implements StorageService {
             String jsonStr = response.body().string();
             if (StringUtils.isEmpty(jsonStr)) {
                 log.info("目录为空: {}", path);
-                if (!"/".equals(path)) { // 不是根目录的空目录也作为相册
+                // 空目录也作为相册，但只有非根目录和非main目录
+                if (!"/".equals(path) && !"/main".equals(path)) {
+                    log.info("空目录[{}]作为空相册", path);
                     addAlbum(path, albums, null, 0, null);
                 }
                 return;
@@ -84,6 +105,7 @@ public class UpyunStorageServiceImpl implements StorageService {
             String coverUrl = null;
             int imageCount = 0;
             long lastModified = 0;
+            boolean hasSubDirectories = false;
 
             String[] lines = jsonStr.split("\n");
             for (String line : lines) {
@@ -97,6 +119,7 @@ public class UpyunStorageServiceImpl implements StorageService {
                 lastModified = Math.max(lastModified, time);
 
                 if ("F".equals(type)) {
+                    hasSubDirectories = true;
                     String subPath = path.endsWith("/") ? path + name : path + "/" + name;
                     log.debug("发现子目录: {}", subPath);
                     
@@ -128,7 +151,18 @@ public class UpyunStorageServiceImpl implements StorageService {
                 String albumName = path.substring(path.lastIndexOf("/") + 1);
                 // 检查是否已存在同名相册
                 if (albums.stream().noneMatch(a -> a.getName().equals(albumName))) {
-                    addAlbum(path, albums, coverUrl, imageCount, String.valueOf(lastModified));
+                    if (imageCount > 0) {
+                        // 有图片的目录作为相册
+                        log.info("目录[{}]包含{}张图片，添加为相册", path, imageCount);
+                        addAlbum(path, albums, coverUrl, imageCount, String.valueOf(lastModified));
+                    } else if (!hasSubDirectories) {
+                        // 既没有子目录也没有图片的目录作为空相册
+                        log.info("目录[{}]既没有子目录也没有图片，添加为空相册", path);
+                        addAlbum(path, albums, null, 0, String.valueOf(lastModified));
+                    } else {
+                        // 只有子目录没有图片的目录不作为相册
+                        log.info("目录[{}]只有子目录没有图片，不作为相册", path);
+                    }
                 }
             }
         } finally {

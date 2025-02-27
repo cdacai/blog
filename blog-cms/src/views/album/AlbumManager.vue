@@ -9,6 +9,11 @@
       <div class="album-manager-header">
         <div class="header-left">
           <h3>相册管理</h3>
+          <!-- 显示/隐藏相册开关 -->
+          <button class="visibility-toggle" @click="toggleShowHidden" :title="showHidden ? '隐藏已隐藏的相册' : '显示所有相册'">
+            <eye-icon v-if="showHidden" :size="20" color="#409EFF" />
+            <eye-close-icon v-else :size="20" color="#F56C6C" />
+          </button>
         </div>
         <div class="header-right">
           <button class="upload-btn" @click="showCreateAlbumDialog">
@@ -23,7 +28,13 @@
       <div class="album-manager-content">
         <div class="album-list">
           <!-- 相册卡片列表 -->
-          <div class="album-card" v-for="(album, index) in albums" :key="'album_' + index + '_' + album.name" @click="selectAlbum(album)">
+          <div 
+            class="album-card" 
+            v-for="(album, index) in filteredAlbums" 
+            :key="'album_' + index + '_' + album.name" 
+            @click="selectAlbum(album)"
+            :class="{'hidden-album': album.hidden}"
+          >
             <div class="album-cover" :class="{'empty-album': !album.coverUrl}">
               <template v-if="album.coverUrl">
                 <img :src="album.coverUrl" alt="相册封面">
@@ -40,8 +51,17 @@
               <p>{{ album.imageCount }}张照片</p>
             </div>
             <div class="album-actions">
+              <!-- 隐藏/显示按钮 -->
+              <button 
+                class="action-btn visibility-btn" 
+                @click.stop="toggleAlbumVisibility(album)" 
+                :title="album.hidden ? '显示相册' : '隐藏相册'"
+              >
+                <eye-icon v-if="album.hidden" :size="20" color="#409EFF" />
+                <eye-close-icon v-else :size="20" color="#F56C6C" />
+              </button>
               <button class="action-btn" @click.stop="deleteAlbumConfirm(album)" title="删除">
-                    <img :src="icons.delete" alt="删除" class="icon">
+                <img :src="icons.delete" alt="删除" class="icon">
               </button>
             </div>
           </div>
@@ -197,7 +217,9 @@ import {
   deleteAlbum,
   uploadToAlbum,
   deleteFromAlbum,
-  moveImage
+  moveImage,
+  getHiddenAlbums,
+  updateAlbumVisibility
 } from '@/api/album'
 import { Message } from 'element-ui'
 import DeleteIcon from '@/assets/icons/delete.svg'
@@ -207,6 +229,8 @@ import UploadIcon from '@/assets/icons/upload.svg'
 import BackIcon from '@/assets/icons/back.svg'
 import CheckIcon from '@/assets/icons/check.svg'
 import CheckSelectedIcon from '@/assets/icons/check-selected.svg'
+import EyeIcon from '@/components/icons/EyeIcon.vue'
+import EyeCloseIcon from '@/components/icons/EyeCloseIcon.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import AlbumCreateEditDialog from '@/components/album/AlbumCreateEditDialog.vue'
 import AlbumUploadDialog from '@/components/album/AlbumUploadDialog.vue'
@@ -225,7 +249,9 @@ export default {
     LoadingSpinner,
     AlbumCreateEditDialog,
     AlbumUploadDialog,
-    AlbumMoveDialog
+    AlbumMoveDialog,
+    EyeIcon,
+    EyeCloseIcon
   },
   data() {
     return {
@@ -255,7 +281,9 @@ export default {
         upload: UploadIcon,
         back: BackIcon,
         check: CheckIcon,
-        checkSelected: CheckSelectedIcon
+        checkSelected: CheckSelectedIcon,
+        eye: EyeIcon,
+        eyeClose: EyeCloseIcon
       },
       imageList: [],
       loadingText: '',
@@ -263,6 +291,7 @@ export default {
       selectedImage: null,
       previewVisible: false,
       previewImageUrl: '',
+      showHidden: false, // 是否显示隐藏的相册
     }
   },
   computed: {
@@ -271,6 +300,16 @@ export default {
       const start = (this.currentPage - 1) * this.pageSize;
       const end = start + this.pageSize;
       return this.imageList.slice(start, end);
+    },
+    // 过滤相册列表
+    filteredAlbums() {
+      if (this.showHidden) {
+        // 显示所有相册
+        return this.albums;
+      } else {
+        // 只显示未隐藏的相册
+        return this.albums.filter(album => !album.hidden);
+      }
     },
     previewImageStyle() {
       if (!this.previewVisible || !this.previewImageUrl) return {}
@@ -338,6 +377,11 @@ export default {
         this.loading = false;
       }
     },
+    // 切换显示/隐藏相册
+    toggleShowHidden() {
+      this.showHidden = !this.showHidden;
+      this.$message.success(this.showHidden ? '显示所有相册' : '隐藏已标记的相册');
+    },
     // 更新缓存的方法
     async updateAlbumCache() {
       try {
@@ -346,6 +390,34 @@ export default {
         sessionStorage.setItem('albumList', JSON.stringify(res.data));
       } catch (error) {
         console.error('Failed to update albums cache:', error);
+      }
+    },
+    // 切换相册的隐藏/显示状态
+    async toggleAlbumVisibility(album) {
+      try {
+        const hidden = !album.hidden;
+        // 使用info类型的消息代替loading
+        const loadingMessage = this.$message({
+          message: `正在${hidden ? '隐藏' : '显示'}相册"${album.name}"...`,
+          type: 'info',
+          duration: 0
+        });
+        const response = await updateAlbumVisibility(album.name, hidden);
+        // 关闭加载消息
+        loadingMessage.close();
+        if (response.code === 200) {
+          album.hidden = hidden;
+          this.$message.success(hidden ? `相册"${album.name}"已隐藏` : `相册"${album.name}"已显示`);
+          // 清除缓存
+          sessionStorage.removeItem('albumList');
+        } else {
+          this.$message.error(`更新相册可见性失败: ${response.msg}`);
+        }
+      } catch (error) {
+        // 确保关闭所有消息
+        this.$message.closeAll();
+        console.error('更新相册可见性失败:', error);
+        this.$message.error(error.message || '更新相册可见性失败，请稍后重试');
       }
     },
     // 获取相册所有图片
@@ -1985,6 +2057,41 @@ export default {
     opacity: 1;
     background: rgba(0, 0, 0, 0.4);
     transform: rotate(90deg);
+  }
+}
+
+/* 隐藏相册样式 */
+.hidden-album {
+  opacity: 0.6;
+}
+
+/* 眼睛图标样式 */
+.visibility-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: 10px;
+  color: #409EFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  .icon {
+    width: 20px;
+    height: 20px;
+    display: block;
+    filter: invert(47%) sepia(82%) saturate(1193%) hue-rotate(194deg) brightness(100%) contrast(101%);
+  }
+}
+
+/* 隐藏/显示按钮样式 */
+.visibility-btn {
+  margin-right: 5px;
+  
+  .icon {
+    width: 20px;
+    height: 20px;
+    display: block;
   }
 }
 </style> 

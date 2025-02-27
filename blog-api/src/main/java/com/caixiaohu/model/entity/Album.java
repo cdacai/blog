@@ -30,6 +30,10 @@ public class Album implements Serializable {
     private String path;
 
     private String lastModified;
+    
+    // 是否隐藏（不存储到数据库，仅用于前端展示）
+    @TableField(exist = false)
+    private Boolean hidden;
 
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
@@ -43,5 +47,13 @@ public class Album implements Serializable {
 
     public void setLastModified(String lastModified) {
         this.lastModified = lastModified;
+    }
+    
+    public Boolean getHidden() {
+        return hidden != null ? hidden : false;
+    }
+    
+    public void setHidden(Boolean hidden) {
+        this.hidden = hidden;
     }
 }

@@ -6,6 +6,7 @@ import com.caixiaohu.model.entity.Album;
 import com.caixiaohu.model.entity.AlbumImage;
 import com.caixiaohu.service.AlbumService;
 import com.caixiaohu.model.vo.Result;
+import com.caixiaohu.util.AlbumConfigUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description: 相册管理控制器
@@ -27,6 +29,9 @@ public class AlbumAdminController {
 
     @Autowired
     private AlbumService albumService;
+    
+    @Autowired
+    private AlbumConfigUtils albumConfigUtils;
 
     @GetMapping("/list")
     public Result getAlbumList() {
@@ -83,6 +88,47 @@ public class AlbumAdminController {
             return Result.ok("删除成功");
         } catch (Exception e) {
             return Result.error(e.getMessage());
+        }
+    }
+    
+    /**
+     * 获取隐藏相册列表
+     */
+    @GetMapping("/hidden")
+    public Result getHiddenAlbums() {
+        List<String> hiddenAlbums = albumConfigUtils.getHiddenAlbums();
+        return Result.ok("获取隐藏相册列表成功", hiddenAlbums);
+    }
+    
+    /**
+     * 更新相册隐藏状态
+     */
+    @PutMapping("/{albumName}/visibility")
+    @OperationLogger("更新相册可见性")
+    public Result updateAlbumVisibility(@PathVariable String albumName, @RequestBody Map<String, Boolean> params) {
+        try {
+            Boolean hidden = params.get("hidden");
+            if (hidden == null) {
+                return Result.error("参数错误");
+            }
+            
+            boolean success;
+            if (hidden) {
+                success = albumConfigUtils.addHiddenAlbum(albumName);
+                log.info("隐藏相册：{}", albumName);
+            } else {
+                success = albumConfigUtils.removeHiddenAlbum(albumName);
+                log.info("显示相册：{}", albumName);
+            }
+            
+            if (success) {
+                return Result.ok(hidden ? "相册已隐藏" : "相册已显示");
+            } else {
+                return Result.error("更新相册可见性失败");
+            }
+        } catch (Exception e) {
+            log.error("更新相册可见性异常: {}", e.getMessage(), e);
+            return Result.error("更新相册可见性失败: " + e.getMessage());
         }
     }
 }
