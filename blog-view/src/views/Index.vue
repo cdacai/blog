@@ -1,8 +1,8 @@
 <template>
 	<div class="site theme5">
 		<!-- 添加点状装饰 -->
-		<div class="dot-decoration top-right"></div>
-		<div class="dot-decoration bottom-left"></div>
+		<div class="dot-decoration top-right fixed"></div>
+		<div class="dot-decoration bottom-left fixed"></div>
 		
 		<!-- 添加色块装饰 -->
 		<div class="color-block top-left fixed"></div>

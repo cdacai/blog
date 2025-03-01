@@ -10,6 +10,11 @@
   background-color: rgba(47, 133, 90, 0.3);
 }
 
+/* 添加固定在视口的点状装饰样式 */
+.dot-decoration.fixed {
+  position: fixed;
+}
+
 /* 右上角点状装饰 */
 .dot-decoration.top-right {
   top: 120px;
