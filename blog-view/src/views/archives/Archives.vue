@@ -73,11 +73,27 @@
 
 <style scoped>
 	.article-header {
-		color: #1a4731;
+		background: linear-gradient(90deg, #1a4731 0%, #38a169 50%, #2F855A 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+		color: transparent;
 		font-size: 2rem;
 		font-weight: 600;
 		margin-bottom: 2rem;
 		padding-bottom: 1rem;
+		position: relative;
+	}
+
+	.article-header::after {
+		content: '';
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100px;
+		height: 3px;
+		background: linear-gradient(90deg, #38a169 0%, #68d391 100%);
+		border-radius: 3px;
 	}
 
 	.archives-wrapper {

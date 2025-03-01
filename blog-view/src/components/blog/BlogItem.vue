@@ -1,6 +1,16 @@
 <template>
 	<div>
-		<div class="blog-card" v-for="item in blogList" :key="item.id">
+		<div class="blog-card subtle-hover" v-for="item in blogList" :key="item.id">
+			<!-- 添加叶子装饰 -->
+			<div class="leaf-decoration top-right"></div>
+			
+			<!-- 添加角落装饰 -->
+			<div class="corner-decoration top-right"></div>
+			<div class="corner-decoration bottom-left"></div>
+			
+			<!-- 添加波浪背景 -->
+			<div class="wave-bg"></div>
+			
 			<div class="top-label" v-if="item.top" title="置顶文章">
 				<img src="@/assets/icons/top.svg" class="top-icon" alt="置顶">
 			</div>
@@ -165,20 +175,67 @@ export default {
 
 .blog-title {
 	margin: 0 0 1rem;
-	font-size: 2.85rem;
+	font-size: 2.34rem;
 	font-weight: normal;
 }
 
 .title-link {
-	background: linear-gradient(90deg, #1A4731 0%, #276749 100%);
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
+	/* color: #3fa89e; 巧克力棕 - 温暖而自然的色调，与绿色形成和谐搭配 */
+	color: #056c61; /* 巧克力棕 - 温暖而自然的色调，与绿色形成和谐搭配 */
 	transition: all 0.3s ease;
+	position: relative;
+	display: inline-block;
 }
 
+/* 
+其他颜色方案建议：
+1. #1E6091 - 深海蓝 - 沉稳而专业，带来平静感
+2. #5B6BBF - 薰衣草蓝 - 柔和而富有创意的色调
+3. #8E44AD - 紫水晶 - 高贵神秘，增添深度
+4. #D35400 - 南瓜橙 - 温暖活力，引人注目
+5. #16A085 - 孔雀绿 - 清新自然，富有生机
+6. #27AE60 - 翠绿 - 明亮而充满活力的绿色
+7. #2980B9 - 钴蓝 - 清澈而专业的蓝色
+8. #E74C3C - 朱砂红 - 热情大胆，引人注目
+9. #6D4C41 - 巧克力棕 - 温暖而自然的色调
+10. #607D8B - 蓝灰色 - 中性而平衡的色调
+*/
+
 .title-link:hover {
-	filter: brightness(1.1);
+	color: #3fa89e; /* 淡棕色 - 更加柔和的棕色，提供良好的视觉反馈 */
 	transform: translateY(-2px);
+}
+
+/* 
+悬停颜色方案建议（对应上面的颜色）：
+1. #2E8BC0 - 亮蓝色 - 更加明亮的蓝色
+2. #7986CB - 淡紫蓝 - 更加柔和的紫蓝色
+3. #9B59B6 - 亮紫色 - 更加鲜明的紫色
+4. #F39C12 - 琥珀金 - 更加明亮的橙色
+5. #1ABC9C - 绿松石 - 更加明亮的绿松石色
+6. #2ECC71 - 翠绿 - 更加明亮的绿色
+7. #3498DB - 天蓝 - 更加明亮的蓝色
+8. #FF5252 - 亮红色 - 更加鲜明的红色
+9. #8D6E63 - 淡棕色 - 更加柔和的棕色
+10. #78909C - 淡蓝灰 - 更加柔和的蓝灰色
+*/
+
+.title-link::after {
+	content: '';
+	position: absolute;
+	bottom: -5px;
+	left: 0;
+	width: 0;
+	height: 2px;
+	background: #3fa89e; /* 下划线颜色与悬停颜色一致 */
+	transition: width 0.3s ease;
+	border-radius: 2px;
+	opacity: 0;
+}
+
+.title-link:hover::after {
+	width: 100%;
+	opacity: 1;
 }
 
 .blog-meta {
@@ -274,6 +331,15 @@ export default {
 .read-btn i {
 	font-size: 1.1rem;
 	margin-left: 0.2rem;
+}
+
+.read-btn {
+	font-size: 0.8rem;
+	padding: 0.2rem 0.5rem;
+	background: rgba(47, 133, 90, 0.05);
+	border: 1px solid rgba(47, 133, 90, 0.1);
+	border-radius: 4px;
+	color: #2F855A;
 }
 
 .tag-list {
@@ -421,6 +487,15 @@ export default {
 	.blog-info-item {
 		font-size: 0.9rem;
 	}
+}
+
+/* 确保叶子装饰在卡片内可见 */
+.leaf-decoration.top-right {
+	top: 15px;
+	right: 15px;
+	width: 40px;
+	height: 40px;
+	opacity: 0.2;
 }
 </style>
 

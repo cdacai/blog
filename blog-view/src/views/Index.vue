@@ -1,5 +1,24 @@
 <template>
 	<div class="site theme5">
+		<!-- 添加点状装饰 -->
+		<div class="dot-decoration top-right"></div>
+		<div class="dot-decoration bottom-left"></div>
+		
+		<!-- 添加色块装饰 -->
+		<div class="color-block top-left fixed"></div>
+		<div class="color-block middle-right fixed"></div>
+		<div class="color-block bottom-right fixed"></div>
+		
+		<!-- 添加圆形色块 -->
+		<div class="color-block circle-top-right fixed"></div>
+		<div class="color-block circle-middle-left fixed"></div>
+		<div class="color-block circle-bottom-center fixed"></div>
+		
+		<!-- 添加椭圆形色块 -->
+		<div class="color-block oval-top-center fixed"></div>
+		<div class="color-block oval-middle-right fixed"></div>
+		<div class="color-block oval-bottom-left fixed"></div>
+		
 		<Nav :blog-name="siteInfo.blogName" :category-list="categoryList"/>
 		<div class="main">
 			<div class="container">
@@ -350,15 +369,31 @@
 	}
 
 	.article-header {
-		color: #1a4731;
+		background: linear-gradient(90deg, #1a4731 0%, #38a169 50%, #2F855A 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+		color: transparent;
 		font-size: 2rem;
 		font-weight: 600;
 		margin-bottom: 2rem;
 		padding-bottom: 1rem;
+		position: relative;
+	}
+
+	.article-header::after {
+		content: '';
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100px;
+		height: 3px;
+		background: linear-gradient(90deg, #38a169 0%, #68d391 100%);
+		border-radius: 3px;
 	}
 
 	.article-header i {
-		color: #2F855A;
+		color: #38a169;
 	}
 
 	.main-content.moments-content {

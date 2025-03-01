@@ -7,6 +7,8 @@ import store from './store'
 import './assets/css/base.css'
 import './assets/css/icon/iconfont.css'
 import "./assets/css/typo.css"
+import './assets/css/badge.css'
+import './assets/css/decorative-elements.css'
 
 // 去除谷歌链接，覆盖 semantic-ui 的字体设置
 import './assets/css/semantic-override.css'

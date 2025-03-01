@@ -1,5 +1,10 @@
 <template>
 	<footer class="ui inverted vertical segment m-padded-tb-large m-opacity">
+		<!-- 添加页脚装饰色块 -->
+		<div class="color-block footer-circle-left"></div>
+		<div class="color-block footer-circle-right"></div>
+		<div class="color-block footer-oval-center"></div>
+		
 		<div class="ui center aligned container">
 			<!-- <div class="ui inverted divided stackable grid"> -->
 
@@ -91,6 +96,7 @@
 	}
 
 	footer {
+		position: relative;
 		background-color: #8bc594 !important;
 		background-image: linear-gradient(0deg, #8bc594 0%, #a3d4ab 100%),
 			url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cstyle%3E.pattern{fill:%239ed3a7;fill-opacity:0.8}%3C/style%3E%3Crect width='40' height='40' fill='none'/%3E%3Cpath class='pattern' d='M0 0h40v2H0zM0 10h40v2H0zM0 20h40v2H0zM0 30h40v2H0zM0 0h2v40H0zM10 0h2v40h-2zM20 0h2v40h-2zM30 0h2v40h-2z'/%3E%3C/svg%3E") !important;

@@ -1,5 +1,9 @@
 <template>
-	<div class="theme5-intro" style="border-radius: 20px">
+	<div class="theme5-intro card-glow" style="border-radius: 20px">
+		<!-- 添加角落装饰 -->
+		<div class="corner-decoration top-right"></div>
+		<div class="corner-decoration bottom-left"></div>
+		
 		<!-- 关于我部分 -->
 		<div class="about-section">
 			<div class="theme5-header">
@@ -9,8 +13,8 @@
 					<!-- <div class="name">Observe</div> -->
 				<!-- <div class="roll-text" id="rollText" v-if="introduction.rollText.length!=0">我们接受所有</div> -->
 				<div class="intro-text" >{{ introduction.selfIntroduction || '全栈开发者，专注Web技术，分享开发经验与技术思考。' }}</div>
-				</div>
-				</div>
+			</div>
+		</div>
 
 		<!-- 暂时注释掉 social-links
 		<div class="social-links">
@@ -64,6 +68,9 @@
 				</div>
 			</div>
 		</div>
+		
+		<!-- 添加波浪背景 -->
+		<div class="wave-bg"></div>
 	</div>
 </template>
 
@@ -146,7 +153,7 @@
 }
 
 .theme5-header {
-	color: #2d3748;
+	color: #236042;
 	font-size: 1.71rem;
 	font-weight: 600;
 	margin-bottom: 16px;
@@ -258,4 +265,10 @@
 .category-section:hover {
 	transform: translateY(-2px);
 	}
+
+/* 增强卡片悬停效果 */
+.theme5-intro:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 10px 25px rgba(47, 133, 90, 0.15);
+}
 </style>
