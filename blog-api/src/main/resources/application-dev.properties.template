@@ -90,3 +90,9 @@ baidu.content.api-key=${BAIDU_API_KEY}
 baidu.content.secret-key=${BAIDU_SECRET_KEY}
 baidu.content.enabled=true
 baidu.content.allow-suspicious=false
+
+# ===== devtools配置 开始 =====
+# 禁用devtools自动重启功能，避免开发环境下每60秒自动重启
+# 注意：此配置仅用于开发环境，生产环境不需要此配置
+spring.devtools.restart.enabled=false
+# ===== devtools配置 结束 =====

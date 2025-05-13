@@ -126,13 +126,13 @@ Spring Boot + Vue 博客系统
 
 #### 博客前台
 - **博客首页**
-  - ![博客首页](./pic/blog1.png)
+  - ![博客首页](./pic/blog1.jpg)
 - **文章详情**
-  - ![文章详情](./pic/blog2.png)
+  - ![文章详情](./pic/blog2.jpg)
 - **动态**
-  - ![动态](./pic/blog3.png)
+  - ![动态](./pic/blog3.jpg)
 - **归档**
-  - ![归档](./pic/blog4.png)
+  - ![归档](./pic/blog4.jpg)
 
 #### 后台管理
 - **登录首页**
