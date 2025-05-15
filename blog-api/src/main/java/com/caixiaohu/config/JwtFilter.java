@@ -41,28 +41,24 @@ public class JwtFilter extends GenericFilterBean {
 			return;
 		}
 		String jwt = request.getHeader("Authorization");
-		log.info("Received JWT: {}", jwt);
+		log.debug("Received JWT: {}", jwt);
 		if (JwtUtils.judgeTokenIsExist(jwt)) {
 			try {
 				Claims claims = JwtUtils.getTokenBody(jwt);
 				String username = claims.getSubject();
 				Object authoritiesClaim = claims.get("authorities");
-				log.debug("JWT claims - subject: {}, authorities: {}, type: {}", 
-					username, authoritiesClaim, 
-					authoritiesClaim != null ? authoritiesClaim.getClass().getName() : "null");
+				log.debug("JWT claims - subject: {}, authorities: {}", username, authoritiesClaim);
 				
 				List<GrantedAuthority> authorities = AuthorityUtils.commaSeparatedStringToAuthorityList(
 					(String) claims.get("authorities")
 				);
-				log.debug("Parsed authorities: {}", authorities);
 				
 				UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
 					username, null, authorities
 				);
 				SecurityContextHolder.getContext().setAuthentication(token);
 			} catch (Exception e) {
-				log.error("JWT validation failed: {}", e.getMessage(), e);
-				e.printStackTrace();
+				log.warn("JWT validation failed: {}", e.getMessage());
 				response.setContentType("application/json;charset=utf-8");
 				Result result = Result.create(403, "凭证已失效，请重新登录！");
 				PrintWriter out = response.getWriter();

@@ -20,7 +20,7 @@ import java.util.concurrent.Future;
  */
 @Slf4j
 public class ScheduleJob extends QuartzJobBean {
-	private ExecutorService service = Executors.newSingleThreadExecutor();
+	private static final ExecutorService service = Executors.newSingleThreadExecutor();
 
 	@Override
 	protected void executeInternal(JobExecutionContext context) {
@@ -58,6 +58,15 @@ public class ScheduleJob extends QuartzJobBean {
 			log.error("任务执行失败，任务ID：{}", scheduleJob.getJobId(), e);
 		} finally {
 			scheduleJobService.saveJobLog(jobLog);
+		}
+	}
+
+	/**
+	 * 关闭线程池
+	 */
+	public static void shutdown() {
+		if (service != null && !service.isShutdown()) {
+			service.shutdown();
 		}
 	}
 }

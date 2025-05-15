@@ -119,7 +119,11 @@ public class JwtUtils {
 	 * @return
 	 */
 	public static Claims getTokenBody(String token) {
-		Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token.replace("Bearer", "")).getBody();
+		Claims claims = Jwts.parser()
+			.setSigningKey(secretKey)
+			.setAllowedClockSkewSeconds(300) // 允许5分钟的时间误差
+			.parseClaimsJws(token.replace("Bearer", ""))
+			.getBody();
 		return claims;
 	}
 

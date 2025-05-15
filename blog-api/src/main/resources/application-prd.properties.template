@@ -57,7 +57,7 @@ log.param.response-max-length=100
 log.param.response-success-data-max-length=100
 
 # JWT配置
-token.expireTime=259200000
+token.expireTime=604800000
 token.secretKey=${TOKEN_SECRET_KEY}
 
 # 评论配置
@@ -99,3 +99,36 @@ baidu.content.allow-suspicious=false
 # 注意：此配置用于生产环境，确保应用程序稳定运行
 spring.devtools.restart.enabled=false
 # ===== devtools配置 结束 =====
+
+# =====Quartz定时任务配置开始=====
+# 使用数据库存储任务
+spring.quartz.job-store-type=jdbc
+# 初始化表结构（生产环境设置为never，避免每次启动都初始化）
+spring.quartz.jdbc.initialize-schema=never
+# 表结构脚本位置
+spring.quartz.jdbc.schema=classpath:schema/quartz_tables.sql
+# 自动启动
+spring.quartz.auto-startup=true
+# 应用关闭时等待quartz任务完成
+spring.quartz.wait-for-jobs-to-complete-on-shutdown=true
+# 覆盖已存在的任务
+spring.quartz.overwrite-existing-jobs=true
+# 调度器实例名
+spring.quartz.scheduler-name=BlogScheduler
+# 实例ID自动生成
+spring.quartz.properties.org.quartz.scheduler.instanceId=AUTO
+# 持久化方式配置
+spring.quartz.properties.org.quartz.jobStore.class=org.quartz.impl.jdbcjobstore.JobStoreTX
+spring.quartz.properties.org.quartz.jobStore.driverDelegateClass=org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+spring.quartz.properties.org.quartz.jobStore.tablePrefix=QRTZ_
+# 集群配置
+spring.quartz.properties.org.quartz.jobStore.isClustered=true
+spring.quartz.properties.org.quartz.jobStore.clusterCheckinInterval=20000
+# 线程池配置
+spring.quartz.properties.org.quartz.threadPool.class=org.quartz.simpl.SimpleThreadPool
+spring.quartz.properties.org.quartz.threadPool.threadCount=20
+spring.quartz.properties.org.quartz.threadPool.threadPriority=5
+spring.quartz.properties.org.quartz.threadPool.threadsInheritContextClassLoaderOfInitializingThread=true
+# 开启JMX监控
+spring.quartz.properties.org.quartz.scheduler.jmx.export=true
+# =====Quartz定时任务配置结束=====

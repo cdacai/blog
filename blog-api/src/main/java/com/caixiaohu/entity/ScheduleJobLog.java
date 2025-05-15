@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -16,7 +17,9 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString
-public class ScheduleJobLog {
+public class ScheduleJobLog implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	private Long logId;//日志id
 	private Long jobId;//任务id
 	private String beanName;//spring bean名称
