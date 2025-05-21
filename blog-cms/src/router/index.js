@@ -27,7 +27,7 @@ const routes = [
 				path: 'dashboard',
 				name: 'Dashboard',
 				component: () => import('@/views/dashboard'),
-				meta: { title: 'Dashboard', icon: 'dashboard' }
+				meta: { title: '首页', icon: 'dashboard' }
 			}
 		]
 	},
@@ -133,7 +133,7 @@ const routes = [
 				path: 'category/list',
 				name: 'CategoryList',
 				component: () => import('@/views/blog/category/CategoryList'),
-				meta: { title: '分类管理', icon: 'el-icon-s-opportunity' }
+				meta: { title: '分类管理', icon: 'el-icon-folder' }
 			},
 			{
 				path: 'tag/list',

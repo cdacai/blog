@@ -23,7 +23,7 @@
                 <el-card v-for="item in notifications" 
                          :key="item.id" 
                          :class="['notification-item', item.isRead ? 'read' : 'unread']"
-                         shadow="hover">
+                         shadow="never">
                     <div class="notification-content" @click="handleItemClick(item)" :class="{ clickable: !item.isRead }">
                         <div class="header">
                             <span class="time">{{ item.createTime | dateFormat('YYYY-MM-DD HH:mm') }}</span>
@@ -41,7 +41,7 @@
                                 <span class="ip">(IP: {{ item.ip }}，{{ item.ipSource }})</span>
                                 <span class="action">评论了你的</span>
                                 <a :href="getTargetLink(item)" class="target" @click.prevent.stop="handleTargetClick(item)">
-                                    "{{ item.targetTitle }}"
+                                    "{{ item.targetTitle ? (item.targetTitle.length > 20 ? item.targetTitle.slice(0, 20) + '...' : item.targetTitle) : '' }}"
                                 </a>
                                 <span class="target-type">文章</span>
                             </div>
@@ -54,7 +54,7 @@
                                 <span class="ip">IP: {{ item.ip }}，{{ item.ipSource }}</span>
                                 <span class="action">点赞了你的</span>
                                 <a :href="getTargetLink(item)" class="target" @click.prevent.stop="handleTargetClick(item)">
-                                    "{{ item.targetTitle }}"
+                                    "{{ item.targetTitle ? (item.targetTitle.length > 20 ? item.targetTitle.slice(0, 20) + '...' : item.targetTitle) : '' }}"
                                 </a>
                                 <span class="target-type">动态</span>
                             </div>
@@ -67,7 +67,7 @@
                                 <span class="ip">(IP: {{ item.ip }}，{{ item.ipSource }})</span>
                                 <span class="action">举报了你的</span>
                                 <a :href="getTargetLink(item)" class="target" @click.prevent.stop="handleTargetClick(item)">
-                                    "{{ item.targetTitle }}"
+                                    "{{ item.targetTitle ? (item.targetTitle.length > 20 ? item.targetTitle.slice(0, 20) + '...' : item.targetTitle) : '' }}"
                                 </a>
                                 <span class="target-type">文章</span>
                             </div>
@@ -275,145 +275,84 @@ export default {
         margin-bottom: 20px;
 
         .notification-item {
-            margin-bottom: 15px;
-            cursor: pointer;
-            transition: all 0.3s;
+            margin-bottom: 10px;
+            border-radius: 0;
+            background: #fff;
+            box-shadow: none;
             border: none;
-            border-radius: 4px;
-
-            &:last-child {
-                margin-bottom: 0;
-            }
-
-            &:hover {
-                transform: translateY(-2px);
-            }
-
+            border-bottom: 1px solid #e4e7ed;
             &.unread {
-                border-left: 4px solid #409EFF;
-                background-color: #f0f9ff;
+                border-left: 4px solid #f56c6c;
+                background: #fff;
             }
             &.read {
-                border-left: 4px solid #e0e0e0;
-                background-color: #fff;
-                opacity: 0.7;
+                border-left: 4px solid #409EFF;
+                background: #fff;
+                opacity: 1;
             }
-
-            .notification-content {
-                .header {
+        }
+        ::v-deep .el-card {
+            box-shadow: none !important;
+        }
+        ::v-deep .el-card__body {
+            padding: 4px 6px;
+        }
+        .notification-content {
+            padding: 0;
+            .header {
+                position: relative;
+                margin-bottom: 4px;
+                .time {
+                    font-size: 11px;
+                }
+                .type-stamp {
+                    position: absolute;
+                    top: 16px;
+                    right: 4px;
+                    transform: rotate(45deg);
                     display: flex;
-                    justify-content: space-between;
                     align-items: center;
-                    margin-bottom: 12px;
-                    position: relative;
-
-                    .time {
-                        color: #909399;
+                    padding: 2px 12px;
+                    font-size: 12px;
+                    font-weight: 500;
+                    opacity: 0.6;
+                    pointer-events: none;
+                    z-index: 1;
+                    background-color: rgba(64, 158, 255, 0.12);
+                    color: #409EFF;
+                    &.like {
+                        background-color: rgba(103, 194, 58, 0.12);
+                        color: #67c23a;
+                    }
+                    &.report {
+                        background-color: rgba(245, 108, 108, 0.12);
+                        color: #f56c6c;
+                    }
+                    i, svg {
+                        margin-right: 4px;
                         font-size: 13px;
                     }
-
-                    .type-stamp {
-                        position: absolute;
-                        top: 0;
-                        right: -37px;
-                        transform: translateY(-50%) rotate(45deg);
-                        display: flex;
-                        align-items: center;
-                        padding: 4px 20px;
-                        font-size: 12px;
-                        font-weight: 500;
-                        opacity: 0.8;
-                        pointer-events: none;
-                        z-index: 1;
-                        
-                        i {
-                            margin-right: 4px;
-                            font-size: 12px;
-                        }
-
-                        &.comment {
-                            background-color: rgba(64, 158, 255, 0.1);
-                            color: #409EFF;
-                        }
-
-                        &.like {
-                            background-color: rgba(103, 194, 58, 0.1);
-                            color: #67c23a;
-                        }
-
-                        &.report {
-                            background-color: rgba(245, 108, 108, 0.1);
-                            color: #f56c6c;
-                        }
-
-                        &::before {
-                            content: '';
-                            position: absolute;
-                            top: 0;
-                            left: 0;
-                            right: 0;
-                            bottom: 0;
-                            background: linear-gradient(45deg, transparent 0%, rgba(255, 255, 255, 0.1) 100%);
-                            pointer-events: none;
-                        }
-                    }
                 }
-
-                .message {
-                    color: #303133;
-                    line-height: 1.6;
-                    font-size: 14px;
-
-                    .user {
-                        font-weight: bold;
-                        color: #409EFF;
-                    }
-
-                    .ip {
-                        color: #909399;
-                        font-size: 13px;
-                        margin-left: 5px;
-                    }
-
-                    .action {
-                        margin: 0 4px;
-                        color: #606266;
-                    }
-
-                    .target {
-                        color: #409EFF;
-                        text-decoration: none;
-                        font-weight: 500;
-                        
-                        &:hover {
-                            text-decoration: underline;
-                        }
-                    }
-
-                    .target-type {
-                        margin-left: 4px;
-                        color: #909399;
-                    }
+            }
+            .message,
+            .comment-content,
+            .report-reason {
+                font-size: 14px;
+            }
+            .message {
+                margin-left: 110px;
+                line-height: 1.4;
+                .user {
+                    font-size: 12px;
                 }
-
-                .comment-content {
-                    margin-top: 12px;
-                    padding: 12px 15px;
-                    background-color: #f5f7fa;
-                    border-radius: 4px;
-                    color: #606266;
-                    font-size: 14px;
-                    line-height: 1.6;
+                .ip {
+                    font-size: 11px;
                 }
-
-                .report-reason {
-                    margin-top: 12px;
-                    padding: 12px 15px;
-                    background-color: #fef0f0;
-                    border-radius: 4px;
-                    color: #f56c6c;
-                    font-size: 14px;
-                    line-height: 1.6;
+                .action {
+                    font-size: 11px;
+                }
+                .target-type {
+                    font-size: 11px;
                 }
             }
         }
@@ -437,6 +376,10 @@ export default {
 }
 
 .notification-content.clickable {
+    cursor: pointer;
+}
+
+.notification-item.unread:hover .notification-content {
     cursor: pointer;
 }
 </style> 
