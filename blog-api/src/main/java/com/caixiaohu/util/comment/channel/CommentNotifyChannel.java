@@ -1,6 +1,6 @@
 package com.caixiaohu.util.comment.channel;
 
-import com.caixiaohu.model.dto.Comment;
+import com.caixiaohu.entity.Comment;
 
 /**
  * 评论提醒方式

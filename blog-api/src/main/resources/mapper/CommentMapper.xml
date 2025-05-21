@@ -139,4 +139,10 @@
         values (#{nickname}, #{email}, #{content}, #{avatar}, #{createTime}, #{website}, #{ip}, #{published}, #{adminComment},
         #{page}, #{notice}, #{parentCommentId}, #{blogId}, #{qq})
     </insert>
+
+    <select id="getBlogTitleById" resultType="string">
+        SELECT title
+        FROM blog
+        WHERE id = #{blogId}
+    </select>
 </mapper>

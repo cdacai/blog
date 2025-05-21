@@ -9,14 +9,17 @@ import org.springframework.transaction.annotation.Transactional;
 import com.github.pagehelper.PageHelper;
 
 import com.caixiaohu.entity.Comment;
+import com.caixiaohu.entity.Notification;
 import com.caixiaohu.exception.BadRequestException;
 import com.caixiaohu.exception.NotFoundException;
 import com.caixiaohu.exception.PersistenceException;
 import com.caixiaohu.mapper.CommentMapper;
+import com.caixiaohu.mapper.BlogMapper;
 import com.caixiaohu.model.vo.PageComment;
 import com.caixiaohu.service.BaiduContentService;
 import com.caixiaohu.service.CommentService;
 import com.caixiaohu.service.NotificationService;
+import com.caixiaohu.util.IpAddressUtils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -32,9 +35,9 @@ import java.util.List;
 @Service
 public class CommentServiceImpl implements CommentService {
 	@Autowired
-	CommentMapper commentMapper;
+	private CommentMapper commentMapper;
 	@Autowired
-	BaiduContentService baiduContentService;
+	private BlogMapper blogMapper;
 	@Autowired
 	private NotificationService notificationService;
 
@@ -127,30 +130,30 @@ public class CommentServiceImpl implements CommentService {
 
 	@Transactional(rollbackFor = Exception.class)
 	@Override
-	public void saveComment(com.caixiaohu.model.dto.Comment commentDto) {
-		log.info("开始保存评论, content={}", commentDto.getContent());
-		// 进行百度内容审核
-		boolean isCompliant = baiduContentService.reviewText(commentDto.getContent());
-		log.info("评论内容审核结果: content={}, isCompliant={}", commentDto.getContent(), isCompliant);
-		if (!isCompliant) {
-			log.warn("评论内容审核不通过: content={}", commentDto.getContent());
-			throw new BadRequestException("评论内容不合规，请修改后重试");
+	public void saveComment(com.caixiaohu.entity.Comment comment) {
+		if (commentMapper.saveComment(comment) != 1) {
+			throw new PersistenceException("评论保存失败");
 		}
-
-		// 评论内容合规，继续保存
-		Comment comment = new Comment();
-		BeanUtils.copyProperties(commentDto, comment);
-		try {
-			if (commentMapper.saveComment(comment) != 1) {
-				throw new PersistenceException("评论失败");
-			}
-			// 创建评论通知
-			notificationService.createNotification("comment", comment.getId());
-			log.info("评论保存成功: id={}, content={}", comment.getId(), comment.getContent());
-		} catch (Exception e) {
-			log.error("评论保存失败: content={}", comment.getContent(), e);
-			throw e;
+		// 创建通知
+		Notification notification = new Notification();
+		notification.setType("comment");
+		notification.setNickname(comment.getNickname());
+		notification.setContent(comment.getContent());
+		notification.setTargetId(comment.getBlogId());
+		notification.setTargetType("blog");
+		// 获取文章标题
+		String blogTitle = null;
+		if (comment.getBlogId() != null) {
+			blogTitle = blogMapper.getTitleByBlogId(comment.getBlogId());
 		}
+		notification.setTargetTitle(blogTitle);
+		notification.setIp(comment.getIp());
+		// 获取IP来源
+		String ipSource = IpAddressUtils.getCityInfo(comment.getIp());
+		notification.setIpSource(ipSource);
+		notification.setIsRead(false);
+		notification.setCreateTime(new Date());
+		notificationService.createNotification(notification);
 	}
 
 	/**

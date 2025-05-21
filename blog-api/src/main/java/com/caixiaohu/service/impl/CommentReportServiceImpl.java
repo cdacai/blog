@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.caixiaohu.entity.Comment;
 import com.caixiaohu.entity.CommentReport;
+import com.caixiaohu.entity.Notification;
 import com.caixiaohu.entity.User;
 import com.caixiaohu.exception.BadRequestException;
 import com.caixiaohu.exception.NotFoundException;
@@ -73,7 +74,15 @@ public class CommentReportServiceImpl implements CommentReportService {
         Long reportId = report.getId();
         if (reportId != null) {
             // 创建举报通知
-            notificationService.createNotification("report", reportId);
+            Notification notification = new Notification();
+            notification.setType("report");
+            notification.setContent("有人举报了评论: " + report.getComment().getContent());
+            notification.setTargetId(reportId);
+            notification.setTargetType("comment_report");
+            notification.setIp(report.getIp());
+            notification.setIsRead(false);
+            notification.setCreateTime(new Date());
+            notificationService.createNotification(notification);
             // 异步发送邮件通知管理员
             sendReportNotifyEmail(report);
         } else {
@@ -89,183 +98,80 @@ public class CommentReportServiceImpl implements CommentReportService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void handleCommentReport(Long reportId, CommentReportHandleRequest request) {
-        CommentReport report = commentReportMapper.getReportById(reportId);
+        CommentReport report = commentReportMapper.getCommentReportById(reportId);
         if (report == null) {
             throw new NotFoundException("举报不存在");
         }
-        if (report.getStatus() == 1) {
-            throw new BadRequestException("该举报已处理");
-        }
 
-        // 设置处理信息
-        report.setHandleTime(new Date());
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        report.setHandleBy(username);
+        // 更新举报状态
+        report.setStatus(request.getStatus());
         report.setHandleResult(request.getHandleResult());
-        report.setStatus(1);
-
-        try {
-            // 根据处理方式执行相应操作
-            switch (request.getAction()) {
-                case "delete":
-                    if (report.getCommentId() != null) {
-                        // 获取评论信息
-                        Comment comment = commentService.getCommentById(report.getCommentId());
-                        if (comment == null) {
-                            report.setHandleResult("评论已不存在");
-                            if (commentReportMapper.updateCommentReport(report) != 1) {
-                                throw new PersistenceException("更新举报状态失败");
-                            }
-                            return;
-                        }
-
-                        if (comment.getBlog() != null) {
-                            // 如果是博客评论，保存博客信息
-                            report.setBlogId(comment.getBlog().getId());
-                            report.setBlogTitle(comment.getBlog().getTitle());
-                        } else {
-                            // 如果是"关于我"页面的评论
-                            report.setBlogId(null);
-                            report.setBlogTitle("关于我");
-                        }
-
-                        try {
-                            // 1. 先更新举报状态
-                            if (commentReportMapper.updateCommentReport(report) != 1) {
-                                throw new PersistenceException("更新举报状态失败");
-                            }
-
-                            // 2. 删除评论
-                            commentService.deleteCommentById(report.getCommentId());
-
-                            // 3. 更新所有相关举报记录为已处理
-                            commentReportMapper.updateReportStatusByCommentId(
-                                    report.getCommentId(),
-                                    1, // 已处理状态
-                                    username,
-                                    new Date(),
-                                    "评论已删除");
-                        } catch (Exception e) {
-                            log.error("处理举报评论失败", e);
-                            throw new PersistenceException("处理失败: " + e.getMessage());
-                        }
-                    } else {
-                        // 评论已经被删除的情况
-                        if (commentReportMapper.updateCommentReport(report) != 1) {
-                            throw new PersistenceException("处理举报失败");
-                        }
-                    }
-                    break;
-                default:
-                    // 仅更新当前举报记录状态
-                    if (commentReportMapper.updateCommentReport(report) != 1) {
-                        throw new PersistenceException("处理举报失败");
-                    }
-            }
-            // 4. 发送处理结果邮件通知举报人
-            sendReportHandleEmail(report, request);
-        } catch (Exception e) {
-            log.error("处理举报失败", e);
-            throw new PersistenceException("处理失败：" + e.getMessage());
+        report.setHandleTime(new Date());
+        if (commentReportMapper.updateCommentReport(report) != 1) {
+            throw new PersistenceException("更新举报状态失败");
         }
+
+        // 如果确认违规，删除评论
+        if (request.getStatus() == 1) {
+            commentService.deleteCommentById(report.getComment().getId());
+        }
+
+        // 发送邮件通知举报者
+        sendReportResultEmail(report);
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void deleteCommentReport(Long id) {
-        if (commentReportMapper.deleteCommentReportById(id) != 1) {
+        if (commentReportMapper.deleteCommentReport(id) != 1) {
             throw new PersistenceException("删除举报失败");
         }
     }
 
-    /**
-     * 异步发送举报通知邮件给管理员
-     */
     @Async
     protected void sendReportNotifyEmail(CommentReport report) {
         try {
-            // 验证箱格式
-            if (adminEmail == null || !adminEmail.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-                log.error("管理员邮箱格式错误: {}", adminEmail);
-                return;
-            }
-            String emailTitle = "New Comment Report";
-            String emailContent = String.format(
-                    "收到新的评论举报:\n" +
-                            "举报内容: %s\n" +
-                            "举报人邮箱: %s\n" +
-                            "举报人手机: %s\n" +
-                            "举报人IP: %s (%s)\n" +
-                            "被举报评论ID: %d\n" +
-                            "被举报评论内容: %s\n" +
-                            "举报时间: %s\n\n" +
-                            "请及时处理该举报。\n" +
-                            "可以通过后台管理系统查看详情：%s/admin/comment/reports",
-                    report.getContent(),
-                    report.getEmail(),
-                    report.getPhone() != null ? report.getPhone() : "未提供",
-                    report.getIp(),
-                    report.getIpSource(),
-                    report.getCommentId(),
-                    report.getCommentContent(),
-                    report.getCreateTime(),
-                    blogCms);
-
-            log.info("开始发送举报通知邮件到管理员邮箱: {}", adminEmail);
-            mailUtils.sendSimpleMail(emailTitle, emailContent, adminEmail);
-            log.info("举报通知邮件发送成功");
+            String subject = "新评论举报通知";
+            String content = String.format(
+                "收到新的评论举报：\n\n" +
+                "举报原因：%s\n" +
+                "评论内容：%s\n" +
+                "评论者：%s\n" +
+                "评论时间：%s\n" +
+                "举报者IP：%s\n\n" +
+                "请登录后台处理：%s/admin/comment-report",
+                report.getReason(),
+                report.getComment().getContent(),
+                report.getComment().getNickname(),
+                report.getComment().getCreateTime(),
+                report.getIp(),
+                blogCms
+            );
+            mailUtils.sendSimpleMail(adminEmail, subject, content);
         } catch (Exception e) {
-            log.error("举报通知邮件发送失败", e);
+            log.error("发送举报通知邮件失败", e);
         }
     }
 
-    /**
-     * 异步发送处理结果邮件给举报人
-     */
     @Async
-    protected void sendReportHandleEmail(CommentReport report, CommentReportHandleRequest request) {
-        // 验证举报人邮箱格式
-        if (report.getEmail() == null || !report.getEmail().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-            log.error("举报人邮箱格式错误: {}", report.getEmail());
-            return;
+    protected void sendReportResultEmail(CommentReport report) {
+        try {
+            String subject = "评论举报处理结果通知";
+            String content = String.format(
+                "您举报的评论已处理：\n\n" +
+                "举报原因：%s\n" +
+                "评论内容：%s\n" +
+                "处理结果：%s\n" +
+                "处理说明：%s\n\n" +
+                "感谢您的反馈！",
+                report.getReason(),
+                report.getComment().getContent(),
+                report.getStatus() == 1 ? "已确认违规，评论已删除" : "未发现违规",
+                report.getHandleResult()
+            );
+            mailUtils.sendSimpleMail(report.getEmail(), subject, content);
+        } catch (Exception e) {
+            log.error("发送举报结果邮件失败", e);
         }
-        // 构造评论链接
-        String commentUrl = "";
-        if ("delete".equals(request.getAction())) {
-            if (report.getBlogId() != null) {
-                commentUrl = blogView + "/blog/" + report.getBlogId();
-            } else {
-                commentUrl = blogView + "/about";
-            }
-        } else {
-            if (report.getBlogId() != null && report.getCommentId() != null) {
-                commentUrl = blogView + "/blog/" + report.getBlogId() + "#comment-" + report.getCommentId();
-            } else if (report.getCommentId() != null) {
-                commentUrl = blogView + "/about#comment-" + report.getCommentId();
-            }
-        }
-
-        String emailTitle = "Report Processing Result";
-
-        String emailContent = String.format(
-                "尊敬的用户：\n\n" +
-                        "您好！您举报的评论已处理完成。\n\n" +
-                        "举报内容：\n" +
-                        "评论：%s\n" +
-                        "位置：%s\n" +
-                        "举报原因：%s\n\n" +
-                        "处理结果：\n" +
-                        "%s\n\n" +
-                        "%s\n\n" +
-                        "如有任何问题，欢迎随时与我们联系。\n\n" +
-                        "此致\n" +
-                        "Observe",
-                report.getCommentContent(),
-                report.getBlogTitle() != null ? "《" + report.getBlogTitle() + "》" : "独立页面",
-                report.getContent(),
-                report.getHandleResult(),
-                "您可以通过以下链接查看该文章：\n" + commentUrl);
-
-        mailUtils.sendSimpleMail(emailTitle, emailContent, report.getEmail());
     }
 }

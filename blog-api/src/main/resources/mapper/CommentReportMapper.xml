@@ -18,6 +18,13 @@
         <result property="handleTime" column="handle_time"/>
         <result property="handleResult" column="handle_result"/>
         <result property="handleBy" column="handle_by"/>
+        <result property="reason" column="content"/>
+        <association property="comment" javaType="com.caixiaohu.entity.Comment">
+            <id property="id" column="c_id"/>
+            <result property="nickname" column="c_nickname"/>
+            <result property="content" column="c_content"/>
+            <result property="createTime" column="c_create_time"/>
+        </association>
     </resultMap>
 
     <insert id="saveCommentReport" parameterType="com.caixiaohu.entity.CommentReport" useGeneratedKeys="true" keyProperty="id">
@@ -49,7 +56,11 @@
     </insert>
 
     <select id="getCommentReportList" resultMap="report">
-        SELECT r.*
+        SELECT r.*, 
+               c.id as c_id,
+               c.nickname as c_nickname,
+               c.content as c_content,
+               c.create_time as c_create_time
         FROM comment_report r
         LEFT JOIN comment c ON r.comment_id = c.id
         LEFT JOIN blog b ON c.blog_id = b.id
@@ -57,7 +68,14 @@
     </select>
 
     <select id="getCommentReportById" resultMap="report">
-        select * from comment_report where id = #{id}
+        SELECT r.*, 
+               c.id as c_id,
+               c.nickname as c_nickname,
+               c.content as c_content,
+               c.create_time as c_create_time
+        FROM comment_report r
+        LEFT JOIN comment c ON r.comment_id = c.id
+        WHERE r.id = #{id}
     </select>
 
     <update id="updateCommentReport" parameterType="com.caixiaohu.entity.CommentReport">
@@ -71,13 +89,9 @@
         where id = #{id}
     </update>
 
-    <delete id="deleteCommentReportById">
+    <delete id="deleteCommentReport">
         delete from comment_report where id = #{id}
     </delete>
-
-    <select id="getReportById" resultType="com.caixiaohu.entity.CommentReport">
-        select * from comment_report where id = #{id}
-    </select>
 
     <update id="updateReportStatusByCommentId">
         update comment_report 

@@ -1,6 +1,7 @@
 package com.caixiaohu.service.impl;
 
 import com.caixiaohu.entity.Moment;
+import com.caixiaohu.entity.Notification;
 import com.caixiaohu.exception.NotFoundException;
 import com.caixiaohu.exception.PersistenceException;
 import com.caixiaohu.mapper.MomentMapper;
@@ -8,11 +9,13 @@ import com.caixiaohu.service.MomentService;
 import com.caixiaohu.service.NotificationService;
 import com.caixiaohu.util.markdown.MarkdownUtils;
 import com.github.pagehelper.PageHelper;
-
+import com.github.pagehelper.PageInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,10 +23,11 @@ import java.util.List;
  * @Author: Naccl
  * @Date: 2020-08-24
  */
+@Slf4j
 @Service
 public class MomentServiceImpl implements MomentService {
 	@Autowired
-	MomentMapper momentMapper;
+	private MomentMapper momentMapper;
 	@Autowired
 	private NotificationService notificationService;
 	// 每页显示5条动态
@@ -53,12 +57,32 @@ public class MomentServiceImpl implements MomentService {
 
 	@Transactional(rollbackFor = Exception.class)
 	@Override
-	public void addLikeByMomentId(Long momentId) {
+	public void addLikeByMomentId(Long momentId, String ip, String ipSource) {
 		if (momentMapper.addLikeByMomentId(momentId) != 1) {
 			throw new PersistenceException("操作失败");
 		}
 		// 创建点赞通知
-		notificationService.createNotification("like", momentId);
+		Notification notification = new Notification();
+		notification.setType("like");
+		notification.setContent("有人点赞了你的动态");
+		notification.setTargetId(momentId);
+		notification.setTargetType("moment");
+		notification.setIp(ip);
+		notification.setIpSource(ipSource);
+		notification.setIsRead(false);
+		notification.setCreateTime(new Date());
+		// 新增：设置 targetTitle
+		Moment moment = momentMapper.getMomentById(momentId);
+		if (moment != null) {
+			String content = moment.getContent();
+			if (content != null && content.length() > 50) {
+				content = content.substring(0, 50) + "...";
+			}
+			notification.setTargetTitle(content);
+		} else {
+			notification.setTargetTitle("动态已删除");
+		}
+		notificationService.createNotification(notification);
 	}
 
 	@Transactional(rollbackFor = Exception.class)

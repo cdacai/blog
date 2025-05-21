@@ -67,7 +67,19 @@ const routes = [
 				path: '',
 				name: 'Visit',
 				component: () => import('@/views/statistics/Visitor'),
-				meta: { title: '访客统计', icon: 'el-icon-s-marketing' }
+				meta: { title: '访客足迹', icon: 'svg-icon', svgIcon: 'footprint' }
+			}
+		]
+	},
+	{
+		path: '/notification',
+		component: Layout,
+		children: [
+			{
+				path: '',
+				name: 'NotificationList',
+				component: () => import('@/views/notification/NotificationList'),
+				meta: { title: '消息中心', icon: 'el-icon-bell' }
 			}
 		]
 	},

@@ -9,7 +9,7 @@ public interface MomentService {
 
 	List<Moment> getMomentVOList(Integer pageNum, boolean adminIdentity);
 
-	void addLikeByMomentId(Long momentId);
+	void addLikeByMomentId(Long momentId, String ip, String ipSource);
 
 	void updateMomentPublishedById(Long momentId, Boolean published);
 

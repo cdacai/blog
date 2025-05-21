@@ -21,11 +21,11 @@ public interface CommentReportMapper {
     
     List<CommentReport> getCommentReportList();
     
-    CommentReport getReportById(Long id);
+    CommentReport getCommentReportById(Long id);
     
     int updateCommentReport(CommentReport report);
     
-    int deleteCommentReportById(Long id);
+    int deleteCommentReport(Long id);
     
     /**
      * 根据评论ID更新所有相关举报的状态

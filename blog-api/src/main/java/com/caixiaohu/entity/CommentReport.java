@@ -30,4 +30,6 @@ public class CommentReport {
     private Date handleTime;
     private String handleResult;
     private String handleBy;
+    private String reason;
+    private Comment comment;
 } 

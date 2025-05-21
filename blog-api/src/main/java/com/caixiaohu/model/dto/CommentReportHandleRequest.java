@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class CommentReportHandleRequest {
-    private String action;      // 处理方式
+    private Integer status;     // 处理状态：0-未处理，1-已处理
     private String handleResult;// 处理结果说明
 } 

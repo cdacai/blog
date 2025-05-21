@@ -12,6 +12,7 @@ import com.caixiaohu.service.MomentService;
 import com.caixiaohu.service.RedisService;
 import com.caixiaohu.service.impl.UserServiceImpl;
 import com.caixiaohu.util.JwtUtils;
+import com.caixiaohu.util.IpAddressUtils;
 import com.github.pagehelper.PageInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,14 +82,16 @@ public class MomentController {
 	@PostMapping("/moment/like/{id}")
 	public Result like(@PathVariable Long id, HttpServletRequest request) {
 		// 检查是否已点赞
-		String ip = request.getRemoteAddr();
+		String ip = IpAddressUtils.getIpAddress(request);
 		String key = "moment_like_" + ip + "_" + id;
 		Object count = redisService.getObjectByValue(key, Integer.class);
 		if (count != null) {
 			return Result.create(200, "不可以重复点赞哦");
 		}
+		// 获取IP来源
+		String ipSource = IpAddressUtils.getCityInfo(ip);
 		// 点赞并记录到 Redis
-		momentService.addLikeByMomentId(id);
+		momentService.addLikeByMomentId(id, ip, ipSource);
 		redisService.saveObjectToValue(key, 1);
 		redisService.expire(key, 86400);
 		return Result.ok("点赞成功");

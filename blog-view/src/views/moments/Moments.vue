@@ -52,7 +52,6 @@
 		components: {Pagination},
 		data() {
 			return {
-				likeMomentIds: JSON.parse(window.localStorage.getItem('likeMomentIds') || '[]'),
 				momentList: [],
 				pageNum: 1,
 				totalPage: 0
@@ -64,7 +63,7 @@
 		computed: {
 			isLike() {
 				return function (id) {
-					return this.likeMomentIds.indexOf(id) > -1
+					return false;
 				}
 			}
 		},
@@ -100,27 +99,19 @@
 				})
 			},
 			like(id) {
-				// 检查是否已经点赞
-				if (this.likeMomentIds.indexOf(id) > -1) {
-					this.msgWarning('不可以重复点赞哦')
-					return
-				}
 				likeMoment(id).then(res => {
 					if (res.code === 200) {
 						if (res.msg === '点赞成功') {
 							this.msgSuccess(res.msg)
-							this.likeMomentIds.push(id)
 							this.momentList.forEach(item => {
 								if (item.id === id) {
 									item.likes++
+									item._liked = true
 								}
 							})
 						} else {
 							// 处理重复点赞的情况
 							this.msgWarning(res.msg)
-							if (this.likeMomentIds.indexOf(id) === -1) {
-								this.likeMomentIds.push(id)
-							}
 						}
 					} else {
 						this.msgError(res.msg)

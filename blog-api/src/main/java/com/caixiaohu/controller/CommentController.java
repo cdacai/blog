@@ -122,7 +122,7 @@ public class CommentController {
 	 */
 	@AccessLimit(seconds = 30, maxCount = 1, msg = "30秒内只能提交一次评论")
 	@PostMapping("/comment")
-	public Result postComment(@RequestBody Comment comment,
+	public Result postComment(@RequestBody com.caixiaohu.entity.Comment comment,
 			HttpServletRequest request,
 			@RequestHeader(value = "Authorization", defaultValue = "") String jwt) {
 		// 评论内容合法性校验

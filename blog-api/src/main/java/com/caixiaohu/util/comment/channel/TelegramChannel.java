@@ -52,14 +52,14 @@ public class TelegramChannel implements CommentNotifyChannel {
 	 * @param comment 当前收到的评论
 	 */
 	@Override
-	public void notifyMyself(Comment comment) {
+	public void notifyMyself(com.caixiaohu.entity.Comment comment) {
 		String url = telegramProperties.getApi() + telegramProperties.getToken() + TelegramUtils.SEND_MESSAGE;
 		String content = getContent(comment);
 		Map<String, Object> messageBody = telegramUtils.getMessageBody(content);
 		telegramUtils.sendByAutoCheckReverseProxy(url, messageBody);
 	}
 
-	private String getContent(Comment comment) {
+	private String getContent(com.caixiaohu.entity.Comment comment) {
 		CommentPageEnum commentPageEnum = CommentUtils.getCommentPageEnum(comment);
 		return String.format(
 				"<b>您的文章<a href=\"%s\">《%s》</a>有了新的评论~</b>\n" +

@@ -1,6 +1,7 @@
 package com.caixiaohu.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.caixiaohu.entity.Comment;
@@ -39,4 +40,9 @@ public interface CommentMapper {
 	int countComment();
 
 	int saveComment(Comment comment);
+
+	/**
+	 * 根据博客ID获取博客标题
+	 */
+	String getBlogTitleById(@Param("blogId") Long blogId);
 }

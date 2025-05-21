@@ -173,7 +173,7 @@ public class TelegramBotMsgHandler {
 				"<b>删除成功！</b>\n" +
 						"\n" +
 						"评论ID：%d\n" +
-						"该评��及其子评论已删除",
+						"该评论及其子评论已删除",
 				commentId
 		);
 	}
@@ -195,7 +195,7 @@ public class TelegramBotMsgHandler {
 			//先找到要回复的评论
 			Comment parentComment = commentService.getCommentById(commentId);
 
-			com.caixiaohu.model.dto.Comment comment = new com.caixiaohu.model.dto.Comment();
+			com.caixiaohu.entity.Comment comment = new com.caixiaohu.entity.Comment();
 			comment.setContent(commentContent);
 			comment.setParentCommentId(parentComment.getId());
 			//父评论所在页面
@@ -211,32 +211,19 @@ public class TelegramBotMsgHandler {
 			commentUtils.judgeSendNotify(comment, false, parentComment);
 
 			CommentPageEnum commentPageEnum = CommentUtils.getCommentPageEnum(comment);
+			String url = blogProperties.getView() + commentPageEnum.getPath() + "#comment-" + comment.getId();
 			return String.format(
 					"<b>回复成功！</b>\n" +
-							"\n" +
-							"<b>您在<a href=\"%s\">《%s》</a>给 <b>%s</b> 的快捷回复：</b>\n" +
-							"\n" +
-							"<pre>%s</pre>\n" +
-							"\n" +
-							"<b>其他信息：</b>\n" +
-							"评论ID：<code>%d</code>\n" +
-							"IP：%s\n" +
-							"时间：<u>%s</u>\n" +
-							"邮箱：<code>%s</code>\n" +
-							"状态：%s [<a href=\"%s\">管理评论</a>]\n",
-					blogProperties.getView() + commentPageEnum.getPath(),
-					commentPageEnum.getTitle(),
-					parentComment.getNickname(),
-					comment.getContent(),
+					"\n" +
+					"评论ID：%d\n" +
+					"内容：%s\n" +
+					"<a href=\"%s\">点击查看</a>",
 					comment.getId(),
-					comment.getIp(),
-					simpleDateFormat.format(comment.getCreateTime()),
-					comment.getEmail(),
-					comment.getPublished() ? "公开" : "待审核",
-					blogProperties.getCms() + "/blog/comment/list"
+					comment.getContent(),
+					url
 			);
 		}
-		return "<b>命令格式有误！</b>\n\n" + HELP_MESSAGE;
+		return "回复格式错误，请使用 /reply [评论ID] [内容]";
 	}
 
 	/**

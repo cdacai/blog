@@ -2,35 +2,81 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.caixiaohu.mapper.NotificationMapper">
     
-    <resultMap id="notification" type="com.caixiaohu.entity.Notification">
-        <id property="id" column="id"/>
-        <result property="type" column="type"/>
-        <result property="sourceId" column="source_id"/>
-        <result property="isRead" column="is_read"/>
-        <result property="createTime" column="create_time"/>
-        <result property="readTime" column="read_time"/>
+    <resultMap id="BaseResultMap" type="com.caixiaohu.entity.Notification">
+        <id column="id" property="id"/>
+        <result column="type" property="type"/>
+        <result column="nickname" property="nickname"/>
+        <result column="content" property="content"/>
+        <result column="target_id" property="targetId"/>
+        <result column="target_type" property="targetType"/>
+        <result column="target_title" property="targetTitle"/>
+        <result column="ip" property="ip"/>
+        <result column="ip_source" property="ipSource"/>
+        <result column="report_reason" property="reportReason"/>
+        <result column="is_read" property="isRead"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
     </resultMap>
 
-    <insert id="saveNotification" parameterType="com.caixiaohu.entity.Notification" useGeneratedKeys="true" keyProperty="id">
-        insert into notification (type, source_id, is_read, create_time)
-        values (#{type}, #{sourceId}, #{isRead}, #{createTime})
+    <sql id="Base_Column_List">
+        id, type, nickname, content, target_id, target_type, target_title, ip, ip_source, report_reason, is_read, create_time, update_time
+    </sql>
+
+    <insert id="insert" parameterType="com.caixiaohu.entity.Notification" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO notification (
+            type, nickname, content, target_id, target_type, target_title, ip, ip_source, report_reason, is_read, create_time, update_time
+        ) VALUES (
+            #{type}, #{nickname}, #{content}, #{targetId}, #{targetType}, #{targetTitle}, #{ip}, #{ipSource}, #{reportReason}, #{isRead}, NOW(), NOW()
+        )
     </insert>
 
-    <select id="getUnreadCount" resultType="java.lang.Integer">
-        select count(*) from notification
-        where type = #{type} and is_read = false
+    <select id="getUnreadCount" resultType="int">
+        SELECT COUNT(*)
+        FROM notification
+        WHERE is_read = false
+        <if test="type != null and type != ''">
+            AND type = #{type}
+        </if>
+    </select>
+
+    <select id="getNotificationList" resultMap="BaseResultMap">
+        SELECT 
+        <include refid="Base_Column_List"/>
+        FROM notification
+        <where>
+            <if test="type != null and type != ''">
+                AND type = #{type}
+            </if>
+        </where>
+        ORDER BY create_time DESC
     </select>
 
     <update id="markReadByType">
-        update notification
-        set is_read = true,
-            read_time = now()
-        where type = #{type} and is_read = false
+        UPDATE notification
+        SET is_read = 1,
+            update_time = NOW()
+        WHERE type = #{type}
+        AND is_read = 0
     </update>
 
-    <select id="getUnreadNotifications" resultMap="notification">
-        select * from notification
-        where is_read = false
-        order by create_time desc
+    <update id="markReadById">
+        UPDATE notification
+        SET is_read = 1,
+            update_time = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <update id="markAllAsRead">
+        UPDATE notification
+        SET is_read = 1,
+            update_time = NOW()
+        WHERE is_read = 0
+    </update>
+
+    <!-- 检查目标是否存在 -->
+    <select id="checkTargetExists" resultType="int">
+        SELECT COUNT(*)
+        FROM ${targetType}
+        WHERE id = #{targetId}
     </select>
 </mapper> 

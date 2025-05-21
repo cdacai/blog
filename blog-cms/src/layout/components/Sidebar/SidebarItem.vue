@@ -79,7 +79,8 @@
 					if (showingChildren[0].name === 'Dashboard' || 
 						showingChildren[0].name === 'Write' || 
 						showingChildren[0].name === 'Moment' || 
-						showingChildren[0].name === 'Visit') {
+						showingChildren[0].name === 'Visit' || 
+						showingChildren[0].name === 'NotificationList') {
 						return true
 					}
 					//修改为单个子路由时也显示父菜单

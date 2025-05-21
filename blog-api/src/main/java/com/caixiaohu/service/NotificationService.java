@@ -1,15 +1,36 @@
 package com.caixiaohu.service;
 
+import com.github.pagehelper.PageInfo;
 import com.caixiaohu.entity.Notification;
-import java.util.Map;
 
 public interface NotificationService {
-    // 创建新通知
-    void createNotification(String type, Long sourceId);
+    /**
+     * 创建通知
+     */
+    void createNotification(Notification notification);
 
-    // 获取所有类型的未读通知数量
-    Map<String, Integer> getUnreadCounts();
+    /**
+     * 获取未读消息数量
+     */
+    int getUnreadCount(String type);
 
-    // 将指定类型的通知标记为已读
-    void markRead(String type);
+    /**
+     * 获取消息列表
+     */
+    PageInfo<Notification> getNotificationList(String type, int pageNum, int pageSize);
+
+    /**
+     * 标记指定类型的消息为已读
+     */
+    void markReadByType(String type);
+
+    /**
+     * 标记指定ID的消息为已读
+     */
+    void markReadById(Long id);
+
+    /**
+     * 标记所有消息为已读
+     */
+    void markAllAsRead();
 }

@@ -9,32 +9,29 @@
 				<div class="avatar-wrapper">
 					<img :src="user.avatar" class="user-avatar">
 					<div v-if="hasUnread" class="unread-dot"></div>
+					<i class="el-icon-caret-bottom"/>
 				</div>
 				<el-dropdown-menu slot="dropdown" class="user-dropdown">
 					<div class="notification-group">
 						<div class="notification-title">消息通知</div>
-						<el-dropdown-item>
-							<router-link to="/blog/comment/list" @click.native="handleNotificationClick('comment')">
+						<el-dropdown-item @click.native="handleNotificationClick('comment')">
 								<span class="notification-text">新评论</span>
 								<span class="count" :class="{ 'has-count': unreadCounts.comment > 0 }">{{ unreadCounts.comment || 0 }}</span>
-							</router-link>
 						</el-dropdown-item>
-						<el-dropdown-item>
-							<router-link to="/blog/moment/list" @click.native="handleNotificationClick('like')">
+						<el-dropdown-item @click.native="handleNotificationClick('like')">
 								<span class="notification-text">新点赞</span>
 								<span class="count" :class="{ 'has-count': unreadCounts.like > 0 }">{{ unreadCounts.like || 0 }}</span>
-							</router-link>
 						</el-dropdown-item>
-						<el-dropdown-item>
-							<router-link to="/blog/comment/reports" @click.native="handleNotificationClick('report')">
+						<el-dropdown-item @click.native="handleNotificationClick('report')">
 								<span class="notification-text">新举报</span>
 								<span class="count" :class="{ 'has-count': unreadCounts.report > 0 }">{{ unreadCounts.report || 0 }}</span>
-							</router-link>
+						</el-dropdown-item>
+						<el-dropdown-item @click.native="$router.push('/notification')">
+							<span class="notification-text">全部消息</span>
 						</el-dropdown-item>
 					</div>
-					<el-dropdown-item divided>
-						<SvgIcon icon-class="logout" class-name="svg"/>
-						<span @click="logout">退出</span>
+					<el-dropdown-item divided @click.native="logout">
+						<span style="display:block;">退出登录</span>
 					</el-dropdown-item>
 				</el-dropdown-menu>
 			</el-dropdown>
@@ -43,7 +40,7 @@
 </template>
 
 <script>
-	import {mapGetters} from 'vuex'
+	import {mapGetters, mapState, mapActions} from 'vuex'
 	import Breadcrumb from '@/components/Breadcrumb'
 	import Hamburger from '@/components/Hamburger'
 	import SvgIcon from '@/components/SvgIcon'
@@ -57,38 +54,24 @@
 		},
 		data() {
 			return {
-				user: null,
-				unreadCounts: {
-					comment: 0,
-					like: 0,
-					report: 0
-				},
-				timer: null
+				user: null
 			}
 		},
 		computed: {
 			...mapGetters([
 				'sidebar',
 			]),
+			...mapState('notification', ['unreadCounts', 'hasNewMessage']),
 			hasUnread() {
-				return this.unreadCounts.comment > 0 || 
-					   this.unreadCounts.like > 0 || 
-					   this.unreadCounts.report > 0
+				return this.hasNewMessage
 			}
 		},
 		created() {
 			this.getUserInfo()
 			this.getUnreadCounts()
-			// 每30秒轮询一次未读消息
-			this.timer = setInterval(this.getUnreadCounts, 30000)
-		},
-		beforeDestroy() {
-			// 组件销毁前清除定时器
-			if (this.timer) {
-				clearInterval(this.timer)
-			}
 		},
 		methods: {
+			...mapActions('notification', ['getUnreadCounts']),
 			toggleSideBar() {
 				this.$store.dispatch('app/toggleSideBar')
 			},
@@ -105,17 +88,25 @@
 				this.msgSuccess('退出成功')
 			},
 			async handleNotificationClick(type) {
-				await markRead(type)
-				this.unreadCounts[type] = 0
-			},
-			async getUnreadCounts() {
+				this.$store.commit('notification/SET_HAS_NEW_MESSAGE', false)
 				try {
-					const res = await getUnreadCount()
-					if (res.code === 200) {
-						this.unreadCounts = res.data
+					await markRead(type)
+					await this.getUnreadCounts(type)
+					
+					// 如果当前已经在消息列表页面，且类型相同，则不进行路由跳转
+					const currentPath = this.$route.path
+					const currentType = this.$route.query.type
+					if (currentPath === '/notification' && currentType === type) {
+						return
 					}
+					
+					this.$router.push({
+						path: '/notification',
+						query: { type }
+					})
 				} catch (error) {
-					console.error('获取未读消息数量失败:', error)
+					console.error('标记已读失败:', error)
+					this.$message.error('标记已读失败')
 				}
 			}
 		}
@@ -152,34 +143,13 @@
 			float: right;
 			height: 100%;
 			line-height: 50px;
-
-			&:focus {
-				outline: none;
-			}
-
-			.right-menu-item {
-				display: inline-block;
-				padding: 0 8px;
-				height: 100%;
-				font-size: 18px;
-				color: #5a5e66;
-				vertical-align: text-bottom;
-
-				&.hover-effect {
-					cursor: pointer;
-					transition: background .3s;
-
-					&:hover {
-						background: rgba(0, 0, 0, .025)
-					}
-				}
-			}
+			display: flex;
+			align-items: center;
 
 			.avatar-container {
-				margin-right: 20px;
-
+				margin-right: 30px;
+				margin-top: 21px;
 				.avatar-wrapper {
-					margin-top: 5px;
 					position: relative;
 
 					.user-avatar {
@@ -191,36 +161,20 @@
 
 					.unread-dot {
 						position: absolute;
-						left: -3px;
-						bottom: -3px;
-						width: 10px;
-						height: 10px;
-						background: #ff4d4f;
+						top: 3px;
+						right: 3px;
+						width: 8px;
+						height: 8px;
+						background: #f56c6c;
 						border-radius: 50%;
-						border: 2px solid #fff;
-						box-shadow: 0 0 0 1px #ff4d4f;
 					}
 
 					.el-icon-caret-bottom {
-						cursor: pointer;
-						position: absolute;
-						right: -20px;
-						top: 0px;
-						font-size: 12px;
+						display: none;
 					}
 				}
 			}
 		}
-	}
-
-	.user-dropdown .svg {
-		margin-right: 5px;
-	}
-
-	.el-dropdown-menu {
-		margin: 7px 0 0 0 !important;
-		padding: 0 !important;
-		border: 0 !important;
 	}
 
 	.user-dropdown {
@@ -237,6 +191,7 @@
 			.notification-text {
 				width: 48px;
 				display: inline-block;
+				white-space: nowrap;
 			}
 
 			.count {
@@ -271,20 +226,6 @@
 				justify-content: flex-start;
 				width: 100%;
 			}
-		}
-	}
-
-	.avatar-wrapper {
-		position: relative;
-		
-		.unread-dot {
-			position: absolute;
-			top: 3px;
-			right: 3px;
-			width: 8px;
-			height: 8px;
-			background: #f56c6c;
-			border-radius: 50%;
 		}
 	}
 </style>

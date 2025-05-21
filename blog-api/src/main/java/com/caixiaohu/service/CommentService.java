@@ -24,5 +24,5 @@ public interface CommentService {
 
 	int countByPageAndIsPublished(Integer page, Long blogId, Boolean isPublished);
 
-	void saveComment(com.caixiaohu.model.dto.Comment comment);
+	void saveComment(com.caixiaohu.entity.Comment comment);
 }

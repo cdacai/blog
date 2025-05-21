@@ -36,7 +36,7 @@ public class MailChannel implements CommentNotifyChannel {
 	 * @param comment 当前收到的评论
 	 */
 	@Override
-	public void notifyMyself(Comment comment) {
+	public void notifyMyself(com.caixiaohu.entity.Comment comment) {
 		CommentPageEnum commentPageEnum = CommentUtils.getCommentPageEnum(comment);
 		Map<String, Object> map = new HashMap<>(16);
 		map.put("title", commentPageEnum.getTitle());

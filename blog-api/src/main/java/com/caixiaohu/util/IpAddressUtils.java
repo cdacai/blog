@@ -22,6 +22,26 @@ import java.net.UnknownHostException;
 @Slf4j
 @Component
 public class IpAddressUtils {
+	private static Searcher searcher;
+	private static Method method;
+
+	/**
+	 * 在服务启动时加载 ip2region.db 到内存中
+	 * 解决打包jar后找不到 ip2region.db 的问题
+	 *
+	 * @throws Exception 出现异常应该直接抛出终止程序启动，避免后续invoke时出现更多错误
+	 */
+	@PostConstruct
+	public void initIp2regionResource() throws Exception {
+		InputStream inputStream = new ClassPathResource("/ipdb/ip2region.xdb").getInputStream();
+		//将 ip2region.db 转为 ByteArray
+		byte[] dbBinStr = FileCopyUtils.copyToByteArray(inputStream);
+		// 2、使用上述的 dbBinStr 创建一个完全基于内存的查询对象。
+		searcher = new Searcher(null, null, dbBinStr);
+		//二进制方式初始化 DBSearcher，需要使用基于内存的查找算法 memorySearch
+		method = searcher.getClass().getMethod("search", String.class);
+	}
+
 	/**
 	 * 在Nginx等代理之后获取用户真实IP地址
 	 *
@@ -61,26 +81,6 @@ public class IpAddressUtils {
 		return StringUtils.substringBefore(ip, ",");
 	}
 
-	private static Searcher searcher;
-	private static Method method;
-
-	/**
-	 * 在服务启动时加载 ip2region.db 到内存中
-	 * 解决打包jar后找不到 ip2region.db 的问题
-	 *
-	 * @throws Exception 出现异常应该直接抛出终止程序启动，避免后续invoke时出现更多错误
-	 */
-	@PostConstruct
-	private void initIp2regionResource() throws Exception {
-		InputStream inputStream = new ClassPathResource("/ipdb/ip2region.xdb").getInputStream();
-		//将 ip2region.db 转为 ByteArray
-		byte[] dbBinStr = FileCopyUtils.copyToByteArray(inputStream);
-		// 2、使用上述的 dbBinStr 创建一个完全基于内存的查询对象。
-		searcher = new Searcher(null, null, dbBinStr);
-		//二进制方式初始化 DBSearcher，需要使用基于内存的查找算法 memorySearch
-		method = searcher.getClass().getMethod("search", String.class);
-	}
-
 	/**
 	 * 根据ip从 ip2region.db 中获取地理位置
 	 *
@@ -88,6 +88,14 @@ public class IpAddressUtils {
 	 * @return
 	 */
 	public static String getCityInfo(String ip) {
+		if (searcher == null || method == null) {
+			try {
+				new IpAddressUtils().initIp2regionResource();
+			} catch (Exception e) {
+				log.error("Failed to initialize ip2region resource:", e);
+				return "";
+			}
+		}
 		try {
 			String ipInfo = (String) method.invoke(searcher, ip);
 			if (!StringUtils.isEmpty(ipInfo)) {
@@ -100,6 +108,7 @@ public class IpAddressUtils {
 		}
 		return "";
 	}
+
 	public static void main(String[] args) throws Exception {
 		IpAddressUtils ipAddressUtils = new IpAddressUtils();
 		ipAddressUtils.initIp2regionResource();
