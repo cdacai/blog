@@ -1,15 +1,7 @@
 <template>
 	<div class="navbar">
 		<div class="hamburger-container" @click="toggleSideBar">
-			<svg v-if="sidebar.opened" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;">
-				<line x1="6" y1="7" x2="18" y2="7"/>
-				<line x1="6" y1="12" x2="18" y2="12"/>
-				<line x1="6" y1="17" x2="18" y2="17"/>
-			</svg>
-			<svg v-else viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;">
-				<line x1="7" y1="7" x2="17" y2="17"/>
-				<line x1="17" y1="7" x2="7" y2="17"/>
-			</svg>
+			<svg-icon :icon-class="sidebar.opened ? 'sidebar-opened' : 'sidebar-closed'" />
 		</div>
 
 		<breadcrumb class="breadcrumb-container"/>
@@ -108,10 +100,10 @@
 						return
 					}
 					
-					this.$router.push({
+				this.$router.push({
 						path: '/notification',
-						query: { type }
-					})
+					query: { type }
+				})
 				} catch (error) {
 					console.error('标记已读失败:', error)
 					this.$message.error('标记已读失败')
@@ -143,7 +135,7 @@
 			width: 40px;
 			-webkit-tap-highlight-color: transparent;
 			margin-left: 8px;
-			margin-right: 12px;
+			// margin-right: 12px;
 
 			&:hover {
 				background: rgba(0, 0, 0, .06);

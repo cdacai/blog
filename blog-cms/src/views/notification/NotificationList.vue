@@ -8,7 +8,7 @@
                     <el-radio-button label="comment">评论消息</el-radio-button>
                     <el-radio-button label="like">点赞消息</el-radio-button>
                     <el-radio-button label="report">举报消息</el-radio-button>
-                </el-radio-group>
+            </el-radio-group>
             </div>
             <div class="right">
                 <el-button type="primary" size="medium" @click="markAllAsRead" :disabled="!hasUnread">
@@ -20,8 +20,8 @@
         <!-- 通知列表 -->
         <div class="notification-container">
             <template v-if="notifications.length > 0">
-                <el-card v-for="item in notifications" 
-                         :key="item.id" 
+        <el-card v-for="item in notifications" 
+                 :key="item.id" 
                          :class="['notification-item', item.isRead ? 'read' : 'unread']"
                          shadow="never">
                     <div class="notification-content" @click="handleItemClick(item)" :class="{ clickable: !item.isRead }">
@@ -33,48 +33,48 @@
                                 <span>{{ getTypeLabel(item.type) }}</span>
                             </div>
                         </div>
-                        
-                        <!-- 评论通知 -->
-                        <template v-if="item.type === 'comment'">
-                            <div class="message">
-                                <span class="user">{{ item.nickname }}</span>
-                                <span class="ip">(IP: {{ item.ip }}，{{ item.ipSource }})</span>
-                                <span class="action">评论了你的</span>
+                
+                <!-- 评论通知 -->
+                <template v-if="item.type === 'comment'">
+                    <div class="message">
+                        <span class="user">{{ item.nickname }}</span>
+                        <span class="ip">(IP: {{ item.ip }}，{{ item.ipSource }})</span>
+                        <span class="action">评论了你的</span>
                                 <a :href="getTargetLink(item)" class="target" @click.prevent.stop="handleTargetClick(item)">
                                     "{{ item.targetTitle ? (item.targetTitle.length > 20 ? item.targetTitle.slice(0, 20) + '...' : item.targetTitle) : '' }}"
                                 </a>
-                                <span class="target-type">文章</span>
-                            </div>
-                            <div class="comment-content">{{ item.content }}</div>
-                        </template>
+                        <span class="target-type">文章</span>
+                    </div>
+                    <div class="comment-content">{{ item.content }}</div>
+                </template>
 
-                        <!-- 点赞通知 -->
-                        <template v-else-if="item.type === 'like'">
-                            <div class="message">
-                                <span class="ip">IP: {{ item.ip }}，{{ item.ipSource }}</span>
-                                <span class="action">点赞了你的</span>
+                <!-- 点赞通知 -->
+                <template v-else-if="item.type === 'like'">
+                    <div class="message">
+                        <span class="ip">IP: {{ item.ip }}，{{ item.ipSource }}</span>
+                        <span class="action">点赞了你的</span>
                                 <a :href="getTargetLink(item)" class="target" @click.prevent.stop="handleTargetClick(item)">
                                     "{{ item.targetTitle ? (item.targetTitle.length > 20 ? item.targetTitle.slice(0, 20) + '...' : item.targetTitle) : '' }}"
                                 </a>
                                 <span class="target-type">动态</span>
-                            </div>
-                        </template>
+                    </div>
+                </template>
 
-                        <!-- 举报通知 -->
-                        <template v-else-if="item.type === 'report'">
-                            <div class="message">
-                                <span class="user">{{ item.nickname }}</span>
-                                <span class="ip">(IP: {{ item.ip }}，{{ item.ipSource }})</span>
-                                <span class="action">举报了你的</span>
+                <!-- 举报通知 -->
+                <template v-else-if="item.type === 'report'">
+                    <div class="message">
+                        <span class="user">{{ item.nickname }}</span>
+                        <span class="ip">(IP: {{ item.ip }}，{{ item.ipSource }})</span>
+                        <span class="action">举报了你的</span>
                                 <a :href="getTargetLink(item)" class="target" @click.prevent.stop="handleTargetClick(item)">
                                     "{{ item.targetTitle ? (item.targetTitle.length > 20 ? item.targetTitle.slice(0, 20) + '...' : item.targetTitle) : '' }}"
                                 </a>
-                                <span class="target-type">文章</span>
-                            </div>
-                            <div class="report-reason">举报原因：{{ item.reportReason }}</div>
-                        </template>
+                        <span class="target-type">文章</span>
                     </div>
-                </el-card>
+                    <div class="report-reason">举报原因：{{ item.reportReason }}</div>
+                </template>
+            </div>
+        </el-card>
             </template>
             <div v-else class="empty-state">
                 <i class="el-icon-bell" style="font-size: 48px; color: #909399;"></i>
@@ -84,16 +84,16 @@
 
         <!-- 分页 -->
         <div class="pagination-container" v-if="total > 0">
-            <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="queryInfo.pageNum"
-                :page-sizes="[10, 20, 30, 50]"
-                :page-size="queryInfo.pageSize"
-                :total="total"
-                layout="total, sizes, prev, pager, next, jumper"
-                background>
-            </el-pagination>
+        <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="queryInfo.pageNum"
+            :page-sizes="[10, 20, 30, 50]"
+            :page-size="queryInfo.pageSize"
+            :total="total"
+            layout="total, sizes, prev, pager, next, jumper"
+            background>
+        </el-pagination>
         </div>
     </div>
 </template>
@@ -274,19 +274,19 @@ export default {
         padding: 20px;
         margin-bottom: 20px;
 
-        .notification-item {
+    .notification-item {
             margin-bottom: 10px;
             border-radius: 0;
             background: #fff;
             box-shadow: none;
             border: none;
             border-bottom: 1px solid #e4e7ed;
-            &.unread {
+        &.unread {
                 border-left: 4px solid #f56c6c;
                 background: #fff;
             }
             &.read {
-                border-left: 4px solid #409EFF;
+            border-left: 4px solid #409EFF;
                 background: #fff;
                 opacity: 1;
             }
@@ -302,7 +302,7 @@ export default {
             .header {
                 position: relative;
                 margin-bottom: 4px;
-                .time {
+            .time {
                     font-size: 11px;
                 }
                 .type-stamp {
@@ -354,14 +354,14 @@ export default {
                 .target-type {
                     font-size: 11px;
                 }
+                }
             }
-        }
 
         .empty-state {
             text-align: center;
             padding: 40px 0;
             background-color: #fff;
-            border-radius: 4px;
+                border-radius: 4px;
         }
     }
 
