@@ -6,89 +6,39 @@
 [![MySQL](https://img.shields.io/badge/MySQL-5.7+-blue.svg)](https://www.mysql.com/)
 [![Redis](https://img.shields.io/badge/Redis-6.0+-red.svg)](https://redis.io/)
 
-> 基于Spring Boot + Vue开发的个人博客系统，支持内容管理、评论互动、数据统计等功能。
+> 采用前后端分离架构，基于Spring Boot + Vue开发的个人博客系统，支持内容管理、评论互动、相册管理、数据统计等功能，并集成了内容审核、消息通知、定时任务等特性。
 
 预览地址：
 - 博客前台：[https://caixiaohu.com](https://caixiaohu.com)
 - 管理后台：[https://set.caixiaohu.com](https://set.caixiaohu.com)（访客用户名：guest，密码：123456）
 
-主要功能：
-- 内容管理：支持文章、动态等内容管理
-- 相册系统：支持图片管理、一键插入、相册分类
-- 评论系统：支持评论、回复、点赞、举报功能
-- 存储系统：支持本地/云存储
-- 消息通知：支持站内消息和邮件通知
-- 任务调度：支持定时任务管理
-- 数据统计：支持访问统计和用户行为分析
-
 ## 目录
 
-- [系统介绍](#系统介绍)
-- [技术架构](#技术架构)
-- [功能说明](#功能说明)
+- [主要功能](#主要功能)
+- [系统截图](#系统截图)
 - [快速开始](#快速开始)
 - [注意事项](#注意事项)
+- [更新日志](#更新日志)
 - [许可证](#许可证)
 - [致谢](#致谢)
-- [更新日志](#更新日志)
 
-## 系统介绍
+主要功能：
+- 内容管理
+  - 文章管理：支持Markdown编辑、自动保存、草稿箱
+  - 动态管理：支持发布动态、图片上传
+  - 相册管理：支持图片管理、一键插入、相册分类
+  - 内容审核：支持文本内容审核
 
-本系统采用前后端分离架构，后端基于Spring Boot开发，前端基于Vue.js开发。系统提供了完整的博客功能，包括内容管理、评论互动、相册管理、数据统计等，并集成了内容审核、消息通知、定时任务等特性。
+- 评论互动
+  - 评论功能：支持评论、回复、点赞
+  - 评论管理：支持评论审核、举报处理
+  - 举报功能：支持内容举报、举报处理、结果通知
+  - 消息通知：支持站内消息、邮件通知
 
-## 技术架构
-
-### 后端技术
-- 核心框架：Spring Boot 2.2.7.RELEASE
-- 安全框架：Spring Security
-- 数据库：MySQL 5.7+
-- 缓存：Redis 6.0+
-- Token：jjwt 0.9.1
-- ORM：MyBatis + PageHelper
-- 内容审核：百度智能云文本审核API
-- 对象存储：又拍云SDK / 本地文件系统
-- 定时任务：Quartz 2.3.2
-- 其他：
-  - Markdown渲染：commonmark-java
-  - IP地址库：ip2region
-  - UA解析：yauaa
-
-### 前端技术
-- 核心框架：Vue 2.6.x + Vue Router + Vuex
-- UI组件：Element UI 2.x
-- 构建工具：Vue CLI 4.x
-- HTTP：axios
-- 编辑器：mavonEditor
-- 可视化：echarts
-- 工具库：
-  - dayjs（时间处理）
-  - lodash（工具函数）
-  - v-viewer（图片预览）
-  - prismjs（代码高亮）
-
-## 功能说明
-
-### 内容管理
-- 文章管理：支持Markdown编辑、自动保存、草稿箱
-- 动态管理：支持发布动态、图片上传
-- 相册管理：支持图片管理、一键插入
-- 内容审核：支持文本内容审核
-
-### 评论互动
-- 评论功能：支持评论、回复、点赞
-- 评论管理：支持评论审核、举报处理
-- 举报功能：支持内容举报、举报处理、结果通知
-- 消息通知：支持站内消息、邮件通知
-
-### 系统功能
-- 任务调度：支持定时任务配置、执行日志
-- 数据统计：支持访问统计、用户行为分析
-- 存储管理：支持本地存储、云存储切换
-
-### 用户体验
-- 移动端适配：响应式设计，支持各种设备
-- 交互优化：触摸操作优化，性能优化
-- 界面设计：简洁美观，操作便捷
+- 用户体验
+  - 移动端适配：响应式设计，支持各种设备
+  - 交互优化：触摸操作优化，性能优化
+  - 界面设计：简洁美观，操作便捷
 
 ## 系统截图
 
@@ -115,12 +65,41 @@
 ## 快速开始
 
 ### 环境要求
-- JDK: 1.8+
-- MySQL: 5.7+（utf8mb4字符集）
-- Redis: 6.0+
-- Node.js: 12.x+
-- Maven: 3.6+
-- NPM: 6.x+
+- **基础环境**
+  - JDK: 1.8+
+  - MySQL: 5.7+（utf8mb4字符集）
+  - Redis: 6.0+
+  - Node.js: 12.x+
+  - Maven: 3.6+
+  - NPM: 6.x+
+
+- **后端技术**
+  - 核心框架：Spring Boot 2.2.7.RELEASE
+  - 安全框架：Spring Security
+  - 数据库：MySQL 5.7+
+  - 缓存：Redis 6.0+
+  - Token：jjwt 0.9.1
+  - ORM：MyBatis + PageHelper
+  - 内容审核：百度智能云文本审核API
+  - 对象存储：又拍云SDK / 本地文件系统
+  - 定时任务：Quartz 2.3.2
+  - 其他：
+    - Markdown渲染：commonmark-java
+    - IP地址库：ip2region
+    - UA解析：yauaa
+
+- **前端技术**
+  - 核心框架：Vue 2.6.x + Vue Router + Vuex
+  - UI组件：Element UI 2.x
+  - 构建工具：Vue CLI 4.x
+  - HTTP：axios
+  - 编辑器：mavonEditor
+  - 可视化：echarts
+  - 工具库：
+    - dayjs（时间处理）
+    - lodash（工具函数）
+    - v-viewer（图片预览）
+    - prismjs（代码高亮）
 
 ### 配置说明
 
@@ -165,18 +144,6 @@ CREATE DATABASE nblog CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
   - 又拍云存储：需自行申请账号和配置空间，可选用本地存储
   - 邮箱服务：默认配置QQ邮箱，可切换其他服务商
 
-## 许可证
-
-本项目基于MIT许可证开源，详见 [LICENSE](./LICENSE) 文件。
-
-## 致谢
-
-感谢以下开源项目：
-- [Spring Boot](https://github.com/spring-projects/spring-boot)
-- [Vue](https://github.com/vuejs/vue)
-- [Element UI](https://github.com/ElemeFE/element)
-- 以及 README 中提到的所有开源依赖项目
-
 ## 更新日志
 
 ### v2.0.0 (2025-05-21)
@@ -195,3 +162,15 @@ CREATE DATABASE nblog CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 - 编辑器升级：替换为富文本编辑器
 - 动态模块完善：支持动态评论功能
 - 主题定制功能：支持多套主题模板切换
+
+## 许可证
+
+本项目基于MIT许可证开源，详见 [LICENSE](./LICENSE) 文件。
+
+## 致谢
+
+感谢以下开源项目：
+- [Spring Boot](https://github.com/spring-projects/spring-boot)
+- [Vue](https://github.com/vuejs/vue)
+- [Element UI](https://github.com/ElemeFE/element)
+- 以及 README 中提到的所有开源依赖项目
