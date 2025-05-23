@@ -1,5 +1,7 @@
 # 蔡小虎博客系统
 
+[English](./README_EN.md) | 简体中文
+
 [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](./LICENSE)
 [![Vue](https://img.shields.io/badge/Vue-2.x-brightgreen.svg)](https://github.com/vuejs/vue)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.2.7-brightgreen.svg)](https://github.com/spring-projects/spring-boot)
