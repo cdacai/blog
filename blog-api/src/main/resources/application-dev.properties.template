@@ -100,10 +100,8 @@ spring.devtools.restart.enabled=false
 # =====Quartz定时任务配置开始=====
 # 使用数据库存储任务
 spring.quartz.job-store-type=jdbc
-# 初始化表结构（首次启动时设置为always，后续设置为never）
+# 禁用自动初始化表结构，因为表已经存在
 spring.quartz.jdbc.initialize-schema=never
-# 表结构脚本位置
-spring.quartz.jdbc.schema=classpath:schema/quartz_tables.sql
 # 自动启动
 spring.quartz.auto-startup=true
 # 应用关闭时等待quartz任务完成

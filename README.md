@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](./LICENSE)
 [![Vue](https://img.shields.io/badge/Vue-2.x-brightgreen.svg)](https://github.com/vuejs/vue)
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.2.x-brightgreen.svg)](https://github.com/spring-projects/spring-boot)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.2.7-brightgreen.svg)](https://github.com/spring-projects/spring-boot)
 [![MySQL](https://img.shields.io/badge/MySQL-5.7+-blue.svg)](https://www.mysql.com/)
 [![Redis](https://img.shields.io/badge/Redis-6.0+-red.svg)](https://redis.io/)
 
@@ -19,6 +19,7 @@
 - ⚡️ 文章编辑自动保存，防止意外丢失
 - 🖼️ 相册管理系统，支持一键插入文章
 - 📨 完善的通知系统，支持站内消息和邮件提醒
+- ⏰ 强大的定时任务系统，支持动态任务管理
 
 ## 目录
 
@@ -46,7 +47,7 @@ Spring Boot + Vue 博客系统
 ## 技术栈
 
 ### 后端
-- 核心框架：Spring Boot 2.2.x
+- 核心框架：Spring Boot 2.2.7.RELEASE
 - 安全框架：Spring Security
 - 数据库：MySQL 5.7+
 - 缓存：Redis 6.0+
@@ -54,10 +55,10 @@ Spring Boot + Vue 博客系统
 - ORM：MyBatis + PageHelper
 - 内容审核：基于百度智能云文本审核API
 - 对象存储：又拍云SDK / 本地文件系统
+- 定时任务：Quartz 2.3.2
 - 其他：
   - Markdown渲染：commonmark-java
   - IP地址库：ip2region
-  - 定时任务：quartz
   - UA解析：yauaa
 
 ### 前端
@@ -84,6 +85,7 @@ Spring Boot + Vue 博客系统
 | 灵活的图片存储 | 支持本地服务器存储和又拍云存储双模式，可自由切换，不强依赖第三方服务 |
 | 通知系统 | 评论、举报、点赞等操作均可触发通知提醒 |
 | 访客体验 | 提供guest账号供访客体验后台功能 |
+| 定时任务系统 | 支持动态任务管理、任务监控、执行日志等功能 |
 
 ### 前端优化
 
@@ -121,6 +123,10 @@ Spring Boot + Vue 博客系统
   - 系统通知集成
     - 替换原有链接
     - 支持快速跳转管理
+  - 定时任务管理
+    - 可视化任务配置
+    - 实时任务状态监控
+    - 任务执行日志查看
 
 ## 项目截图
 
@@ -174,6 +180,12 @@ Spring Boot + Vue 博客系统
   - 百度内容审核：配置`baidu.content.*`（可选）
   - 邮件服务：默认QQ邮箱，可切换其他服务商
 
+- **定时任务配置**
+  - 使用数据库存储任务配置
+  - 表结构已内置在nblog.sql中
+  - 支持动态任务管理
+  - 支持任务执行日志记录
+
 ### 开发环境搭建
 
 1. 创建 MySQL 数据库：
@@ -201,6 +213,9 @@ CREATE DATABASE nblog CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 - **核心配置说明** (`application-dev.properties`,`application-prd.properties`)
   - 安全相关：
     - 必须修改`token.secretKey`
+  - 定时任务相关：
+    - 表结构已内置在nblog.sql中
+    - 无需额外配置初始化脚本
 
 ## 许可证
 
@@ -228,6 +243,7 @@ CREATE DATABASE nblog CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 - 🎨 重新设计界面风格
 - ✅ 支持本地图片存储
 - 🔒 集成内容审核功能
+- ⏰ 集成定时任务系统
 
 ### 开发计划
 > 未来计划开发的功能和优化
