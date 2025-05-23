@@ -10,6 +10,32 @@
 
 > A modern personal blog system built with Spring Boot + Vue, featuring content management, photo albums, and social interactions. The system adopts a front-end and back-end separation architecture, provides a complete admin panel, and supports both local and cloud storage.
 
+## Featured Features
+
+### 1. Message Center
+- Unified collection of comment, like, and report history
+- Support for internal messages and email notifications
+- Message categorization and status management
+- Real-time message push
+
+### 2. Photo Album Management
+- Image management with one-click insertion
+- Album categorization
+- Support for both local and Upyun storage
+- Image preview and batch operations
+
+### 3. Content Security
+- Integration with Baidu Cloud Text Review (configurable)
+- Content reporting functionality
+- Report processing workflow
+- Result notification mechanism
+
+### 4. Storage Solutions
+- Local file system storage support
+- Upyun object storage support
+- Configurable storage strategies
+- Flexible storage switching
+
 Preview:
 - Blog Frontend: [https://caixiaohu.com](https://caixiaohu.com)
 - Admin Panel: [https://set.caixiaohu.com](https://set.caixiaohu.com) (Guest username: guest, password: 123456)
