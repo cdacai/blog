@@ -23,7 +23,7 @@ export default {
   created() {
     // 兼容vuex和localStorage
     const token = this.$store.getters.token || localStorage.getItem('token')
-    this.themeSwitcherUrl = `/theme-switcher?token=${token}`
+    this.themeSwitcherUrl = `http://localhost:8080/new?token=${token}`
   }
 }
 </script>
