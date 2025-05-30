@@ -65,6 +65,15 @@
 	import {mapState} from 'vuex'
 	import {SAVE_CLIENT_SIZE, SAVE_INTRODUCTION, SAVE_SITE_INFO, RESTORE_COMMENT_FORM} from "@/store/mutations-types";
 
+	import axios from 'axios'
+
+	const defaultTheme = {
+	  theme: 'theme1',
+	  primaryColor: '#2F855A',
+	  background: '#fff',
+	  textColor: '#222'
+	}
+
 	export default {
 		name: "Index",
 	components: { Header, BlogPasswordDialog, Tocbot, RandomBlog, Tags, Nav, Footer, Introduction},
@@ -82,6 +91,7 @@
 				badges: [],
 				newBlogList: [],
 				// hitokoto: {},
+        themeConfig: { ...defaultTheme }
 			}
 		},
 		computed: {
@@ -95,6 +105,7 @@
 		},
 		created() {
 			this.getSite()
+      this.applyTheme()
 			// this.getHitokoto()
 			//从localStorage恢复之前的评论信息
 			this.$store.commit(RESTORE_COMMENT_FORM)
@@ -122,6 +133,24 @@
 					}
 				})
 			},
+			async applyTheme() {
+				try {
+					const res = await axios.get('/api/theme')
+					let config = res.data
+					if (typeof config === 'string') config = JSON.parse(config)
+					this.themeConfig = { ...defaultTheme, ...config }
+				} catch (e) {
+					this.themeConfig = { ...defaultTheme }
+				}
+				// 注入CSS变量
+				this.setThemeVars()
+			},
+			setThemeVars() {
+				const root = document.documentElement
+				root.style.setProperty('--primary-color', this.themeConfig.primaryColor)
+				root.style.setProperty('--background', this.themeConfig.background)
+				root.style.setProperty('--text-color', this.themeConfig.textColor)
+			},
 			//获取一言
 			// getHitokoto() {
 			// 	getHitokoto().then(res => {
@@ -137,6 +166,9 @@
 		display: flex;
 		min-height: 100vh;
 		flex-direction: column;
+    background: var(--background);
+    color: var(--text-color);
+    transition: background 0.3s, color 0.3s;
 	}
 
 	.theme5 {

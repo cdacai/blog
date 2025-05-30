@@ -233,8 +233,11 @@ CREATE TABLE `schedule_job`  (
 -- ----------------------------
 -- Records of schedule_job
 -- ----------------------------
-INSERT INTO `schedule_job` VALUES (1, 'redisSyncScheduleTask', 'syncBlogViewsToDatabase', '', '0 0 1 * * ?', 1, '每天凌晨一点，从Redis将博客浏览量同步到数据库', '2020-11-17 23:45:42');
-INSERT INTO `schedule_job` VALUES (2, 'visitorSyncScheduleTask', 'syncVisitInfoToDatabase', '', '0 0 0 * * ?', 1, '清空当天Redis访客标识，记录当天的PV和UV，更新当天所有访客的PV和最后访问时间，更新城市新增访客UV数', '2021-02-05 08:14:28');
+DELETE FROM schedule_job;
+INSERT INTO `schedule_job` (`job_id`, `bean_name`, `method_name`, `params`, `cron`, `status`, `remark`, `create_time`)
+VALUES
+(1, 'redisSyncScheduleTask', 'syncBlogViewsToDatabase', '', '0 0 1 * * ?', 1, '每天凌晨一点，从Redis将博客浏览量同步到数据库', '2020-11-17 23:45:42'),
+(2, 'visitorSyncScheduleTask', 'syncVisitInfoToDatabase', '', '0 0 0 * * ?', 1, '清空当天Redis访客标识，记录当天的PV和UV，更新当天所有访客的PV和最后访问时间，更新城市新增访客UV数', '2021-02-05 08:14:28');
 
 -- ----------------------------
 -- Table structure for schedule_job_log
@@ -397,6 +400,7 @@ CREATE TABLE `visitor`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- 评论举报表
+DROP TABLE IF EXISTS `comment_report`;
 CREATE TABLE `comment_report` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `comment_id` bigint(20) NOT NULL COMMENT '被举报的评论id',
@@ -455,7 +459,54 @@ CREATE TABLE `album_image` (
 
 SET FOREIGN_KEY_CHECKS = 1;
 
--- 整合quartz_tables_mysql56.sql内容
+-- ----------------------------
+-- Quartz 默认定时任务 TASK_1 初始化，防止启动报错（幂等处理）
+-- ----------------------------
+DELETE FROM qrtz_cron_triggers WHERE SCHED_NAME='BlogScheduler' AND TRIGGER_NAME='TASK_1' AND TRIGGER_GROUP='DEFAULT';
+DELETE FROM qrtz_triggers WHERE SCHED_NAME='BlogScheduler' AND TRIGGER_NAME='TASK_1' AND TRIGGER_GROUP='DEFAULT';
+DELETE FROM qrtz_job_details WHERE SCHED_NAME='BlogScheduler' AND JOB_NAME='TASK_1' AND JOB_GROUP='DEFAULT';
+INSERT INTO qrtz_job_details (SCHED_NAME, JOB_NAME, JOB_GROUP, DESCRIPTION, JOB_CLASS_NAME, IS_DURABLE, IS_NONCONCURRENT, IS_UPDATE_DATA, REQUESTS_RECOVERY, JOB_DATA)
+VALUES ('BlogScheduler', 'TASK_1', 'DEFAULT', '默认任务1', 'com.caixiaohu.util.quartz.ScheduleJob', '1', '1', '0', '0', NULL);
+INSERT INTO qrtz_triggers (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP, JOB_NAME, JOB_GROUP, DESCRIPTION, NEXT_FIRE_TIME, PREV_FIRE_TIME, PRIORITY, TRIGGER_STATE, TRIGGER_TYPE, START_TIME, END_TIME, CALENDAR_NAME, MISFIRE_INSTR, JOB_DATA)
+VALUES ('BlogScheduler', 'TASK_1', 'DEFAULT', 'TASK_1', 'DEFAULT', '默认任务1', NULL, NULL, NULL, 'WAITING', 'CRON', 0, NULL, NULL, NULL, NULL);
+INSERT INTO qrtz_cron_triggers (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP, CRON_EXPRESSION, TIME_ZONE_ID)
+VALUES ('BlogScheduler', 'TASK_1', 'DEFAULT', '0 0 1 * * ?', 'Asia/Shanghai');
+
+-- ----------------------------
+-- Quartz 默认定时任务 TASK_2 初始化，防止启动报错（幂等处理）
+-- ----------------------------
+DELETE FROM qrtz_cron_triggers WHERE SCHED_NAME='BlogScheduler' AND TRIGGER_NAME='TASK_2' AND TRIGGER_GROUP='DEFAULT';
+DELETE FROM qrtz_triggers WHERE SCHED_NAME='BlogScheduler' AND TRIGGER_NAME='TASK_2' AND TRIGGER_GROUP='DEFAULT';
+DELETE FROM qrtz_job_details WHERE SCHED_NAME='BlogScheduler' AND JOB_NAME='TASK_2' AND JOB_GROUP='DEFAULT';
+INSERT INTO qrtz_job_details (SCHED_NAME, JOB_NAME, JOB_GROUP, DESCRIPTION, JOB_CLASS_NAME, IS_DURABLE, IS_NONCONCURRENT, IS_UPDATE_DATA, REQUESTS_RECOVERY, JOB_DATA)
+VALUES ('BlogScheduler', 'TASK_2', 'DEFAULT', '默认任务2', 'com.caixiaohu.util.quartz.ScheduleJob', '1', '1', '0', '0', NULL);
+INSERT INTO qrtz_triggers (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP, JOB_NAME, JOB_GROUP, DESCRIPTION, NEXT_FIRE_TIME, PREV_FIRE_TIME, PRIORITY, TRIGGER_STATE, TRIGGER_TYPE, START_TIME, END_TIME, CALENDAR_NAME, MISFIRE_INSTR, JOB_DATA)
+VALUES ('BlogScheduler', 'TASK_2', 'DEFAULT', 'TASK_2', 'DEFAULT', '默认任务2', NULL, NULL, NULL, 'WAITING', 'CRON', 0, NULL, NULL, NULL, NULL);
+INSERT INTO qrtz_cron_triggers (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP, CRON_EXPRESSION, TIME_ZONE_ID)
+VALUES ('BlogScheduler', 'TASK_2', 'DEFAULT', '0 0 0 * * ?', 'Asia/Shanghai');
+
+-- ----------------------------
+-- Table structure for site_config
+-- ----------------------------
+DROP TABLE IF EXISTS `site_config`;
+CREATE TABLE `site_config`  (
+  `id` INT PRIMARY KEY AUTO_INCREMENT,
+  `config_key` VARCHAR(50) NOT NULL UNIQUE,
+  `config_value` TEXT,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of site_config (主题配置初始化)
+-- ----------------------------
+INSERT INTO `site_config` (config_key, config_value)
+VALUES (
+  'current_theme',
+  '{"theme":"theme1","primaryColor":"#2F855A","background":"#fff"}'
+)
+ON DUPLICATE KEY UPDATE config_value = VALUES(config_value);
+
 -- ----------------------------
 -- Table structure for qrtz_job_details
 -- ----------------------------
