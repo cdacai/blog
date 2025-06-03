@@ -317,3 +317,70 @@ export default {
 - 支持主题预览
 - 支持主题保存
 - 支持主题重置 
+
+## 九、主题扩展与同步建议
+
+### 9.1 背景装饰色块随主题主色变化
+
+- **目标**：让首页/全站的背景装饰色块（如绿色点、块、圆等）颜色随主题主色（primaryColor）自动变化。
+- **实现建议**：
+  1. **统一用 CSS 变量控制装饰色**：所有背景装饰相关的 CSS（如 `.dot-decoration`、`.color-block` 等）颜色属性，统一用 `background: var(--primary-color)` 或类似变量。
+  2. **主题参数扩展**：如需不同于主色，可在主题 JSON 增加 `decorationColor` 字段，并同步注入 `--decoration-color` 变量。
+  3. **主题切换时自动同步**：主题切换时注入 CSS 变量，所有用变量的装饰元素会自动变色，无需额外 JS 逻辑。
+  4. **样式修改示例**：
+     ```css
+     .dot-decoration, .color-block {
+       background: var(--primary-color, #2F855A);
+     }
+     /* 或者 */
+     .dot-decoration {
+       background: var(--decoration-color, #2F855A);
+     }
+     ```
+  5. **主题参数结构扩展示例**：
+     ```json
+     {
+       "theme": "theme1",
+       "primaryColor": "#2F855A",
+       "background": "#fff",
+       "decorationColor": "#2F855A"
+     }
+     ```
+
+### 9.2 板块元素尺寸与主题设置页同步
+
+- **目标**：首页/全站的主要内容区、卡片、按钮等尺寸（如圆角、间距、阴影、字体大小等）与主题设置页保持一致。
+- **实现建议**：
+  1. **主题参数扩展**：在主题 JSON 中增加尺寸相关参数，例如：
+     ```json
+     {
+       "theme": "theme1",
+       "primaryColor": "#2F855A",
+       "background": "#fff",
+       "cardRadius": "12px",
+       "cardPadding": "24px",
+       "fontSize": "16px"
+     }
+     ```
+  2. **注入 CSS 变量**：切换主题时，将这些尺寸参数同步注入到 `:root`，如：
+     ```js
+     root.style.setProperty('--card-radius', config.cardRadius)
+     root.style.setProperty('--card-padding', config.cardPadding)
+     root.style.setProperty('--font-size', config.fontSize)
+     ```
+  3. **全站样式统一用变量**：所有板块、卡片、按钮等样式，统一用 CSS 变量控制尺寸：
+     ```css
+     .article-card {
+       border-radius: var(--card-radius, 8px);
+       padding: var(--card-padding, 16px);
+       font-size: var(--font-size, 15px);
+     }
+     ```
+  4. **主题设置页与首页参数结构保持一致**：主题设置页的预览区和首页用同一套参数，保证所见即所得。
+
+### 9.3 兼容性与维护建议
+
+- 不新增插件，只扩展主题 JSON 和 CSS 变量，兼容性好，改动小。
+- 注释清晰，在 CSS 和 JS 注入处加注释，方便维护。
+- 参数命名统一，避免混乱。
+- 主题参数结构建议持续扩展，保证主题切换的灵活性和一致性。 
