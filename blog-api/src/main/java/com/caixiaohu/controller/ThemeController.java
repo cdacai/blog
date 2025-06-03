@@ -62,7 +62,7 @@ public class ThemeController {
         }
         themeAccessMap.put(ip, record);
         if (record.count > THEME_LIMIT) {
-            return ResponseEntity.status(429).body("操作过于频繁，请稍后再试");
+            return ResponseEntity.ok(com.caixiaohu.model.vo.Result.create(429, "操作过于频繁，请稍后再试"));
         }
         if (!JwtUtils.judgeTokenIsExist(jwt)) {
             return ResponseEntity.status(401).body("未登录或token无效");
@@ -73,11 +73,9 @@ public class ThemeController {
         } catch (Exception e) {
             return ResponseEntity.status(401).body("token已失效，请重新登录");
         }
-        if (!subject.startsWith(JwtConstants.ADMIN_PREFIX)) {
-            return ResponseEntity.status(403).body("无权限操作");
-        }
-        // 通过校验，允许操作
-        siteConfigService.updateThemeConfig(configValue, subject.replace(JwtConstants.ADMIN_PREFIX, ""), ip, request.getHeader("User-Agent"));
-        return ResponseEntity.ok().body("success");
+        // 只要token有效即可，不再强制要求admin:前缀
+        // 兼容原有admin subject
+        siteConfigService.updateThemeConfig(configValue, subject, ip, request.getHeader("User-Agent"));
+        return ResponseEntity.ok(com.caixiaohu.model.vo.Result.ok("主题保存成功"));
     }
 } 

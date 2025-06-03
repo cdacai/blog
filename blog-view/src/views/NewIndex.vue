@@ -63,8 +63,11 @@
       </div>
     </main>
 
-    <!-- 主题切换器 -->
-    <theme-switcher />
+    <!-- 主题切换器和保存按钮悬浮区 -->
+    <div class="theme-fab-group">
+      <button class="magicui-rainbow-fab" @click="saveTheme" title="保存主题"><span>💾</span></button>
+      <theme-switcher />
+    </div>
   </div>
 </template>
 
@@ -73,6 +76,7 @@ import { getBlogList } from '@/api/home'
 import { getSite } from '@/api/index'
 import { mapGetters } from 'vuex'
 import ThemeSwitcher from '@/components/ThemeSwitcher.vue'
+import axios from '@/plugins/axios'
 
 export default {
   name: 'NewIndex',
@@ -312,6 +316,24 @@ export default {
           { name: '工程化', count: 6 },
           { name: 'Node.js', count: 5 }
         ]
+      }
+    },
+    async saveTheme() {
+      try {
+        const theme = this.$store.getters['theme/theme']
+        // 获取token，优先url参数，其次localStorage
+        const urlParams = new URLSearchParams(window.location.search)
+        const token = urlParams.get('token') || localStorage.getItem('token') || ''
+        const res = await axios.post('/admin/theme', theme, {
+          headers: { Authorization: token }
+        })
+        if (res && res.code === 200) {
+          window.parent.postMessage({ type: 'theme-save', status: 'success', msg: res.msg || '主题保存成功' }, '*')
+        } else {
+          window.parent.postMessage({ type: 'theme-save', status: 'error', msg: (res && res.msg) || '保存失败' }, '*')
+        }
+      } catch (e) {
+        window.parent.postMessage({ type: 'theme-save', status: 'error', msg: '保存失败' }, '*')
       }
     }
   }
@@ -620,5 +642,44 @@ export default {
   .nav {
     gap: 32px;
   }
+}
+
+.theme-fab-group {
+  position: fixed;
+  right: 32px;
+  bottom: 32px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 1000;
+}
+
+.magicui-rainbow-fab {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: #222;
+  background: #fff;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  overflow: hidden;
+  position: relative;
+}
+
+.magicui-rainbow-fab:hover {
+  transform: scale(1.08);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+.magicui-rainbow-fab span {
+  position: relative;
+  z-index: 1;
 }
 </style> 

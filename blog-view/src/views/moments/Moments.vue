@@ -196,12 +196,12 @@
 
 .moment-author {
 	font-weight: 600;
-	color: #2F855A;
+	color: var(--primary-color);
 }
 
 .moment-time {
 	font-size: 0.875rem;
-	color: #666;
+	color: var(--text-color);
 }
 
 .moment-content {
@@ -238,7 +238,7 @@
 	gap: 0.5rem;
 	padding: 0.5rem 1rem;
 	border-radius: 0.5rem;
-	color: #2F855A;
+	color: var(--primary-color);
 	background: rgba(47, 133, 90, 0.1);
 	transition: all 0.3s ease;
 	cursor: pointer;
@@ -249,7 +249,7 @@
 }
 
 .like-button .like-color {
-	color: #e53e3e;
+	color: var(--primary-color);
 }
 
 .ui.bottom {
@@ -279,7 +279,7 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	color: #666;
+	color: var(--text-color);
 }
 
 .empty-icon {
@@ -301,7 +301,7 @@
 
 .empty-icon i {
 	font-size: 2.5rem;
-	color: #2F855A;
+	color: var(--primary-color);
 }
 
 .empty-text {
@@ -310,14 +310,14 @@
 
 .empty-text .primary-text {
 	font-size: 1.25rem;
-	color: #2F855A;
+	color: var(--primary-color);
 	font-weight: 500;
 	margin: 0 0 0.5rem 0;
 }
 
 .empty-text .secondary-text {
 	font-size: 1rem;
-	color: #666;
+	color: var(--text-color);
 	margin: 0;
 	opacity: 0.8;
 }

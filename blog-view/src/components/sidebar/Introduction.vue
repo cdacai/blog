@@ -150,10 +150,11 @@
 	margin-bottom: 40px;
 	border-bottom: 1px solid rgba(203, 213, 224, 0.5);
 	padding-bottom: 40px;
+	color: var(--text-color);
 }
 
 .theme5-header {
-	color: #236042;
+	color: var(--primary-color);
 	font-size: 1.71rem;
 	font-weight: 600;
 	margin-bottom: 16px;
@@ -166,22 +167,23 @@
 .about-content {
 	padding: 0 0 0 4px;
 	line-height: 1.8;
+	color: var(--text-color);
 }
 
 .name {
-		font-size: 15px;
+	font-size: 15px;
 	font-weight: normal;
-	color: #2d3748;
+	color: var(--text-color);
 	margin-bottom: 6px;
 }
 
 .roll-text {
-	color: #4a5568;
+	color: var(--text-color);
 	font-size: 14px;
 	line-height: 1.8;
 }
-.intro-text {	
-	color: #276749;
+.intro-text {
+	color: var(--text-color);
 	font-size: 1.12rem;
 	letter-spacing: 0.02em;
 	line-height: 1.8;
@@ -192,6 +194,7 @@
 	margin-top: 40px;
 	transition: all 0.3s ease;
 	border-radius: 20px;
+	color: var(--text-color);
 }
 
 .category-section:hover {
@@ -202,13 +205,14 @@
 	display: flex;
 	flex-direction: column;
 	padding: 0;
+	color: var(--text-color);
 }
 
 .theme5-category-item {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	color: #4a5568;
+	color: var(--text-color);
 	font-size: 14px;
 	transition: all 0.2s ease;
 	line-height: 1;
@@ -222,11 +226,12 @@
 }
 
 .theme5-category-item:hover {
-	color: #2F855A;
+	color: var(--primary-color);
 }
 
 .category-name {
 	position: relative;
+	color: var(--text-color);
 }
 
 .category-count {
@@ -235,7 +240,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background-color: #2F855A;
+	background-color: var(--primary-color);
 	color: white;
 	border-radius: 12px;
 	font-size: 12px;
@@ -255,16 +260,6 @@
 	box-shadow: 0 4px 20px rgba(26, 71, 49, 0.08);
 	background: rgba(255, 255, 255, 0.9);
 }
-
-.category-section {
-	margin-top: 40px;
-	transition: all 0.3s ease;
-	border-radius: 20px;
-}
-
-.category-section:hover {
-	transform: translateY(-2px);
-	}
 
 /* 增强卡片悬停效果 */
 .theme5-intro:hover {

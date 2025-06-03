@@ -144,10 +144,7 @@ export default {
 
 <style scoped>
 .nblog-theme-switcher {
-  position: fixed;
-  right: 32px;
-  bottom: 32px;
-  z-index: 1000;
+  display: inline-block;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   font-size: 14px;
   line-height: 1.5;

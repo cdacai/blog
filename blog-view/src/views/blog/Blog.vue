@@ -8,7 +8,7 @@
 				<router-link 
 					:to="`/category/${blog.category.name}`" 
 					class="info-item"
-					style="color: rgb(47, 133, 90);"
+					style="color: var(--primary-color);"
 					v-if="blog.category"
 				>
 					{{ blog.category.name }}
@@ -236,7 +236,7 @@
 .blog-title {
 	font-size: 2.25rem;
 	font-weight: 600;
-	color: #1a202c;
+	color: var(--text-color);
 	margin: 1rem 0 1.5rem;
 	line-height: 1.4;
 	letter-spacing: -0.02em;
@@ -249,7 +249,7 @@
 	flex-wrap: wrap;
 	gap: 0;
 	margin: 1.5rem 0;
-	color: #4a5568;
+	color: var(--text-color);
 	font-size: 0.9rem;
 	opacity: 0.9;
 	justify-content: center;
@@ -259,7 +259,7 @@
 	display: flex;
 	align-items: center;
 	font-size: 0.9rem;
-	color: #2F855A;
+	color: var(--primary-color);
 }
 
 .info-item:not(:first-child)::before {
@@ -268,7 +268,7 @@
 	width: 3px;
 	height: 3px;
 	border-radius: 50%;
-	background-color: #2F855A;
+	background-color: var(--primary-color);
 	margin: 0 0.7rem;
 	opacity: 0.6;
 }
@@ -281,7 +281,7 @@
 	height: 0;
 	border-style: solid;
 	border-width: 0 4rem 4rem 0;
-	border-color: transparent #bcefbc transparent transparent;
+	border-color: transparent var(--primary-color) transparent transparent;
 	cursor: pointer;
 	transition: opacity 0.3s ease;
 	z-index: 1;
@@ -309,7 +309,7 @@
 }
 
 .tag-label {
-	color: #2F855A;
+	color: var(--primary-color);
 	font-size: 0.9rem;
 	margin-right: 0.5rem;
 }
@@ -322,7 +322,7 @@
 
 .tag-item {
 	padding: 0.15rem 0.3rem;
-	color: #2F855A;
+	color: var(--primary-color);
 	font-size: 0.8rem;
 	transition: all 0.2s ease;
 	line-height: 1;
@@ -338,7 +338,7 @@
 	margin: 2.5rem 0;
 	line-height: 1.8;
 	font-size: 1.05rem;
-	color: #2d3748;
+	color: var(--text-color);
 }
 
 .typo h1,
@@ -350,12 +350,12 @@
 	margin: 2rem 0 1rem;
 	font-weight: 600;
 	line-height: 1.4;
-	color: #1a202c;
+	color: var(--text-color);
 }
 
 .typo h1 {
 	font-size: 2rem;
-	border-bottom: 2px solid rgba(47, 133, 90, 0.1);
+	border-bottom: 2px solid rgba(var(--primary-color), 0.1);
 	padding-bottom: 0.5rem;
 }
 
@@ -380,14 +380,14 @@
 }
 
 .typo a {
-	color: #2F855A;
+	color: var(--primary-color);
 	text-decoration: none;
-	border-bottom: 1px solid rgba(47, 133, 90, 0.2);
+	border-bottom: 1px solid rgba(var(--primary-color), 0.2);
 	transition: all 0.2s ease;
 }
 
 .typo a:hover {
-	border-bottom-color: #2F855A;
+	border-bottom-color: var(--primary-color);
 }
 
 .typo img {
@@ -399,23 +399,23 @@
 .typo blockquote {
 	margin: 1.5rem 0;
 	padding: 1rem 1.5rem;
-	border-left: 4px solid #2F855A;
-	background-color: rgba(47, 133, 90, 0.05);
+	border-left: 4px solid var(--primary-color);
+	background-color: rgba(var(--primary-color), 0.05);
 	border-radius: 0 8px 8px 0;
-	color: #4a5568;
+	color: var(--text-color);
 }
 
 .typo code {
-	background-color: rgba(47, 133, 90, 0.08);
+	background-color: rgba(var(--primary-color), 0.08);
 	padding: 0.2em 0.4em;
 	border-radius: 4px;
 	font-size: 0.9em;
-	color: #2F855A;
+	color: var(--primary-color);
 }
 
 .typo pre code {
-	background-color: #2d3748;
-	color: #e2e8f0;
+	background-color: var(--text-color);
+	color: var(--text-color);
 	padding: 1rem;
 	border-radius: 8px;
 	overflow-x: auto;
@@ -424,7 +424,7 @@
 
 .ui.attached.positive.message {
 	border: none;
-	border-top: 1px solid rgba(47, 133, 90, 0.1);
+	border-top: 1px solid rgba(var(--primary-color), 0.1);
 	box-shadow: none;
 	margin: 0;
 	background-color: white;
@@ -441,31 +441,31 @@
 	display: flex;
 	align-items: center;
 	gap: 0.75rem;
-	color: #718096;
+	color: var(--text-color);
 	font-size: 0.9rem;
 }
 
 .time-label {
-	color: #2d3748;
+	color: var(--text-color);
 	font-weight: 500;
 	letter-spacing: 0.02em;
 }
 
 .time-value {
-	color: #718096;
+	color: var(--text-color);
 }
 
 /* 赞赏按钮样式 */
 .ui.orange.inverted.circular.button {
-	background-color: rgba(47, 133, 90, 0.1) !important;
-	color: #2F855A !important;
+	background-color: rgba(var(--primary-color), 0.1) !important;
+	color: var(--primary-color) !important;
 	font-weight: 500;
 	padding: 0.75rem 1.5rem;
 	transition: all 0.2s ease;
 }
 
 .ui.orange.inverted.circular.button:hover {
-	background-color: rgba(47, 133, 90, 0.15) !important;
+	background-color: rgba(var(--primary-color), 0.15) !important;
 	transform: translateY(-1px);
 }
 
@@ -489,7 +489,7 @@
 }
 
 .reward-button {
-	background: #F6AD55;
+	background: var(--primary-color);
 	color: white;
 	border: none;
 	padding: 0.6rem 1.5rem;
@@ -497,13 +497,13 @@
 	border-radius: 4px;
 	transition: all 0.3s ease;
 	font-weight: 500;
-	box-shadow: 0 2px 4px rgba(246, 173, 85, 0.2);
+	box-shadow: 0 2px 4px rgba(var(--primary-color), 0.2);
 }
 
 .reward-button:hover {
-	background: #ED8936;
+	background: var(--primary-color);
 	transform: translateY(-1px);
-	box-shadow: 0 4px 8px rgba(237, 137, 54, 0.25);
+	box-shadow: 0 4px 8px rgba(var(--primary-color), 0.25);
 }
 
 .reward-content {
@@ -512,7 +512,7 @@
 
 .reward-text {
 	font-size: 0.9rem;
-	color: #ED8936;
+	color: var(--primary-color);
 	margin-bottom: 0.8rem;
 }
 

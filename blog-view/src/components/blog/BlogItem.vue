@@ -19,8 +19,8 @@
 				<!--文章简要信息-->
 				<div class="blog-meta">
 					<!--分类-->
-					<router-link :to="`/category/${item.category.name}`" class="meta-item">
-						<span style="color:rgb(47, 133, 90)">{{ item.category.name }}</span>
+					<router-link :to="`/category/${item.category.name}`" class="meta-item category-meta">
+						<span style="color:var(--primary-color)">{{ item.category.name }}</span>
 					</router-link>
 					<div class="meta-item">
 						<span>{{ item.createTime | dateFormat('YYYY-MM-DD')}}</span>
@@ -181,7 +181,7 @@ export default {
 
 .title-link {
 	/* color: #3fa89e; 巧克力棕 - 温暖而自然的色调，与绿色形成和谐搭配 */
-	color: #056c61; /* 巧克力棕 - 温暖而自然的色调，与绿色形成和谐搭配 */
+	color: var(--primary-color); /* 巧克力棕 - 温暖而自然的色调，与绿色形成和谐搭配 */
 	transition: all 0.3s ease;
 	position: relative;
 	display: inline-block;
@@ -227,7 +227,7 @@ export default {
 	left: 0;
 	width: 0;
 	height: 2px;
-	background: #3fa89e; /* 下划线颜色与悬停颜色一致 */
+	background: var(--primary-color); /* 下划线颜色与悬停颜色一致 */
 	transition: width 0.3s ease;
 	border-radius: 2px;
 	opacity: 0;
@@ -243,16 +243,19 @@ export default {
 	flex-wrap: wrap;
 	gap: 0;
 	margin-bottom: 1rem;
-	color: #2F855A;
 	font-size: 0.875rem;
-	opacity: 0.9;
 }
 
 .meta-item {
 	display: flex;
 	align-items: center;
 	font-size: 0.9rem;
-	color: #2F855A;
+	color: var(--text-color) !important;
+}
+
+/* 分类单独高亮主题色 */
+.meta-item.category-meta {
+	color: var(--primary-color) !important;
 }
 
 .meta-item:not(:first-child)::before {
@@ -261,7 +264,7 @@ export default {
 	width: 3px;
 	height: 3px;
 	border-radius: 50%;
-	background-color: #2F855A;
+	background-color: var(--primary-color);
 	margin: 0 0.7rem;
 	opacity: 0.6;
 }
@@ -271,7 +274,7 @@ export default {
 	align-items: center;
 	padding: 0.4rem 0.8rem;
 	background: rgba(47, 133, 90, 0.1);
-	color: #2F855A;
+	color: var(--primary-color);
 	border-radius: 8px;
 	font-size: 0.875rem;
 	margin-bottom: 1rem;
@@ -284,7 +287,7 @@ export default {
 }
 
 .blog-description {
-	color: #276749;
+	color: var(--text-color);
 	line-height: 1.85;
 	margin: 1rem 0;
 	font-size: 0.95rem;
@@ -315,7 +318,7 @@ export default {
 	gap: 0.3rem;
 	padding: 0.5rem 0;
 	background: transparent;
-	color: rgb(47, 133, 90);
+	color: var(--primary-color);
 	font-size: 1.1rem;
 	transition: all 0.3s ease;
 	border: none;
@@ -324,7 +327,7 @@ export default {
 
 .read-btn:hover {
 	background: transparent;
-	color: #276749;
+	color: var(--text-color);
 	transform: translateY(-2px);
 }
 
@@ -339,7 +342,7 @@ export default {
 	background: rgba(47, 133, 90, 0.05);
 	border: 1px solid rgba(47, 133, 90, 0.1);
 	border-radius: 4px;
-	color: #2F855A;
+	color: var(--primary-color);
 }
 
 .tag-list {
@@ -352,7 +355,7 @@ export default {
 .tag-item {
 	padding: 0.15rem 0.5rem;
 	background: rgba(47, 133, 90, 0.04);
-	color: #2F855A;
+	color: var(--primary-color);
 	border-radius: 3px;
 	font-size: 0.7rem;
 	transition: all 0.2s ease;
@@ -368,7 +371,7 @@ export default {
 }
 
 .tag-more {
-	color: #2F855A;
+	color: var(--primary-color);
 	font-size: 0.7rem;
 	line-height: 1;
 	display: inline-flex;
@@ -416,7 +419,7 @@ export default {
 		font-size: 0.85rem;
 		margin: 0.5rem 0;
 		line-height: 1.5;
-		color: #276749;
+		color: var(--text-color);
 	}
 
 	.bottom-wrapper {
@@ -465,7 +468,7 @@ export default {
 		background: rgba(47, 133, 90, 0.05);
 		border: 1px solid rgba(47, 133, 90, 0.1);
 		border-radius: 4px;
-		color: #2F855A;
+		color: var(--primary-color);
 	}
 }
 
@@ -528,7 +531,7 @@ export default {
 	padding: 0.2em 0.4em !important;
 	border-radius: 4px !important;
 	background: rgba(47, 133, 90, 0.1) !important;
-	color: #2F855A !important;
+	color: var(--primary-color) !important;
 }
 
 /* 添加图片容器样式 */
@@ -539,13 +542,13 @@ export default {
 
 /* 确保链接样式 */
 .blog-description a {
-	color: #2F855A !important;
+	color: var(--primary-color) !important;
 	text-decoration: none !important;
 	transition: all 0.3s ease !important;
 }
 
 .blog-description a:hover {
-	color: #276749 !important;
+	color: var(--text-color) !important;
 	text-decoration: underline !important;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-	<div class="site theme5">
+	<div class="site">
 		<!-- 添加点状装饰 -->
 		<div class="dot-decoration top-right fixed"></div>
 		<div class="dot-decoration bottom-left fixed"></div>
@@ -135,21 +135,25 @@
 			},
 			async applyTheme() {
 				try {
-					const res = await axios.get('/api/theme')
+					const res = await axios.get('/blog/api/theme')
 					let config = res.data
 					if (typeof config === 'string') config = JSON.parse(config)
-					this.themeConfig = { ...defaultTheme, ...config }
+					this.themeConfig = config
+
+					// 适配嵌套结构，注入 CSS 变量
+					const root = document.documentElement
+					if (config.colors) {
+						root.style.setProperty('--primary-color', config.colors.primary)
+						root.style.setProperty('--background', config.colors.background)
+						root.style.setProperty('--text-color', config.colors.text && config.colors.text.primary)
+					}
 				} catch (e) {
-					this.themeConfig = { ...defaultTheme }
+					// 降级
+					const root = document.documentElement
+					root.style.setProperty('--primary-color', '#2F855A')
+					root.style.setProperty('--background', '#fff')
+					root.style.setProperty('--text-color', '#222')
 				}
-				// 注入CSS变量
-				this.setThemeVars()
-			},
-			setThemeVars() {
-				const root = document.documentElement
-				root.style.setProperty('--primary-color', this.themeConfig.primaryColor)
-				root.style.setProperty('--background', this.themeConfig.background)
-				root.style.setProperty('--text-color', this.themeConfig.textColor)
 			},
 			//获取一言
 			// getHitokoto() {
@@ -169,15 +173,6 @@
     background: var(--background);
     color: var(--text-color);
     transition: background 0.3s, color 0.3s;
-	}
-
-	.theme5 {
-		background-color: #8bc594;
-		background-image: linear-gradient(180deg, #8bc594 0%, #a3d4ab 100%),
-			url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cstyle%3E.pattern{fill:%239ed3a7;fill-opacity:0.8}%3C/style%3E%3Crect width='40' height='40' fill='none'/%3E%3Cpath class='pattern' d='M0 0h40v2H0zM0 10h40v2H0zM0 20h40v2H0zM0 30h40v2H0zM0 0h2v40H0zM10 0h2v40h-2zM20 0h2v40h-2zM30 0h2v40h-2z'/%3E%3C/svg%3E");
-		background-repeat: repeat;
-		background-position: center;
-		background-size: 40px;
 	}
 
 	.main {
@@ -222,7 +217,7 @@
 
 	.main-content.blog-detail {
 		flex: 0 0 100%;
-		background-color: white;
+		background-color: var(--background);
 		border-radius: 20px;
 		padding: 2rem;
 	}
@@ -231,15 +226,15 @@
 		display: inline-flex;
 		align-items: center;
 		padding: 4px 8px;
-		background-color: rgba(47, 133, 90, 0.1);
-		color: #2F855A;
+		background-color: rgba(var(--primary-color-rgb,47,133,90), 0.1);
+		color: var(--primary-color);
 		border-radius: 4px;
 		font-size: 0.875rem;
 		transition: all 0.2s ease;
 	}
 
 	.main-content.blog-detail :deep(.category-tag:hover) {
-		background-color: rgba(47, 133, 90, 0.2);
+		background-color: rgba(var(--primary-color-rgb,47,133,90), 0.2);
 	}
 
 	.main-content.blog-detail :deep(.top-tag) {
@@ -247,7 +242,7 @@
 		align-items: center;
 		padding: 4px 8px;
 		background-color: rgba(229, 62, 62, 0.1);
-		color: #e53e3e;
+		color: var(--primary-color);
 		border-radius: 4px;
 		font-size: 0.875rem;
 		margin-right: 8px;
@@ -266,7 +261,6 @@
 	}
 
 	/* 统一侧边栏所有模块样式 */
-	.theme5-category,
 	.sidebar > div {
 		background: rgba(255, 255, 255, 0.82);
 		border-radius: 1rem;
@@ -275,13 +269,13 @@
 		margin-bottom: 2rem;
 	}
 
-	.theme5-header {
-		color: #2F855A;
+	.header, .theme5-header {
+		color: var(--primary-color);
 		font-size: 1.1rem;
 		font-weight: 500;
 		margin-bottom: 1rem;
 		padding-bottom: 0.8rem;
-		border-bottom: 1px solid rgba(47, 133, 90, 0.1);
+		border-bottom: 1px solid rgba(var(--primary-color-rgb,47,133,90), 0.1);
 		display: flex;
 		align-items: center;
 		gap: 0.5rem;
@@ -298,8 +292,8 @@
 	}
 
 	.theme5-category-item {
-		background: rgba(47, 133, 90, 0.1);
-		color: #2F855A;
+		background: rgba(var(--primary-color-rgb,47,133,90), 0.1);
+		color: var(--primary-color);
 		border-radius: 0.5rem;
 		padding: 0.5rem 1rem;
 		font-size: 0.9rem;
@@ -307,7 +301,7 @@
 	}
 
 	.theme5-category-item:hover {
-		background: rgba(47, 133, 90, 0.2);
+		background: rgba(var(--primary-color-rgb,47,133,90), 0.2);
 		transform: translateY(-2px);
 	}
 
@@ -364,7 +358,6 @@
 			padding: 0 1rem;
 		}
 
-		.theme5-category,
 		.sidebar > div {
 			padding: 2rem;
 			margin-bottom: 1.5rem;
@@ -401,7 +394,7 @@
 	}
 
 	.article-header {
-		background: linear-gradient(90deg, #1a4731 0%, #38a169 50%, #2F855A 100%);
+		background: linear-gradient(90deg, var(--primary-color, #1a4731) 0%, var(--primary-color, #38a169) 50%, var(--primary-color, #2F855A) 100%);
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 		background-clip: text;
@@ -420,12 +413,12 @@
 		left: 0;
 		width: 100px;
 		height: 3px;
-		background: linear-gradient(90deg, #38a169 0%, #68d391 100%);
+		background: linear-gradient(90deg, var(--primary-color, #38a169) 0%, var(--primary-color, #68d391) 100%);
 		border-radius: 3px;
 	}
 
 	.article-header i {
-		color: #38a169;
+		color: var(--primary-color);
 	}
 
 	.main-content.moments-content {
@@ -460,7 +453,6 @@
 			padding: 0 2rem;
 		}
 
-		.theme5-category,
 		.sidebar > div {
 			padding: 2rem;
 		}
