@@ -73,6 +73,7 @@ export default {
         '--primary-color': t.primaryColor,
         '--background': t.background,
         '--text-color': t.textColor,
+        '--theme-text-primary': t.textColor,
         background: t.background,
         color: t.textColor
       }
@@ -183,5 +184,13 @@ export default {
 .theme-actions {
   display: flex;
   gap: 12px;
+}
+.theme-preview h1,
+.theme-preview h2,
+.theme-preview h3 {
+  color: var(--theme-text-primary);
+}
+.theme-preview nav {
+  color: var(--theme-text-primary);
 }
 </style> 

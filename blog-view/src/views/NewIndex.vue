@@ -132,13 +132,15 @@ export default {
       
       const { colors = {}, spacing = {}, typography = {}, borderRadius = {}, transitions = {} } = this.theme
       const { text = {}, nav = {}, card = {}, gradients = {} } = colors
+      // 兼容多种主题结构
+      const themeTextPrimary = (text && text.primary) || this.theme.textColor || (this.theme.text && this.theme.text.primary) || '#222'
 
       return {
         // 颜色
         '--theme-primary': colors.primary || '',
         '--theme-bg': colors.background || '',
         '--theme-bg-gradient': (gradients.background && gradients.background.image) || gradients.background || '',
-        '--theme-text-primary': text.primary || '',
+        '--theme-text-primary': themeTextPrimary,
         '--theme-text-secondary': text.secondary || '',
         '--theme-text-meta': text.meta || '',
         '--theme-nav-inactive': nav.inactive || '',
@@ -386,7 +388,7 @@ export default {
 }
 
 .nav-item {
-  color: rgba(44, 82, 60, 0.9);
+  color: var(--theme-text-primary);
   text-decoration: none;
   font-size: var(--theme-nav-size);
   letter-spacing: var(--theme-nav-spacing);

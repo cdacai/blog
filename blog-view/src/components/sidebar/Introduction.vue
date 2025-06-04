@@ -154,7 +154,7 @@
 }
 
 .theme5-header {
-	color: var(--primary-color);
+	color: var(--theme-text-primary);
 	font-size: 1.71rem;
 	font-weight: 600;
 	margin-bottom: 16px;
@@ -265,5 +265,9 @@
 .theme5-intro:hover {
 	transform: translateY(-5px);
 	box-shadow: 0 10px 25px rgba(47, 133, 90, 0.15);
+}
+
+.about-section h3 {
+  color: var(--theme-text-primary);
 }
 </style>

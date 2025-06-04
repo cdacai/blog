@@ -196,7 +196,7 @@
 	right: 10%;
 	width: 80px;
 	height: 80px;
-	background-color: rgba(47, 133, 90, 0.4);
+	background-color: var(--decoration-color, rgba(47,133,90,0.4));
 	transform: rotate(15deg);
 	border-radius: 10px;
 	opacity: 0.15;
@@ -209,7 +209,7 @@
 	left: 15%;
 	width: 60px;
 	height: 60px;
-	background-color: rgba(47, 133, 90, 0.5);
+	background-color: var(--decoration-color, rgba(47,133,90,0.5));
 	transform: rotate(-10deg);
 	border-radius: 10px;
 	opacity: 0.15;
@@ -222,7 +222,7 @@
 	left: 40%;
 	width: 70px;
 	height: 70px;
-	background-color: rgba(47, 133, 90, 0.35);
+	background-color: var(--decoration-color, rgba(47,133,90,0.35));
 	border-radius: 50%;
 	opacity: 0.15;
 	z-index: -1;
@@ -239,13 +239,13 @@
 .blog-title {
 	font-size: 1.5rem;
 	font-weight: 100;
-	color: #2F855A;
+	color: var(--theme-text-primary);
 	text-decoration: none;
 	transition: all 0.3s ease;
 }
 
 .blog-title:hover {
-	color: #276749;
+	color: var(--theme-text-primary);
 }
 
 .nav-container-placeholder {
@@ -260,8 +260,7 @@
 
 .nav-item {
 	font-size: 1.14rem;
-	color: #2F855A;
-
+	color: var(--theme-text-primary);
 	text-decoration: none;
 	transition: all 0.3s ease;
 	font-weight: 600;
@@ -269,11 +268,11 @@
 }
 
 .nav-item:hover {
-	color: #276749;
+	color: var(--theme-text-primary);
 }
 
 .nav-item.active {
-	color: rgba(44, 82, 60, 0.9);
+	color: var(--theme-text-primary);
 	font-weight: 600;
 }
 
@@ -340,12 +339,12 @@
 		text-align: center;
 		padding: 0.5rem 0.8rem;
 		font-size: 1rem;
-		color: #2F855A;
+		color: var(--theme-text-primary);
 		position: relative;
 	}
 
 	.nav-item:hover {
-		color: #276749;
+		color: var(--theme-text-primary);
 	}
 
 	.nav-item.active::before {
@@ -356,7 +355,7 @@
 		transform: translateY(-50%);
 		width: 2px;
 		height: 16px;
-		background: #2F855A;
+		background: var(--theme-text-primary);
 		border-radius: 1px;
 	}
 }
