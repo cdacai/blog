@@ -384,3 +384,77 @@ export default {
 - 注释清晰，在 CSS 和 JS 注入处加注释，方便维护。
 - 参数命名统一，避免混乱。
 - 主题参数结构建议持续扩展，保证主题切换的灵活性和一致性。 
+
+### 9.4 尺寸参数与元素间距同步建议
+
+- **目标**：让首页/全站的卡片、按钮、sidebar、标题、标签等所有常用元素的圆角、内外边距、字体大小、元素间距等尺寸参数，随主题切换自动同步，CMS预览区和首页保持一致，实现"所见即所得"。
+- **实现建议**：
+  1. **主题参数扩展**：在主题 JSON 中增加所有常用元素的尺寸参数，例如：
+     ```json
+     {
+       "theme": "theme1",
+       "primaryColor": "#2F855A",
+       "background": "#fff",
+       "cardRadius": "20px",
+       "cardPadding": "32px",
+       "cardMargin": "32px",
+       "cardFontSize": "1rem",
+       "buttonRadius": "8px",
+       "buttonPadding": "12px 24px",
+       "buttonFontSize": "1rem",
+       "sidebarRadius": "20px",
+       "sidebarPadding": "32px",
+       "titleFontSize": "1.5rem",
+       "descFontSize": "1rem",
+       "elementGap": "24px"
+     }
+     ```
+  2. **注入 CSS 变量**：主题切换时，将这些尺寸参数同步注入到 `:root`，如：
+     ```js
+     root.style.setProperty('--card-radius', config.cardRadius)
+     root.style.setProperty('--card-padding', config.cardPadding)
+     root.style.setProperty('--card-margin', config.cardMargin)
+     root.style.setProperty('--card-font-size', config.cardFontSize)
+     root.style.setProperty('--button-radius', config.buttonRadius)
+     root.style.setProperty('--button-padding', config.buttonPadding)
+     root.style.setProperty('--button-font-size', config.buttonFontSize)
+     root.style.setProperty('--sidebar-radius', config.sidebarRadius)
+     root.style.setProperty('--sidebar-padding', config.sidebarPadding)
+     root.style.setProperty('--title-font-size', config.titleFontSize)
+     root.style.setProperty('--desc-font-size', config.descFontSize)
+     root.style.setProperty('--element-gap', config.elementGap)
+     ```
+  3. **全站样式统一用变量**：所有卡片、按钮、sidebar、标题、标签等样式，统一用 CSS 变量控制尺寸：
+     ```css
+     .blog-card {
+       border-radius: var(--card-radius, 20px);
+       padding: var(--card-padding, 32px);
+       margin-bottom: var(--card-margin, 32px);
+       font-size: var(--card-font-size, 1rem);
+     }
+     .read-btn {
+       border-radius: var(--button-radius, 8px);
+       padding: var(--button-padding, 12px 24px);
+       font-size: var(--button-font-size, 1rem);
+     }
+     .sidebar > div {
+       border-radius: var(--sidebar-radius, 20px);
+       padding: var(--sidebar-padding, 32px);
+     }
+     .theme5-header {
+       font-size: var(--title-font-size, 1.5rem);
+     }
+     .blog-description, .intro-text {
+       font-size: var(--desc-font-size, 1rem);
+     }
+     .element-gap {
+       gap: var(--element-gap, 24px);
+     }
+     ```
+  4. **主题设置页与首页参数结构保持一致**：主题设置页的预览区和首页用同一套参数，保证所见即所得。
+
+- **兼容性与维护建议**：
+  - 不新增插件，只扩展主题 JSON 和 CSS 变量，兼容性好，改动小。
+  - 注释清晰，在 CSS 和 JS 注入处加注释，方便维护。
+  - 参数命名统一，避免混乱。
+  - 主题参数结构建议持续扩展，保证主题切换的灵活性和一致性。 
