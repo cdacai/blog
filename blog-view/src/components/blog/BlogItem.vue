@@ -200,6 +200,7 @@ export default {
 	margin: 0 0 1rem;
 	font-size: 2.34rem;
 	font-weight: normal;
+	color: var(--theme-text-primary);
 }
 
 .title-link {
@@ -309,7 +310,8 @@ export default {
 	transform: translateY(-2px);
 }
 
-.blog-description {
+.blog-description,
+.intro-text {
 	color: var(--text-color);
 	line-height: 1.85;
 	margin: 1rem 0;

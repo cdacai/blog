@@ -270,4 +270,13 @@
 .about-section h3 {
   color: var(--theme-text-primary);
 }
+
+.about-content,
+.intro-text,
+.category-section,
+.category-list,
+.theme5-category-item,
+.category-name {
+	color: var(--text-color);
+}
 </style>
