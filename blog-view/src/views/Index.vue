@@ -1,5 +1,5 @@
 <template>
-	<div class="site">
+	<div class="site" :style="rootStyles">
 		<!-- 添加点状装饰 -->
 		<div class="dot-decoration top-right fixed"></div>
 		<div class="dot-decoration bottom-left fixed"></div>
@@ -62,7 +62,7 @@
 	import Tocbot from "@/components/sidebar/Tocbot";
 	import BlogPasswordDialog from "@/components/index/BlogPasswordDialog";
 	import Introduction from "@/components/sidebar/Introduction";
-	import {mapState} from 'vuex'
+	import {mapState, mapGetters} from 'vuex'
 	import {SAVE_CLIENT_SIZE, SAVE_INTRODUCTION, SAVE_SITE_INFO, RESTORE_COMMENT_FORM} from "@/store/mutations-types";
 
 	import axios from 'axios'
@@ -96,7 +96,116 @@
 			}
 		},
 		computed: {
-			...mapState(['focusMode'])
+			...mapState(['focusMode']),
+			...mapGetters('theme', ['theme']),
+			rootStyles() {
+				if (!this.theme) {
+					return {}
+				}
+				const { colors = {}, spacing = {}, typography = {}, borderRadius = {}, transitions = {} } = this.theme
+				const { text = {}, nav = {}, card = {}, gradients = {} } = colors
+				const themeTextPrimary = (text && text.primary) || this.theme.textColor || (this.theme.text && this.theme.text.primary) || '#222'
+				return {
+					'--theme-primary': colors.primary || '',
+					'--theme-bg': colors.background || '',
+					'--theme-bg-gradient': (gradients.background && gradients.background.image) || gradients.background || '',
+					'--theme-text-primary': themeTextPrimary,
+					'--theme-text-secondary': text.secondary || '',
+					'--theme-text-meta': text.meta || '',
+					'--theme-nav-inactive': nav.inactive || '',
+					'--theme-nav-hover': nav.hover || '',
+					'--theme-nav-active': nav.active || '',
+					'--theme-nav-bg': nav.background || '',
+					'--theme-nav-blur': nav.blur || '',
+					'--theme-card-bg': card.background || '',
+					'--theme-card-hover': card.hover || '',
+					'--theme-card-border': card.border || '',
+					'--theme-card-glow': card.glow || '',
+					'--theme-divider': colors.divider || '',
+					'--theme-header-height': spacing.headerHeight || '',
+					'--theme-header-top': spacing.headerTop || '',
+					'--theme-header-padding': spacing.headerPadding || '',
+					'--theme-content-width': spacing.contentWidth || '1200px',
+					'--theme-content-padding': spacing.contentPadding || '2rem',
+					'--theme-main-padding-top': spacing.mainPaddingTop || '',
+					'--theme-sidebar-width': spacing.sidebarWidth || '31%',
+					'--theme-sidebar-spacing': spacing.sidebarSpacing || '',
+					'--theme-grid-gap': (spacing.gap && spacing.gap.grid) || '5.5%',
+					'--theme-articles-gap': (spacing.gap && spacing.gap.articles) || '',
+					'--theme-nav-gap': (spacing.gap && spacing.gap.nav) || '',
+					'--theme-meta-gap': (spacing.gap && spacing.gap.meta) || '',
+					'--theme-social-gap': (spacing.gap && spacing.gap.social) || '',
+					'--theme-card-padding': (spacing.padding && spacing.padding.card) || '',
+					'--theme-sidebar-padding': (spacing.padding && spacing.padding.sidebar) || '',
+					'--theme-content-padding': (spacing.padding && spacing.padding.content) || '',
+					'--theme-nav-padding': (spacing.padding && spacing.padding.nav) || '',
+					'--theme-meta-padding': (spacing.padding && spacing.padding.meta) || '',
+					'--theme-section-title-margin': (spacing.margin && spacing.margin.sectionTitle) || '',
+					'--theme-article-title-margin': (spacing.margin && spacing.margin.articleTitle) || '',
+					'--theme-article-meta-margin': (spacing.margin && spacing.margin.articleMeta) || '',
+					'--theme-article-desc-margin': (spacing.margin && spacing.margin.articleDesc) || '',
+					'--theme-sidebar-section-margin': (spacing.margin && spacing.margin.sidebarSection) || '',
+					'--theme-category-item-margin': (spacing.margin && spacing.margin.categoryItem) || '',
+					'--theme-logo-size': (typography.logo && typography.logo.size) || '',
+					'--theme-logo-weight': (typography.logo && typography.logo.weight) || '',
+					'--theme-nav-size': (typography.nav && typography.nav.size) || '',
+					'--theme-nav-spacing': (typography.nav && typography.nav.spacing) || '',
+					'--theme-title-size': (typography.title && typography.title.size) || '',
+					'--theme-title-line-height': (typography.title && typography.title.lineHeight) || '',
+					'--theme-title-weight': (typography.title && typography.title.weight) || '',
+					'--theme-title-spacing': (typography.title && typography.title.spacing) || '',
+					'--theme-section-title-size': (typography.sectionTitle && typography.sectionTitle.size) || '',
+					'--theme-section-title-weight': (typography.sectionTitle && typography.sectionTitle.weight) || '',
+					'--theme-section-title-spacing': (typography.sectionTitle && typography.sectionTitle.spacing) || '',
+					'--theme-meta-size': (typography.meta && typography.meta.size) || '',
+					'--theme-meta-spacing': (typography.meta && typography.meta.spacing) || '',
+					'--theme-description-size': (typography.description && typography.description.size) || '',
+					'--theme-description-line-height': (typography.description && typography.description.lineHeight) || '',
+					'--theme-description-spacing': (typography.description && typography.description.spacing) || '',
+					'--theme-footer-size': (typography.footer && typography.footer.size) || '',
+					'--theme-footer-spacing': (typography.footer && typography.footer.spacing) || '',
+					'--theme-sidebar-title-size': (typography.sidebar && typography.sidebar.title && typography.sidebar.title.size) || '',
+					'--theme-sidebar-title-weight': (typography.sidebar && typography.sidebar.title && typography.sidebar.title.weight) || '',
+					'--theme-sidebar-title-spacing': (typography.sidebar && typography.sidebar.title && typography.sidebar.title.spacing) || '',
+					'--theme-sidebar-text-size': (typography.sidebar && typography.sidebar.text && typography.sidebar.text.size) || '',
+					'--theme-sidebar-text-line-height': (typography.sidebar && typography.sidebar.text && typography.sidebar.text.lineHeight) || '',
+					'--theme-sidebar-text-spacing': (typography.sidebar && typography.sidebar.text && typography.sidebar.text.spacing) || '',
+					'--theme-sidebar-category-size': (typography.sidebar && typography.sidebar.category && typography.sidebar.category.size) || '',
+					'--theme-sidebar-category-spacing': (typography.sidebar && typography.sidebar.category && typography.sidebar.category.spacing) || '',
+					'--theme-sidebar-count-size': (typography.sidebar && typography.sidebar.count && typography.sidebar.count.size) || '',
+					'--theme-sidebar-count-line-height': (typography.sidebar && typography.sidebar.count && typography.sidebar.count.lineHeight) || '',
+					'--theme-sidebar-about-title-size': (typography.sidebar && typography.sidebar.about && typography.sidebar.about.title && typography.sidebar.about.title.size) || (typography.sidebar && typography.sidebar.title && typography.sidebar.title.size) || '',
+					'--theme-sidebar-about-title-weight': (typography.sidebar && typography.sidebar.about && typography.sidebar.about.title && typography.sidebar.about.title.weight) || (typography.sidebar && typography.sidebar.title && typography.sidebar.title.weight) || '',
+					'--theme-sidebar-about-title-spacing': (typography.sidebar && typography.sidebar.about && typography.sidebar.about.title && typography.sidebar.about.title.spacing) || (typography.sidebar && typography.sidebar.title && typography.sidebar.title.spacing) || '',
+					'--theme-sidebar-about-desc-size': (typography.sidebar && typography.sidebar.about && typography.sidebar.about.description && typography.sidebar.about.description.size) || (typography.sidebar && typography.sidebar.text && typography.sidebar.text.size) || '',
+					'--theme-sidebar-about-desc-line-height': (typography.sidebar && typography.sidebar.about && typography.sidebar.about.description && typography.sidebar.about.description.lineHeight) || (typography.sidebar && typography.sidebar.text && typography.sidebar.text.lineHeight) || '',
+					'--theme-sidebar-categories-title-size': (typography.sidebar && typography.sidebar.categories && typography.sidebar.categories.title && typography.sidebar.categories.title.size) || (typography.sidebar && typography.sidebar.title && typography.sidebar.title.size) || '',
+					'--theme-sidebar-categories-title-weight': (typography.sidebar && typography.sidebar.categories && typography.sidebar.categories.title && typography.sidebar.categories.title.weight) || (typography.sidebar && typography.sidebar.title && typography.sidebar.title.weight) || '',
+					'--theme-sidebar-categories-title-spacing': (typography.sidebar && typography.sidebar.categories && typography.sidebar.categories.title && typography.sidebar.categories.title.spacing) || (typography.sidebar && typography.sidebar.title && typography.sidebar.title.spacing) || '',
+					'--theme-sidebar-categories-item-size': (typography.sidebar && typography.sidebar.categories && typography.sidebar.categories.item && typography.sidebar.categories.item.name && typography.sidebar.categories.item.name.size) || (typography.sidebar && typography.sidebar.category && typography.sidebar.category.size) || '',
+					'--theme-sidebar-categories-item-spacing': (typography.sidebar && typography.sidebar.categories && typography.sidebar.categories.item && typography.sidebar.categories.item.name && typography.sidebar.categories.item.name.spacing) || (typography.sidebar && typography.sidebar.category && typography.sidebar.category.spacing) || '',
+					'--theme-card-radius': borderRadius.card || '',
+					'--theme-button-radius': borderRadius.button || '',
+					'--theme-tag-radius': borderRadius.tag || '',
+					'--theme-hover-transition': transitions.hover || 'all 0.2s ease',
+					'--theme-element-gap': spacing.elementGap || '',
+					'--theme-button-padding': (spacing.padding && spacing.padding.button) || '',
+					'--theme-button-font-size': (typography.button && typography.button.size) || '',
+					'--theme-card-font-size': (typography.card && typography.card.size) || '',
+					'--theme-sidebar-radius': borderRadius.sidebar || '',
+					'--theme-title-font-size': (typography.title && typography.title.size) || '',
+					'--theme-desc-font-size': (typography.description && typography.description.size) || '',
+					'--theme-card-padding': (spacing.padding && spacing.padding.card) || '',
+					'--theme-card-font-size': (typography.card && typography.card.size) || (typography.description && typography.description.size) || '',
+					'--theme-sidebar-padding': (spacing.padding && spacing.padding.sidebar) || '',
+					'--theme-title-font-size': (typography.title && typography.title.size) || '',
+					'--theme-desc-font-size': (typography.description && typography.description.size) || '',
+					'--theme-button-radius': borderRadius.button || '',
+					'--theme-button-padding': (spacing.padding && spacing.padding.button) || '',
+					'--theme-button-font-size': (typography.button && typography.button.size) || (typography.nav && typography.nav.size) || '',
+					'--element-gap': (spacing.gap && spacing.gap.articles) || spacing.elementGap || '',
+				}
+			}
 		},
 		watch: {
 			//路由改变时，页面滚动至顶部
@@ -257,7 +366,10 @@
 	.content-wrapper {
 		display: flex;
 		justify-content: center;
-		gap: 5.5%;
+		max-width: var(--theme-content-width, 1200px);
+		margin: 0 auto;
+		padding: 0 var(--theme-content-padding, 2rem);
+		gap: var(--theme-grid-gap, 5.5%);
 	}
 
 	.content-wrapper.full-width {
@@ -271,6 +383,7 @@
 		flex: 1;
 		padding: 2rem;
 		overflow-y: auto;
+		min-width: 0;
 	}
 
 	.blog-detail {
@@ -323,7 +436,9 @@
 	}
 
 	.sidebar {
-		flex: 0 0 31%;
+		flex: 0 0 var(--theme-sidebar-width, 31%);
+		max-width: var(--theme-sidebar-width, 31%);
+		min-width: 220px;
 	}
 
 	/* 统一侧边栏所有模块样式 */
@@ -386,6 +501,7 @@
 			flex-direction: column;
 			gap: 2rem;
 			width: 100%;
+			padding: 0 1rem;
 		}
 
 		.main-content,
@@ -409,8 +525,8 @@
 		}
 
 		.sidebar > div {
-			padding: 1.2rem;
-			width: 100%;
+			padding: 2rem;
+			margin-bottom: 1.5rem;
 		}
 
 		.main-content {
@@ -454,8 +570,9 @@
 	}
 
 	@media screen and (max-width: 1200px) {
-		.container {
-			padding: 1.5rem;
+		.content-wrapper {
+			max-width: 100%;
+			padding: 0 1.5rem;
 		}
 	}
 

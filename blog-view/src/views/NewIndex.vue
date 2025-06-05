@@ -158,12 +158,12 @@ export default {
         '--theme-header-height': spacing.headerHeight || '',
         '--theme-header-top': spacing.headerTop || '',
         '--theme-header-padding': spacing.headerPadding || '',
-        '--theme-content-width': spacing.contentWidth || '',
-        '--theme-content-padding': spacing.contentPadding || '',
+        '--theme-content-width': spacing.contentWidth || '1200px',
+        '--theme-content-padding': spacing.contentPadding || '2rem',
         '--theme-main-padding-top': spacing.mainPaddingTop || '',
-        '--theme-sidebar-width': spacing.sidebarWidth || '',
+        '--theme-sidebar-width': spacing.sidebarWidth || '31%',
         '--theme-sidebar-spacing': spacing.sidebarSpacing || '',
-        '--theme-grid-gap': (spacing.gap && spacing.gap.grid) || '',
+        '--theme-grid-gap': (spacing.gap && spacing.gap.grid) || '5.5%',
         '--theme-articles-gap': (spacing.gap && spacing.gap.articles) || '',
         '--theme-nav-gap': (spacing.gap && spacing.gap.nav) || '',
         '--theme-meta-gap': (spacing.gap && spacing.gap.meta) || '',
@@ -434,16 +434,20 @@ export default {
 }
 
 .main-content {
-  padding-top: 100px;
+  position: relative;
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+  min-width: 0;
 }
 
 .content-wrapper {
-  max-width: var(--theme-content-width);
+  display: flex;
+  justify-content: center;
+  max-width: var(--theme-content-width, 1200px);
   margin: 0 auto;
-  padding: 0 var(--theme-content-padding);
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) var(--theme-sidebar-width);
-  gap: var(--theme-grid-gap);
+  padding: 0 var(--theme-content-padding, 2rem);
+  gap: var(--theme-grid-gap, 5.5%);
 }
 
 .section-title {
@@ -564,7 +568,17 @@ export default {
 }
 
 .sidebar {
-  padding: 0;
+  flex: 0 0 var(--theme-sidebar-width, 31%);
+  max-width: var(--theme-sidebar-width, 31%);
+  min-width: 220px;
+}
+
+.sidebar > div {
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: var(--sidebar-radius, 20px);
+  padding: var(--sidebar-padding, 32px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  margin-bottom: 2rem;
 }
 
 .sidebar-content {
@@ -665,19 +679,34 @@ export default {
   flex: 1;
 }
 
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) {
   .content-wrapper {
-    grid-template-columns: 1fr;
-    gap: 48px;
-    padding: 0 20px;
+    flex-direction: column;
+    gap: 2rem;
+    width: 100%;
+    padding: 0 1rem;
   }
-  
-  .header-content {
-    padding: 0 20px;
+  .main-content,
+  .sidebar {
+    flex: 0 0 100%;
+    max-width: 100%;
+    width: 100%;
   }
-  
-  .nav {
-    gap: 32px;
+  .sidebar > div {
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  .main-content {
+    flex: 0 0 100%;
+    padding: 0 1rem;
+    margin-bottom: 2rem;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .content-wrapper {
+    max-width: 100%;
+    padding: 0 1.5rem;
   }
 }
 
