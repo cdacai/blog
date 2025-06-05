@@ -183,67 +183,22 @@ export const theme1 = {
         },
         sidebar: {
             title: {
-                size: '18px',
-                spacing: '-0.02em',
-                weight: 'normal'
+                size: '1.1rem',
+                weight: '600',
+                spacing: '0.01em'
             },
             text: {
-                size: '13px',
-                lineHeight: '1.7',
+                size: '1rem',
+                lineHeight: '1.8',
                 spacing: '0.01em'
             },
             category: {
-                size: '13px',
+                size: '1rem',
                 spacing: '0.01em'
             },
             count: {
-                size: '11px',
+                size: '0.9rem',
                 lineHeight: '1.5'
-            },
-            about: {
-                title: {
-                    size: '18px',
-                    weight: '600',
-                    color: 'var(--theme-text-primary)',
-                    marginBottom: '16px'
-                },
-                description: {
-                    size: '14px',
-                    lineHeight: '1.6',
-                    color: 'var(--theme-text-secondary)',
-                    marginBottom: '16px'
-                }
-            },
-            categories: {
-                title: {
-                    size: '18px',
-                    weight: '600',
-                    color: 'var(--theme-text-primary)',
-                    marginBottom: '16px'
-                },
-                item: {
-                    name: {
-                        size: '14px',
-                        color: 'var(--theme-text-secondary)',
-                        hover: {
-                            color: 'var(--theme-text-primary)'
-                        }
-                    },
-                    count: {
-                        size: '12px',
-                        color: '#fff',
-                        background: 'var(--theme-primary)'
-                    }
-                }
-            },
-            social: {
-                link: {
-                    size: '12px',
-                    color: 'var(--theme-primary)',
-                    hover: {
-                        opacity: '0.8'
-                    }
-                }
             }
         },
         link: {
@@ -822,67 +777,22 @@ export const theme2 = {
         },
         sidebar: {
             title: {
-                size: '18px',
-                spacing: '-0.02em',
-                weight: 'normal'
+                size: '1.1rem',
+                weight: '600',
+                spacing: '0.01em'
             },
             text: {
-                size: '13px',
-                lineHeight: '1.7',
+                size: '1rem',
+                lineHeight: '1.8',
                 spacing: '0.01em'
             },
             category: {
-                size: '13px',
+                size: '1rem',
                 spacing: '0.01em'
             },
             count: {
-                size: '11px',
+                size: '0.9rem',
                 lineHeight: '1.5'
-            },
-            about: {
-                title: {
-                    size: '18px',
-                    weight: '600',
-                    color: 'var(--theme-text-primary)',
-                    marginBottom: '16px'
-                },
-                description: {
-                    size: '14px',
-                    lineHeight: '1.6',
-                    color: 'var(--theme-text-secondary)',
-                    marginBottom: '16px'
-                }
-            },
-            categories: {
-                title: {
-                    size: '18px',
-                    weight: '600',
-                    color: 'var(--theme-text-primary)',
-                    marginBottom: '16px'
-                },
-                item: {
-                    name: {
-                        size: '14px',
-                        color: 'var(--theme-text-secondary)',
-                        hover: {
-                            color: 'var(--theme-text-primary)'
-                        }
-                    },
-                    count: {
-                        size: '12px',
-                        color: '#fff',
-                        background: 'var(--theme-primary)'
-                    }
-                }
-            },
-            social: {
-                link: {
-                    size: '12px',
-                    color: 'var(--theme-primary)',
-                    hover: {
-                        opacity: '0.8'
-                    }
-                }
             }
         },
         link: {
@@ -1404,72 +1314,22 @@ export const theme3 = {
         },
         sidebar: {
             title: {
-                size: '20px',
-                spacing: '-0.02em',
+                size: '1.1rem',
                 weight: '600',
-                marginBottom: '32px',
-                gradient: 'var(--theme-gradients-text)'
+                spacing: '0.01em'
             },
             text: {
-                size: '16px',
+                size: '1rem',
                 lineHeight: '1.8',
-                spacing: '0.02em',
-                weight: '400'
+                spacing: '0.01em'
             },
             category: {
-                size: '16px',
-                spacing: '0.02em',
-                weight: '600'
+                size: '1rem',
+                spacing: '0.01em'
             },
             count: {
-                size: '14px',
-                lineHeight: '1.4',
-                weight: '700'
-            },
-            about: {
-                title: {
-                    size: '24px',
-                    weight: '700',
-                    color: 'var(--theme-text-primary)',
-                    marginBottom: '24px'
-                },
-                description: {
-                    size: '16px',
-                    lineHeight: '1.8',
-                    color: 'var(--theme-text-secondary)',
-                    marginBottom: '24px'
-                }
-            },
-            categories: {
-                title: {
-                    size: '24px',
-                    weight: '700',
-                    color: 'var(--theme-text-primary)',
-                    marginBottom: '24px'
-                },
-                item: {
-                    name: {
-                        size: '16px',
-                        color: 'var(--theme-text-secondary)',
-                        hover: {
-                            color: 'var(--theme-text-primary)'
-                        }
-                    },
-                    count: {
-                        size: '14px',
-                        color: '#fff',
-                        background: 'var(--theme-primary)'
-                    }
-                }
-            },
-            social: {
-                link: {
-                    size: '14px',
-                    color: 'var(--theme-primary)',
-                    hover: {
-                        opacity: '0.8'
-                    }
-                }
+                size: '0.9rem',
+                lineHeight: '1.5'
             }
         },
         link: {
@@ -1928,70 +1788,57 @@ export const theme4 = {
         },
         sidebar: {
             title: {
-                size: '24px',
-                spacing: '-0.02em',
-                weight: '700',
-                marginBottom: '32px',
-                gradient: 'var(--theme-gradients-text)'
+                size: '1.1rem',
+                weight: '600',
+                spacing: '0.01em'
             },
             text: {
-                size: '16px',
+                size: '1rem',
                 lineHeight: '1.8',
-                spacing: '0.02em',
-                weight: '400'
+                spacing: '0.01em'
             },
             category: {
-                size: '16px',
-                spacing: '0.02em',
-                weight: '600'
+                size: '1rem',
+                spacing: '0.01em'
             },
             count: {
-                size: '14px',
-                lineHeight: '1.4',
-                weight: '700'
+                size: '0.9rem',
+                lineHeight: '1.5'
             },
             about: {
                 title: {
-                    size: '24px',
-                    weight: '700',
-                    color: 'var(--theme-text-primary)',
-                    marginBottom: '24px'
+                    size: '1.1rem',
+                    weight: '600',
+                    color: '#1A4731',
+                    marginBottom: '16px',
+                    textShadow: 'none'
                 },
                 description: {
-                    size: '16px',
+                    size: '1rem',
                     lineHeight: '1.8',
-                    color: 'var(--theme-text-secondary)',
-                    marginBottom: '24px'
+                    color: '#276749',
+                    marginBottom: '16px',
+                    letterSpacing: '0.01em'
                 }
             },
             categories: {
                 title: {
-                    size: '24px',
-                    weight: '700',
-                    color: 'var(--theme-text-primary)',
-                    marginBottom: '24px'
+                    size: '1.1rem',
+                    weight: '600',
+                    background: 'none',
+                    WebkitBackgroundClip: 'initial',
+                    WebkitTextFillColor: 'initial',
+                    marginBottom: '16px'
                 },
                 item: {
                     name: {
-                        size: '16px',
-                        color: 'var(--theme-text-secondary)',
+                        size: '1rem',
+                        color: '#276749',
+                        transition: 'all 0.3s ease',
                         hover: {
-                            color: 'var(--theme-text-primary)'
+                            color: '#2F855A',
+                            transform: 'none'
                         }
-                    },
-                    count: {
-                        size: '14px',
-                        color: '#fff',
-                        background: 'var(--theme-primary)'
-                    }
-                }
-            },
-            social: {
-                link: {
-                    size: '14px',
-                    color: 'var(--theme-primary)',
-                    hover: {
-                        opacity: '0.8'
                     }
                 }
             }

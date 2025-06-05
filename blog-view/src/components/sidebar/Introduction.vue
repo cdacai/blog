@@ -141,8 +141,9 @@
 
 <style scoped>
 .theme5-intro {
-	border-radius: 20px;
-	padding: 16px;
+	/* 变量化圆角和内边距 */
+	border-radius: var(--sidebar-radius, 20px);
+	padding: var(--sidebar-padding, 16px);
 	min-height: 36.71rem;
 }
 
@@ -155,7 +156,7 @@
 
 .theme5-header {
 	color: var(--theme-text-primary);
-	font-size: 1.71rem;
+	font-size: var(--title-font-size, 1.71rem);
 	font-weight: 600;
 	margin-bottom: 16px;
 }
@@ -184,7 +185,7 @@
 }
 .intro-text {
 	color: var(--text-color);
-	font-size: 1.12rem;
+	font-size: var(--desc-font-size, 1.12rem);
 	letter-spacing: 0.02em;
 	line-height: 1.8;
 	margin-bottom: 1.12rem;
@@ -193,7 +194,7 @@
 .category-section {
 	margin-top: 40px;
 	transition: all 0.3s ease;
-	border-radius: 20px;
+	border-radius: var(--sidebar-radius, 20px);
 	color: var(--text-color);
 }
 
@@ -213,12 +214,13 @@
 	justify-content: space-between;
 	align-items: center;
 	color: var(--text-color);
-	font-size: 14px;
+	font-size: var(--card-font-size, 14px);
 	transition: all 0.2s ease;
 	line-height: 1;
 	height: 24px;
-	padding: 20px 4px;
+	padding: 0.5rem 1rem;
 	border-bottom: 1px solid rgba(203, 213, 224, 0.3);
+	border-radius: var(--card-radius, 20px);
 }
 
 .theme5-category-item:last-child {

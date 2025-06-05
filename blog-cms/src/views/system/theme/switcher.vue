@@ -86,12 +86,7 @@ export default {
     async saveTheme() {
       this.loading = true
       try {
-        const config = {
-          theme: this.selectedTheme,
-          primaryColor: this.themes[this.selectedTheme].primaryColor,
-          background: this.themes[this.selectedTheme].background,
-          textColor: this.themes[this.selectedTheme].textColor
-        }
+        const config = this.themes[this.selectedTheme]
         await axios.post('/admin/theme', JSON.stringify(config), {
           headers: { Authorization: this.token, 'Content-Type': 'application/json' }
         })

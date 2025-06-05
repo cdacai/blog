@@ -115,14 +115,14 @@ export default {
 <style>
 .card-content {
 	position: relative;
-	padding: 3.42rem 4rem 100px 4rem; /* 临时加大底部padding，便于调试波浪显示 */
+	padding: var(--card-padding, 3.42rem 4rem 100px 4rem); /* 变量化padding */
 	z-index: 2;
 }
 .blog-card {
 	position: relative;
 	background: rgba(255, 255, 255, 0.82);
 	backdrop-filter: blur(10px);
-	border-radius: 20px;
+	border-radius: var(--card-radius, 20px); /* 变量化圆角 */
 	margin-bottom: 3.5rem;
 	box-shadow: 0 4px 20px rgba(26, 71, 49, 0.04);
 	transition: all 0.3s ease;
@@ -198,7 +198,7 @@ export default {
 
 .blog-title {
 	margin: 0 0 1rem;
-	font-size: 2.34rem;
+	font-size: var(--title-font-size, 2.34rem); /* 变量化标题字体 */
 	font-weight: normal;
 	color: var(--theme-text-primary);
 }
@@ -341,13 +341,15 @@ export default {
 	display: inline-flex;
 	align-items: center;
 	gap: 0.3rem;
-	padding: 0.5rem 0;
+	padding: var(--button-padding, 0.2rem 0.5rem);
 	background: transparent;
 	color: var(--primary-color);
-	font-size: 1.1rem;
+	font-size: var(--button-font-size, 1.1rem);
 	transition: all 0.3s ease;
 	border: none;
 	line-height: 1;
+	border-radius: var(--button-radius, 4px);
+	border: 1px solid rgba(47, 133, 90, 0.1);
 }
 
 .read-btn:hover {

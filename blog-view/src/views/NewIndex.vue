@@ -206,8 +206,8 @@ export default {
 
         // 侧边栏字体
         '--theme-sidebar-title-size': (typography.sidebar && typography.sidebar.title && typography.sidebar.title.size) || '',
-        '--theme-sidebar-title-spacing': (typography.sidebar && typography.sidebar.title && typography.sidebar.title.spacing) || '',
         '--theme-sidebar-title-weight': (typography.sidebar && typography.sidebar.title && typography.sidebar.title.weight) || '',
+        '--theme-sidebar-title-spacing': (typography.sidebar && typography.sidebar.title && typography.sidebar.title.spacing) || '',
         '--theme-sidebar-text-size': (typography.sidebar && typography.sidebar.text && typography.sidebar.text.size) || '',
         '--theme-sidebar-text-line-height': (typography.sidebar && typography.sidebar.text && typography.sidebar.text.lineHeight) || '',
         '--theme-sidebar-text-spacing': (typography.sidebar && typography.sidebar.text && typography.sidebar.text.spacing) || '',
@@ -215,6 +215,16 @@ export default {
         '--theme-sidebar-category-spacing': (typography.sidebar && typography.sidebar.category && typography.sidebar.category.spacing) || '',
         '--theme-sidebar-count-size': (typography.sidebar && typography.sidebar.count && typography.sidebar.count.size) || '',
         '--theme-sidebar-count-line-height': (typography.sidebar && typography.sidebar.count && typography.sidebar.count.lineHeight) || '',
+        '--theme-sidebar-about-title-size': (typography.sidebar && typography.sidebar.about && typography.sidebar.about.title && typography.sidebar.about.title.size) || (typography.sidebar && typography.sidebar.title && typography.sidebar.title.size) || '',
+        '--theme-sidebar-about-title-weight': (typography.sidebar && typography.sidebar.about && typography.sidebar.about.title && typography.sidebar.about.title.weight) || (typography.sidebar && typography.sidebar.title && typography.sidebar.title.weight) || '',
+        '--theme-sidebar-about-title-spacing': (typography.sidebar && typography.sidebar.about && typography.sidebar.about.title && typography.sidebar.about.title.spacing) || (typography.sidebar && typography.sidebar.title && typography.sidebar.title.spacing) || '',
+        '--theme-sidebar-about-desc-size': (typography.sidebar && typography.sidebar.about && typography.sidebar.about.description && typography.sidebar.about.description.size) || (typography.sidebar && typography.sidebar.text && typography.sidebar.text.size) || '',
+        '--theme-sidebar-about-desc-line-height': (typography.sidebar && typography.sidebar.about && typography.sidebar.about.description && typography.sidebar.about.description.lineHeight) || (typography.sidebar && typography.sidebar.text && typography.sidebar.text.lineHeight) || '',
+        '--theme-sidebar-categories-title-size': (typography.sidebar && typography.sidebar.categories && typography.sidebar.categories.title && typography.sidebar.categories.title.size) || (typography.sidebar && typography.sidebar.title && typography.sidebar.title.size) || '',
+        '--theme-sidebar-categories-title-weight': (typography.sidebar && typography.sidebar.categories && typography.sidebar.categories.title && typography.sidebar.categories.title.weight) || (typography.sidebar && typography.sidebar.title && typography.sidebar.title.weight) || '',
+        '--theme-sidebar-categories-title-spacing': (typography.sidebar && typography.sidebar.categories && typography.sidebar.categories.title && typography.sidebar.categories.title.spacing) || (typography.sidebar && typography.sidebar.title && typography.sidebar.title.spacing) || '',
+        '--theme-sidebar-categories-item-size': (typography.sidebar && typography.sidebar.categories && typography.sidebar.categories.item && typography.sidebar.categories.item.name && typography.sidebar.categories.item.name.size) || (typography.sidebar && typography.sidebar.category && typography.sidebar.category.size) || '',
+        '--theme-sidebar-categories-item-spacing': (typography.sidebar && typography.sidebar.categories && typography.sidebar.categories.item && typography.sidebar.categories.item.name && typography.sidebar.categories.item.name.spacing) || (typography.sidebar && typography.sidebar.category && typography.sidebar.category.spacing) || '',
 
         // 圆角
         '--theme-card-radius': borderRadius.card || '',
@@ -222,7 +232,29 @@ export default {
         '--theme-tag-radius': borderRadius.tag || '',
 
         // 过渡
-        '--theme-hover-transition': transitions.hover || 'all 0.2s ease'
+        '--theme-hover-transition': transitions.hover || 'all 0.2s ease',
+
+        // 全局元素间距
+        '--theme-element-gap': spacing.elementGap || '',
+        // 按钮尺寸
+        '--theme-button-padding': (spacing.padding && spacing.padding.button) || '',
+        '--theme-button-font-size': (typography.button && typography.button.size) || '',
+        // 卡片尺寸
+        '--theme-card-font-size': (typography.card && typography.card.size) || '',
+        // sidebar尺寸
+        '--theme-sidebar-radius': borderRadius.sidebar || '',
+        // 标题、描述
+        '--theme-title-font-size': (typography.title && typography.title.size) || '',
+        '--theme-desc-font-size': (typography.description && typography.description.size) || '',
+        '--theme-card-padding': (spacing.padding && spacing.padding.card) || '',
+        '--theme-card-font-size': (typography.card && typography.card.size) || (typography.description && typography.description.size) || '',
+        '--theme-sidebar-padding': (spacing.padding && spacing.padding.sidebar) || '',
+        '--theme-title-font-size': (typography.title && typography.title.size) || '',
+        '--theme-desc-font-size': (typography.description && typography.description.size) || '',
+        '--theme-button-radius': borderRadius.button || '',
+        '--theme-button-padding': (spacing.padding && spacing.padding.button) || '',
+        '--theme-button-font-size': (typography.button && typography.button.size) || (typography.nav && typography.nav.size) || '',
+        '--element-gap': (spacing.gap && spacing.gap.articles) || spacing.elementGap || '',
       }
     }
   },
@@ -415,7 +447,7 @@ export default {
 }
 
 .section-title {
-  font-size: var(--theme-section-title-size);
+  font-size: var(--title-font-size, var(--theme-title-font-size, 1.5rem));
   margin-bottom: var(--theme-section-title-margin);
   color: var(--theme-text-primary);
   font-weight: var(--theme-section-title-weight);
@@ -429,10 +461,11 @@ export default {
 }
 
 .article-card {
-  padding: var(--theme-card-padding);
+  padding: var(--card-padding, var(--theme-card-padding, 32px));
   background-color: #ffffffd1;
-  border-radius: var(--theme-card-radius);
+  border-radius: var(--card-radius, var(--theme-card-radius, 20px));
   transition: var(--theme-hover-transition);
+  font-size: var(--card-font-size, var(--theme-card-font-size, 1rem));
 }
 
 .article-card:hover {
@@ -488,10 +521,10 @@ export default {
 
 .article-description {
   color: var(--theme-text-secondary);
-  font-size: var(--theme-desc-size);
-  line-height: var(--theme-desc-line-height);
+  font-size: var(--desc-font-size, var(--theme-desc-font-size, 1rem));
+  line-height: var(--theme-description-line-height);
   margin-bottom: var(--theme-article-desc-margin);
-  letter-spacing: var(--theme-desc-spacing);
+  letter-spacing: var(--theme-description-spacing);
 }
 
 .article-footer {
@@ -521,6 +554,9 @@ export default {
   gap: 4px;
   opacity: 0.9;
   transition: opacity 0.2s;
+  font-size: var(--button-font-size, var(--theme-button-font-size, 1rem));
+  border-radius: var(--button-radius, var(--theme-button-radius, 8px));
+  padding: var(--button-padding, var(--theme-button-padding, 12px 24px));
 }
 
 .read-more:hover {
@@ -533,8 +569,8 @@ export default {
 
 .sidebar-content {
   background-color: #ffffffd1;
-  border-radius: var(--theme-card-radius);
-  padding: var(--theme-sidebar-padding);
+  border-radius: var(--sidebar-radius, var(--theme-sidebar-radius, 20px));
+  padding: var(--sidebar-padding, var(--theme-sidebar-padding, 32px));
 }
 
 .sidebar-content:hover {
@@ -554,19 +590,18 @@ export default {
   border-bottom: 1px solid rgba(0, 0, 0, 0.04);
 }
 
-.about-section h3,
-.categories-section h3 {
-  font-size: var(--theme-sidebar-title-size);
+.about-section h3 {
+  font-size: var(--theme-sidebar-about-title-size, var(--sidebar-title-size, var(--theme-sidebar-title-size, 1.5rem)));
   margin-bottom: 16px;
   color: var(--theme-text-primary);
-  font-weight: var(--theme-sidebar-title-weight);
-  letter-spacing: var(--theme-sidebar-title-spacing);
+  font-weight: var(--theme-sidebar-about-title-weight, var(--sidebar-title-weight, var(--theme-sidebar-title-weight, 600)));
+  letter-spacing: var(--theme-sidebar-about-title-spacing, var(--sidebar-title-spacing, var(--theme-sidebar-title-spacing, 0)));
 }
 
 .about-section p {
   color: var(--theme-text-secondary);
-  line-height: var(--theme-sidebar-text-line-height);
-  font-size: var(--theme-sidebar-text-size);
+  line-height: var(--theme-sidebar-about-desc-line-height, var(--sidebar-text-line-height, var(--theme-sidebar-text-line-height, 1.8)));
+  font-size: var(--theme-sidebar-about-desc-size, var(--sidebar-text-size, var(--theme-sidebar-text-size, 1rem)));
   letter-spacing: var(--theme-sidebar-text-spacing);
   margin-bottom: 16px;
 }
@@ -604,8 +639,8 @@ export default {
   justify-content: space-between;
   padding: 8px 0;
   color: var(--theme-text-secondary);
-  font-size: var(--theme-sidebar-category-size);
-  letter-spacing: var(--theme-sidebar-category-spacing);
+  font-size: var(--theme-sidebar-categories-item-size, var(--sidebar-category-size, var(--theme-sidebar-category-size, 1rem)));
+  letter-spacing: var(--theme-sidebar-categories-item-spacing, var(--sidebar-category-spacing, var(--theme-sidebar-category-spacing, 0)));
   border-bottom: 1px solid rgba(0, 0, 0, 0.04);
 }
 
@@ -615,14 +650,14 @@ export default {
 
 .category-count {
   color: #fff;
-  font-size: var(--theme-sidebar-count-size);
+  font-size: var(--theme-sidebar-count-size, var(--sidebar-count-size, var(--theme-sidebar-count-size, 0.9rem)));
   flex-shrink: 0;
   background-color: var(--theme-primary);
   border-radius: var(--theme-tag-radius);
   padding: 1px 8px;
   min-width: 20px;
   text-align: center;
-  line-height: var(--theme-sidebar-count-line-height);
+  line-height: var(--theme-sidebar-count-line-height, var(--sidebar-count-line-height, var(--theme-sidebar-count-line-height, 1.5)));
   opacity: 0.9;
 }
 
@@ -663,7 +698,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
+  font-size: var(--theme-button-font-size, 24px);
   font-weight: bold;
   color: #222;
   background: #fff;
@@ -673,6 +708,7 @@ export default {
   transition: transform 0.2s, box-shadow 0.2s;
   overflow: hidden;
   position: relative;
+  padding: var(--theme-button-padding, 0);
 }
 
 .magicui-rainbow-fab:hover {
@@ -681,7 +717,46 @@ export default {
 }
 
 .magicui-rainbow-fab span {
-  position: relative;
-  z-index: 1;
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* 统一全局gap变量 */
+.element-gap {
+  gap: var(--theme-element-gap, 24px);
+}
+
+/* 按钮尺寸变量化 */
+.magicui-rainbow-fab {
+  /* 只保留圆形，移除变量化border-radius */
+  border-radius: 50%;
+  padding: var(--theme-button-padding, 0);
+  font-size: var(--theme-button-font-size, 24px);
+}
+
+/* 卡片尺寸变量化 */
+.article-card {
+  border-radius: var(--theme-card-radius, 20px);
+  padding: var(--theme-card-padding, 32px);
+  font-size: var(--theme-card-font-size, 1rem);
+}
+
+/* sidebar尺寸变量化 */
+.sidebar-content {
+  border-radius: var(--theme-sidebar-radius, 20px);
+  padding: var(--theme-sidebar-padding, 32px);
+}
+
+/* 标题、描述尺寸变量化 */
+.section-title, .article-title {
+  font-size: var(--theme-title-font-size, 1.5rem);
+}
+.article-description {
+  font-size: var(--theme-desc-font-size, 1rem);
 }
 </style> 

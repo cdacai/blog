@@ -159,6 +159,26 @@
 					root.style.setProperty('--decoration-color', decorationColor)
 					root.style.setProperty('--theme-text-primary', (config.colors && config.colors.text && config.colors.text.primary) || config.textColor || (config.text && config.text.primary) || '#222')
 
+					// 注入主题尺寸参数，适配多层嵌套结构
+					root.style.setProperty('--card-radius', (config.borderRadius && config.borderRadius.card) || '20px')
+					root.style.setProperty('--button-radius', (config.borderRadius && config.borderRadius.button) || '8px')
+					root.style.setProperty('--sidebar-radius', (config.borderRadius && config.borderRadius.sidebar) || '20px')
+					root.style.setProperty('--card-padding', (config.spacing && config.spacing.padding && config.spacing.padding.card) || '32px')
+					root.style.setProperty('--sidebar-padding', (config.spacing && config.spacing.padding && config.spacing.padding.sidebar) || '32px')
+					root.style.setProperty('--card-font-size',
+						(config.typography && config.typography.description && config.typography.description.size)
+						|| (config.typography && config.typography.article && config.typography.article.description && config.typography.article.description.size)
+						|| '1rem'
+					)
+					root.style.setProperty('--button-font-size',
+						(config.typography && config.typography.nav && config.typography.nav.size)
+						|| (config.typography && config.typography.base && config.typography.base.size)
+						|| '1rem'
+					)
+					root.style.setProperty('--title-font-size', (config.typography && config.typography.title && config.typography.title.size) || '1.5rem')
+					root.style.setProperty('--desc-font-size', (config.typography && config.typography.description && config.typography.description.size) || '1rem')
+					root.style.setProperty('--element-gap', (config.spacing && config.spacing.gap && config.spacing.gap.articles) || '24px')
+
 					// 动态设置所有波浪SVG背景色
 					this.injectWaveBg()
 				} catch (e) {
@@ -263,8 +283,9 @@
 	.main-content.blog-detail {
 		flex: 0 0 100%;
 		background-color: var(--background);
-		border-radius: 20px;
-		padding: 2rem;
+		border-radius: var(--card-radius, 20px);
+		padding: var(--card-padding, 32px);
+		font-size: var(--card-font-size, 1rem);
 	}
 
 	.main-content.blog-detail :deep(.category-tag) {
@@ -308,15 +329,15 @@
 	/* 统一侧边栏所有模块样式 */
 	.sidebar > div {
 		background: rgba(255, 255, 255, 0.82);
-		border-radius: 1rem;
-		padding: 3.42rem;
+		border-radius: var(--sidebar-radius, 20px);
+		padding: var(--sidebar-padding, 32px);
 		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 		margin-bottom: 2rem;
 	}
 
 	.header, .theme5-header {
 		color: var(--primary-color);
-		font-size: 1.1rem;
+		font-size: var(--title-font-size, 1.5rem);
 		font-weight: 500;
 		margin-bottom: 1rem;
 		padding-bottom: 0.8rem;
@@ -333,15 +354,15 @@
 	.category-labels {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 0.8rem;
+		gap: var(--element-gap, 24px);
 	}
 
 	.theme5-category-item {
 		background: rgba(var(--primary-color-rgb,47,133,90), 0.1);
 		color: var(--primary-color);
-		border-radius: 0.5rem;
+		border-radius: var(--card-radius, 20px);
 		padding: 0.5rem 1rem;
-		font-size: 0.9rem;
+		font-size: var(--card-font-size, 1rem);
 		transition: all 0.3s ease;
 	}
 
@@ -440,7 +461,7 @@
 
 	.article-header {
 		color: var(--theme-text-primary);
-		font-size: 2rem;
+		font-size: var(--title-font-size, 1.5rem);
 		font-weight: 600;
 		margin-bottom: 2rem;
 		padding-bottom: 1rem;
@@ -487,5 +508,43 @@
 	.pagination {
 		text-align: center;
 		margin-top: 7rem;
+	}
+
+	/* 统一主要区域尺寸变量化 */
+	.sidebar > div {
+		border-radius: var(--sidebar-radius, 20px);
+		padding: var(--sidebar-padding, 32px);
+	}
+
+	.main-content.blog-detail {
+		border-radius: var(--card-radius, 20px);
+		padding: var(--card-padding, 32px);
+		font-size: var(--card-font-size, 1rem);
+	}
+
+	.theme5-header, .header {
+		font-size: var(--title-font-size, 1.5rem);
+	}
+
+	.article-header {
+		font-size: var(--title-font-size, 1.5rem);
+	}
+
+	.theme5-category-item {
+		border-radius: var(--card-radius, 20px);
+		padding: 0.5rem 1rem;
+		font-size: var(--card-font-size, 1rem);
+	}
+
+	.category-labels {
+		gap: var(--element-gap, 24px);
+	}
+
+	/* 按钮变量化，确保主题切换时同步尺寸 */
+	.button, .read-btn, .main-btn, .el-button {
+		border-radius: var(--button-radius, 8px);
+		padding: var(--button-padding, 12px 24px);
+		font-size: var(--button-font-size, 1rem);
+		transition: all 0.2s;
 	}
 </style>
