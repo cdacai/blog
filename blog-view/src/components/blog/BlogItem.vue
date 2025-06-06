@@ -198,17 +198,21 @@ export default {
 
 .blog-title {
 	margin: 0 0 1rem;
-	font-size: var(--title-font-size, 2.34rem); /* 变量化标题字体 */
+	font-size: var(--title-font-size, 2.34rem);
 	font-weight: normal;
 	color: var(--theme-text-primary);
 }
 
 .title-link {
-	/* color: #3fa89e; 巧克力棕 - 温暖而自然的色调，与绿色形成和谐搭配 */
-	color: var(--primary-color); /* 巧克力棕 - 温暖而自然的色调，与绿色形成和谐搭配 */
+	color: var(--theme-text-primary);
 	transition: all 0.3s ease;
 	position: relative;
 	display: inline-block;
+}
+
+.title-link:hover {
+	color: var(--theme-text-primary);
+	transform: translateY(-2px);
 }
 
 /* 
@@ -223,25 +227,6 @@ export default {
 8. #E74C3C - 朱砂红 - 热情大胆，引人注目
 9. #6D4C41 - 巧克力棕 - 温暖而自然的色调
 10. #607D8B - 蓝灰色 - 中性而平衡的色调
-*/
-
-.title-link:hover {
-	color: #3fa89e; /* 淡棕色 - 更加柔和的棕色，提供良好的视觉反馈 */
-	transform: translateY(-2px);
-}
-
-/* 
-悬停颜色方案建议（对应上面的颜色）：
-1. #2E8BC0 - 亮蓝色 - 更加明亮的蓝色
-2. #7986CB - 淡紫蓝 - 更加柔和的紫蓝色
-3. #9B59B6 - 亮紫色 - 更加鲜明的紫色
-4. #F39C12 - 琥珀金 - 更加明亮的橙色
-5. #1ABC9C - 绿松石 - 更加明亮的绿松石色
-6. #2ECC71 - 翠绿 - 更加明亮的绿色
-7. #3498DB - 天蓝 - 更加明亮的蓝色
-8. #FF5252 - 亮红色 - 更加鲜明的红色
-9. #8D6E63 - 淡棕色 - 更加柔和的棕色
-10. #78909C - 淡蓝灰 - 更加柔和的蓝灰色
 */
 
 .title-link::after {

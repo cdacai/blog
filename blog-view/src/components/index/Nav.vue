@@ -183,10 +183,14 @@
 	left: 0;
 	right: 0;
 	z-index: 1000;
-	padding: 4rem 3rem;
+	padding: 3rem 32px;
 	background: transparent;
 	transition: all 0.3s ease;
 	transform: translateY(0);
+	display: flex;
+	justify-content: center;
+	max-width: var(--theme-content-width, 2200px);
+	margin: 0 auto;
 }
 
 /* 导航栏色块样式 */
@@ -229,7 +233,8 @@
 }
 
 .nav-container {
-	max-width: 1125px;
+	max-width: 1200px;
+	width: 100%;
 	margin: 0 auto;
 	display: flex;
 	justify-content: space-between;
@@ -254,26 +259,23 @@
 
 .nav-links {
 	display: flex;
-	gap: 3rem;
+	gap: var(--theme-nav-gap, 32px);
 	align-items: center;
 }
 
 .nav-item {
-	font-size: 1.14rem;
+	font-size: var(--theme-nav-size, 1rem);
 	color: var(--theme-text-primary);
 	text-decoration: none;
-	transition: all 0.3s ease;
-	font-weight: 600;
-	letter-spacing: 0.03em;
+	transition: var(--theme-hover-transition);
+	font-weight: 500;
+	letter-spacing: var(--theme-nav-spacing, 0.01em);
 }
 
-.nav-item:hover {
-	color: var(--theme-text-primary);
-}
-
+.nav-item:hover,
 .nav-item.active {
 	color: var(--theme-text-primary);
-	font-weight: 600;
+	font-weight: 500;
 }
 
 .mobile-toggle {
@@ -327,7 +329,7 @@
 		flex-direction: column;
 		background: transparent;
 		padding: 0.3rem 0;
-		gap: 0;
+		gap: var(--theme-nav-gap, 16px);
 	}
 
 	.nav-hidden {
@@ -338,9 +340,11 @@
 		width: 100%;
 		text-align: center;
 		padding: 0.5rem 0.8rem;
-		font-size: 1rem;
+		font-size: var(--theme-nav-size, 1rem);
 		color: var(--theme-text-primary);
 		position: relative;
+		letter-spacing: var(--theme-nav-spacing, 0.01em);
+		font-weight: 500;
 	}
 
 	.nav-item:hover {
