@@ -8,6 +8,7 @@
         :src="themeSwitcherUrl" 
         frameborder="0"
         class="theme-iframe"
+        allow="fullscreen"
       ></iframe>
     </el-card>
   </div>

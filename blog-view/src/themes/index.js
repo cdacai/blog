@@ -1551,10 +1551,10 @@ export const theme3 = {
                 },
                 outline: {
                     background: 'transparent',
-                    color: '#2F855A',
+                            color: '#2F855A',
                     border: '1.5px solid currentColor',
                     transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                    hover: {
+            hover: {
                         background: 'rgba(47, 133, 90, 0.05)',
                         transform: 'translateY(-2px)'
                     }
@@ -1565,7 +1565,7 @@ export const theme3 = {
             background: 'rgba(255, 255, 255, 0.9)',
             border: '1px solid rgba(255, 255, 255, 0.3)',
             transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-            focus: {
+        focus: {
                 border: '1px solid rgba(47, 133, 90, 0.5)',
                 boxShadow: '0 0 0 3px rgba(47, 133, 90, 0.1)'
             }

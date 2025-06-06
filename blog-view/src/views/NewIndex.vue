@@ -1,5 +1,5 @@
 <template>
-  <div class="new-index" :style="rootStyles">
+  <div class="new-index" :style="rootStyles" ref="fullscreenRoot">
     <!-- 顶部导航 -->
     <header class="header">
       <div class="header-content">
@@ -66,6 +66,11 @@
     <!-- 主题切换器和保存按钮悬浮区 -->
     <div class="theme-fab-group">
       <button class="magicui-rainbow-fab" @click="saveTheme" title="保存主题"><span>💾</span></button>
+      <!-- 全屏切换按钮，仅在iframe有token时显示 -->
+      <button v-if="hasToken" class="magicui-rainbow-fab" @click="toggleFullscreen" :title="isFullscreen ? '退出全屏' : '全屏预览'" style="margin-left:8px;">
+        <span v-if="!isFullscreen">⛶</span>
+        <span v-else>🗗</span>
+      </button>
       <theme-switcher />
     </div>
   </div>
@@ -120,7 +125,9 @@ export default {
       loading: false,
       pageNum: 1,
       hasMore: false,
-      site: null
+      site: null,
+      isFullscreen: false, // 全屏状态
+      hasToken: false // 是否有token
     }
   },
   computed: {
@@ -266,6 +273,10 @@ export default {
       this.fetchArticles(),
       this.fetchSiteInfo()
     ])
+    // 检测token
+    const urlParams = new URLSearchParams(window.location.search)
+    const token = urlParams.get('token') || localStorage.getItem('token') || ''
+    this.hasToken = !!token
   },
   methods: {
     async fetchArticles() {
@@ -372,7 +383,65 @@ export default {
       } catch (e) {
         window.parent.postMessage({ type: 'theme-save', status: 'error', msg: '保存失败' }, '*')
       }
+    },
+    toggleFullscreen() {
+      const el = this.$refs.fullscreenRoot;
+      console.log('全屏切换按钮点击', el);
+      if (!el) {
+        this.$message && this.$message.error('全屏节点未找到');
+        return;
+      }
+      if (!this.isFullscreen) {
+        try {
+          if (el.requestFullscreen) {
+            el.requestFullscreen();
+          } else if (el.webkitRequestFullscreen) {
+            el.webkitRequestFullscreen();
+          } else if (el.mozRequestFullScreen) {
+            el.mozRequestFullScreen();
+          } else if (el.msRequestFullscreen) {
+            el.msRequestFullscreen();
+          } else {
+            this.$message && this.$message.error('当前浏览器不支持全屏API');
+          }
+          this.isFullscreen = true;
+        } catch (e) {
+          this.$message && this.$message.error('全屏失败：' + e.message);
+        }
+      } else {
+        try {
+          if (document.exitFullscreen) {
+            document.exitFullscreen();
+          } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+          } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+          } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+          } else {
+            this.$message && this.$message.error('当前浏览器不支持全屏API');
+          }
+          this.isFullscreen = false;
+        } catch (e) {
+          this.$message && this.$message.error('退出全屏失败：' + e.message);
+        }
+      }
     }
+  },
+  mounted() {
+    // 监听全屏变化，自动同步isFullscreen状态
+    document.addEventListener('fullscreenchange', () => {
+      this.isFullscreen = !!document.fullscreenElement;
+    });
+    document.addEventListener('webkitfullscreenchange', () => {
+      this.isFullscreen = !!document.webkitFullscreenElement;
+    });
+    document.addEventListener('mozfullscreenchange', () => {
+      this.isFullscreen = !!document.mozFullScreenElement;
+    });
+    document.addEventListener('MSFullscreenChange', () => {
+      this.isFullscreen = !!document.msFullscreenElement;
+    });
   }
 }
 </script>
