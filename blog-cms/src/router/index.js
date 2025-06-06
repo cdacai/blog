@@ -212,15 +212,7 @@ const routes = [
 				path: 'theme',
 				name: 'ThemeSetting',
 				component: () => import('@/views/system/theme/index.vue'),
-				meta: { title: '主题设置', icon: 'el-icon-magic-stick' },
-				children: [
-					{
-						path: 'switcher',
-						name: 'ThemeSwitcher',
-						component: () => import('@/views/system/theme/switcher.vue'),
-						meta: { title: '主题切换' }
-					}
-				]
+				meta: { title: '主题设置', icon: 'el-icon-magic-stick' }
 			},
 		]
 	},
