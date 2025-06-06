@@ -22,26 +22,34 @@
 		<Nav :blog-name="siteInfo.blogName" :category-list="categoryList"/>
 		<div class="main">
 			<div class="container">
-				<div class="content-wrapper" :class="{'full-width': $route.name === 'blog'}">
-					<!-- 左侧区域 -->
-					<div class="main-content" :class="{'blog-detail': $route.name === 'blog', 'moments-content': $route.name === 'moments', 'archives-content': $route.name === 'archives'}">
-						<!-- 最新文章标题 -->
-						<h2 class="article-header" v-if="$route.name === 'home'">
-							最新文章
-						</h2>
-						<!-- 文章列表 -->
+				<div class="content-wrapper">
+					<!-- 主内容区恢复router-view渲染 -->
+					<div class="main-content">
+						<h2 class="section-title" v-if="$route.name === 'home'">最新文章</h2>
 						<router-view style="padding-top:0.5rem" :category-list="categoryList" :tag-list="tagList"/>
 					</div>
-					<!-- 右侧栏 -->
-					<div class="sidebar" v-show="!['blog', 'moments', 'archives'].includes($route.name)">
-						<Introduction :category-list="categoryList"/>
-						<!-- 暂时注释掉标签云
-						<Tags :tag-list="tagList"/>
-						-->
-						<!-- 暂时注释掉随机文章
-						<RandomBlog :random-blog-list="randomBlogList"/>
-						-->
-					</div>
+					<!-- 侧边栏结构和样式与NewIndex.vue一致 -->
+					<aside class="sidebar">
+						<div class="sidebar-content">
+							<div class="about-section">
+								<h3>关于我</h3>
+								<p>全栈开发者，专注Web技术，分享开发经验与技术思考。</p>
+								<div class="social-links">
+									<a href="#" class="social-link">GitHub</a>
+									<a href="#" class="social-link">Twitter</a>
+								</div>
+							</div>
+							<div class="categories-section">
+								<h3>文章分类</h3>
+								<ul class="category-list">
+									<li v-for="category in categoryList" :key="category.name" class="category-item">
+										<span class="category-name">{{ category.name }}</span>
+										<span class="category-count">{{ category.count }}</span>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</aside>
 				</div>
 			</div>
 		</div>
@@ -204,6 +212,8 @@
 					'--theme-button-padding': (spacing.padding && spacing.padding.button) || '',
 					'--theme-button-font-size': (typography.button && typography.button.size) || (typography.nav && typography.nav.size) || '',
 					'--element-gap': (spacing.gap && spacing.gap.articles) || spacing.elementGap || '',
+					'--theme-sidebar-margin-top': (spacing.margin && spacing.margin.sidebar) || '32px',
+					'--theme-article-section-width': (spacing.articleSectionWidth) || '1200px',
 				}
 			}
 		},
@@ -384,6 +394,7 @@
 		padding: 2rem;
 		overflow-y: auto;
 		min-width: 0;
+		width: var(--theme-article-section-width, 1200px);
 	}
 
 	.blog-detail {
@@ -441,13 +452,116 @@
 		min-width: 220px;
 	}
 
-	/* 统一侧边栏所有模块样式 */
-	.sidebar > div {
-		background: rgba(255, 255, 255, 0.82);
-		border-radius: var(--sidebar-radius, 20px);
-		padding: var(--sidebar-padding, 32px);
+	.sidebar-content {
+		background-color: #ffffffd1;
+		border-radius: var(--sidebar-radius, var(--theme-sidebar-radius, 20px));
+		padding: var(--sidebar-padding, var(--theme-sidebar-padding, 32px));
 		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 		margin-bottom: 2rem;
+		transition: background 0.3s;
+	}
+
+	.sidebar-content:hover {
+		background-color: #ffffffee;
+	}
+
+	.about-section,
+	.categories-section {
+		background-color: transparent;
+		padding: 0;
+		margin-bottom: 32px;
+		border-radius: 0;
+	}
+
+	.about-section {
+		padding-bottom: 32px;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+	}
+
+	.about-section h3 {
+		font-size: var(--theme-sidebar-about-title-size, var(--sidebar-title-size, var(--theme-sidebar-title-size, 1.5rem)));
+		margin-bottom: 16px;
+		color: var(--theme-text-primary);
+		font-weight: var(--theme-sidebar-about-title-weight, var(--sidebar-title-weight, var(--theme-sidebar-title-weight, 600)));
+		letter-spacing: var(--theme-sidebar-about-title-spacing, var(--sidebar-title-spacing, var(--theme-sidebar-title-spacing, 0)));
+	}
+
+	.about-section p {
+		color: var(--theme-text-secondary);
+		line-height: var(--theme-sidebar-about-desc-line-height, var(--sidebar-text-line-height, var(--theme-sidebar-text-line-height, 1.8)));
+		font-size: var(--theme-sidebar-about-desc-size, var(--sidebar-text-size, var(--theme-sidebar-text-size, 1rem)));
+		letter-spacing: var(--theme-sidebar-text-spacing);
+		margin-bottom: 16px;
+	}
+
+	.social-links {
+		display: flex;
+		gap: 16px;
+		margin-top: 0;
+		opacity: 0.9;
+	}
+
+	.social-link {
+		color: var(--theme-primary);
+		text-decoration: none;
+		font-size: 12px;
+		letter-spacing: 0.02em;
+		transition: opacity 0.2s;
+	}
+
+	.social-link:hover {
+		opacity: 0.8;
+	}
+
+	.categories-section {
+		margin-bottom: 0;
+	}
+
+	.category-list {
+		list-style: none;
+		padding: 0;
+	}
+
+	.category-item {
+		display: flex;
+		justify-content: space-between;
+		padding: 8px 0;
+		color: var(--theme-text-secondary);
+		font-size: var(--theme-sidebar-categories-item-size, var(--sidebar-category-size, var(--theme-sidebar-category-size, 1rem)));
+		letter-spacing: var(--theme-sidebar-categories-item-spacing, var(--sidebar-category-spacing, var(--theme-sidebar-category-spacing, 0)));
+		border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+	}
+
+	.category-item:last-child {
+		border-bottom: none;
+	}
+
+	.category-count {
+		color: #fff;
+		font-size: var(--theme-sidebar-count-size, var(--sidebar-count-size, var(--theme-sidebar-count-size, 0.9rem)));
+		flex-shrink: 0;
+		background-color: var(--theme-primary);
+		border-radius: var(--theme-tag-radius);
+		padding: 1px 8px;
+		min-width: 20px;
+		text-align: center;
+		line-height: var(--theme-sidebar-count-line-height, var(--sidebar-count-line-height, var(--theme-sidebar-count-line-height, 1.5)));
+		opacity: 0.9;
+	}
+
+	.category-name {
+		flex: 1;
+	}
+
+	@media screen and (max-width: 768px) {
+		.sidebar-content {
+			padding: 2rem;
+			margin-bottom: 1.5rem;
+		}
+		.about-section,
+		.categories-section {
+			margin-bottom: 24px;
+		}
 	}
 
 	.header, .theme5-header {

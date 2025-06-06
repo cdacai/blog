@@ -178,7 +178,7 @@
 }
 
 /* 8. 添加角落装饰 */
-.corner-decoration {
+/* .corner-decoration {
   position: absolute;
   width: 60px;
   height: 60px;
@@ -186,7 +186,6 @@
   pointer-events: none;
   z-index: 1;
 }
-
 .corner-decoration.top-right {
   top: 0;
   right: 0;
@@ -194,14 +193,13 @@
   border-right: 3px solid rgba(47, 133, 90, 0.6);
   border-top-right-radius: 8px;
 }
-
 .corner-decoration.bottom-left {
   bottom: 0;
   left: 0;
   border-bottom: 3px solid rgba(47, 133, 90, 0.6);
   border-left: 3px solid rgba(47, 133, 90, 0.6);
   border-bottom-left-radius: 8px;
-}
+} */
 
 /* 9. 添加波浪背景 - 更轻柔的版本 */
 .wave-bg {

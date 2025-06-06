@@ -5,8 +5,8 @@
 			<div class="leaf-decoration top-right"></div>
 			
 			<!-- 添加角落装饰 -->
-			<div class="corner-decoration top-right"></div>
-			<div class="corner-decoration bottom-left"></div>
+			<!-- <div class="corner-decoration top-right"></div> -->
+			<!-- <div class="corner-decoration bottom-left"></div> -->
 			
 			<!-- 添加波浪背景 -->
 			<div class="wave-bg"></div>
