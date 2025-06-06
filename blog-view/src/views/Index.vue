@@ -26,7 +26,7 @@
 					<!-- 主内容区恢复router-view渲染 -->
 					<div class="main-content">
 						<h2 class="section-title" v-if="$route.name === 'home'">最新文章</h2>
-						<router-view  :category-list="categoryList" :tag-list="tagList"/>
+						<router-view :category-list="categoryList" :tag-list="tagList"/>
 					</div>
 					<!-- 侧边栏结构和样式与NewIndex.vue一致 -->
 					<aside class="sidebar">

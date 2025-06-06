@@ -42,7 +42,7 @@
 				
 				<!--文章Markdown描述-->
 				<div class="blog-description" v-lazy-container="{selector: 'img'}"
-					v-viewer v-html="item.description.slice(0, 50) + '...'"></div>
+					v-viewer v-html="item.description"></div>
 				<!--阅读全文按钮和标签-->
 				<div class="bottom-wrapper">
 					<div class="tag-list">
@@ -297,15 +297,21 @@ export default {
 
 .blog-description,
 .intro-text {
-	color: var(--text-color);
-	line-height: 1.85;
+	color: var(--theme-text-secondary, var(--text-color));
+	line-height: var(--theme-description-line-height, 1.85);
 	margin: 1rem 0;
-	font-size: 0.95rem;
+	font-size: var(--desc-font-size, var(--theme-desc-font-size, 0.95rem));
 	letter-spacing: 0.01em;
 	overflow-wrap: break-word;
 	word-wrap: break-word;
 	word-break: break-word;
 	hyphens: auto;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .bottom-wrapper {
