@@ -73,11 +73,7 @@
 
 <style scoped>
 	.article-header {
-		background: linear-gradient(90deg, #1a4731 0%, #38a169 50%, #2F855A 100%);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
-		color: transparent;
+		color: var(--primary-color);
 		font-size: 2rem;
 		font-weight: 600;
 		margin-bottom: 2rem;
@@ -92,7 +88,7 @@
 		left: 0;
 		width: 100px;
 		height: 3px;
-		background: linear-gradient(90deg, #38a169 0%, #68d391 100%);
+		background: var(--primary-color, #38a169);
 		border-radius: 3px;
 	}
 
@@ -284,5 +280,18 @@
 
 	.tl-red .tl-item .tl-wrap {
 		border-color: var(--primary-color);
+	}
+
+	.main-content, .archives-wrapper, .timeline {
+		max-width: 100vw;
+		overflow-x: hidden;
+		box-sizing: border-box;
+	}
+
+	/* timeline、tl-header等宽度限制，防止溢出 */
+	.timeline, .tl-header, .tl-wrap {
+		max-width: 100%;
+		box-sizing: border-box;
+		word-break: break-all;
 	}
 </style>
