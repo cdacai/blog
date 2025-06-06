@@ -1,20 +1,28 @@
 <template>
 	<div>
 		<div class="blog-card subtle-hover" v-for="item in blogList" :key="item.id">
-			<!-- 添加叶子装饰 -->
-			<div class="leaf-decoration top-right"></div>
-			
-			<!-- 添加角落装饰 -->
-			<!-- <div class="corner-decoration top-right"></div> -->
-			<!-- <div class="corner-decoration bottom-left"></div> -->
-			
 			<!-- 添加波浪背景 -->
 			<div class="wave-bg"></div>
 			
-			<div class="top-label" v-if="item.top" title="置顶文章">
-				<img src="@/assets/icons/top.svg" class="top-icon" alt="置顶">
-			</div>
 			<div class="card-content">
+				<!-- 置顶雪花图标，绝对定位在.card-content右上角 -->
+				<div v-if="item.top" class="top-label" title="置顶文章">
+					<span class="top-corner"></span>
+					<svg class="top-snow" width="20" height="20" viewBox="0 0 16 16" fill="none">
+						<path d="M8 1v14M1 8h14M3.5 3.5l9 9M12.5 3.5l-9 9" stroke="#fff" stroke-width="1" stroke-linecap="round"/>
+						<path d="M8 1l1.2 2L8 5M8 1l-1.2 2L8 5M8 15l1.2-2L8 11M8 15l-1.2-2L8 11
+								 M1 8l2-1.2L5 8M1 8l2 1.2L5 8M15 8l-2-1.2L11 8M15 8l-2 1.2L11 8
+								 M3.5 3.5l2 0.8l1 2M3.5 3.5l0.8 2l2 1
+								 M12.5 12.5l-2-0.8l-1-2M12.5 12.5l-0.8-2l-2-1
+								 M12.5 3.5l-2 0.8l-1 2M12.5 3.5l-0.8 2l-2 1
+								 M3.5 12.5l2-0.8l1-2M3.5 12.5l0.8-2l2-1"
+							  stroke="#fff"
+							  stroke-width="0.6"
+							  stroke-linecap="round"/>
+						<circle cx="8" cy="8" r="1" fill="#fff"/>
+						<circle cx="8" cy="8" r="0.4" fill="#fff"/>
+					</svg>
+				</div>
 
 				<!--文章简要信息-->
 				<div class="blog-meta">
@@ -115,7 +123,7 @@ export default {
 <style>
 .card-content {
 	position: relative;
-	padding: var(--card-padding, 3.42rem 4rem 100px 4rem); /* 变量化padding */
+	padding: var(--card-padding, 32px); /* 只用该变量控制所有卡片内容区padding，主题切换时同步 */
 	z-index: 2;
 }
 .blog-card {
@@ -140,60 +148,35 @@ export default {
 	position: absolute;
 	top: 0;
 	right: 0;
-	width: 0;
-	height: 0;
-	border-style: solid;
-	border-width: 0 4rem 4rem 0;
-	border-color: transparent #bcefbc transparent transparent;
-	cursor: pointer;
-	transition: opacity 0.3s ease;
-	z-index: 1;
-}
-
-.top-icon {
-	position: absolute;
-	top: 1rem;
-	right: -3.1rem;
-	width: 20px;
-	height: 20px;
-	transform: rotate(45deg);
-	filter: brightness(0) invert(1);
-}
-
-.top-label:hover {
-	opacity: 0.85;
-}
-
-.top-tooltip {
-	position: absolute;
-	background: rgba(0, 0, 0, 0.8);
-	color: white;
-	padding: 4px 8px;
-	border-radius: 4px;
-	font-size: 0.8rem;
-	white-space: nowrap;
-	top: -30px;
-	left: 50%;
-	transform: translateX(-50%) scale(0);
-	opacity: 0;
-	transition: all 0.2s ease;
+	z-index: 10;
+	width: 56px;
+	height: 56px;
+	display: flex;
+	align-items: flex-start;
+	justify-content: flex-end;
 	pointer-events: none;
 }
 
-.top-tooltip::after {
-	content: '';
+.top-corner {
 	position: absolute;
-	bottom: -4px;
-	left: 50%;
-	transform: translateX(-50%);
-	border-left: 4px solid transparent;
-	border-right: 4px solid transparent;
-	border-top: 4px solid rgba(0, 0, 0, 0.8);
+	top: 0;
+	right: 0;
+	width: 56px;
+	height: 56px;
+	background: var(--primary-color, #2F855A);
+	clip-path: polygon(100% 0, 0 0, 100% 100%);
+	z-index: 0;
 }
 
-.top-label:hover .top-tooltip {
-	transform: translateX(-50%) scale(1);
-	opacity: 1;
+.top-snow {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	width: 20px;
+	height: 20px;
+	z-index: 1;
+	display: block;
+	pointer-events: auto;
 }
 
 .blog-title {
@@ -508,15 +491,6 @@ export default {
 	.blog-info-item {
 		font-size: 0.9rem;
 	}
-}
-
-/* 确保叶子装饰在卡片内可见 */
-.leaf-decoration.top-right {
-	top: 15px;
-	right: 15px;
-	width: 40px;
-	height: 40px;
-	opacity: 0.2;
 }
 </style>
 

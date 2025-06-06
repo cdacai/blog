@@ -742,13 +742,12 @@
 
 	/* 文章卡片样式 */
 	.article-card {
-	  width: 100%;
-	  padding: var(--card-padding, var(--theme-card-padding, 32px));
-	  background-color: #ffffffd1;
-	  border-radius: var(--card-radius, var(--theme-card-radius, 20px));
-	  transition: var(--theme-hover-transition);
-	  font-size: var(--card-font-size, var(--theme-card-font-size, 1rem));
+	  /* 只保留圆角、阴影、背景色，彻底移除padding */
+	  border-radius: var(--card-radius, 20px);
 	  box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+	  background-color: #fff;
+	  transition: var(--theme-hover-transition);
+	  font-size: var(--card-font-size, 1rem);
 	}
 	.article-card:hover {
 	  transform: translateY(-2px);
@@ -1046,9 +1045,7 @@
 	}
 
 	.article-card {
-	  border-radius: var(--theme-card-radius, 20px);
-	  padding: var(--theme-card-padding, 32px);
-	  font-size: var(--theme-card-font-size, 1rem);
+	  border-radius: var(--card-radius, 20px);
 	  box-shadow: 0 8px 32px rgba(0,0,0,0.10);
 	  background-color: #fff;
 	  transition: var(--theme-hover-transition);
