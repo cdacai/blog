@@ -8,45 +8,40 @@
 [![MySQL](https://img.shields.io/badge/MySQL-5.7+-blue.svg)](https://www.mysql.com/)
 [![Redis](https://img.shields.io/badge/Redis-6.0+-red.svg)](https://redis.io/)
 
-基于Spring Boot与Vue实现的前后端分离博客系统，专为内容创作与互动体验设计。  
-支持主题切换、文章、评论、相册、统计等全方位管理，集成内容审核、消息通知、定时任务等功能，助你高效运营和美化个人博客。
+基于Spring Boot与Vue的现代化博客系统，适合个人和团队快速搭建高颜值、可定制的内容平台。
+支持主题切换、文章与评论管理、相册展示、数据统计、内容审核、消息通知、定时任务等丰富功能，助你高效运营和美化个人博客。
 
 ## 为什么选择蔡小虎博客系统？
-- 极致轻量，低配置友好，适合所有人
+- 极致轻量，低配置要求，适合大多数环境
 - 多套主题模板，后台一键切换，个性化十足
-- 持续活跃维护，功能不断升级
-- 完善的内容管理与互动体验
+- 持续维护，功能持续升级
+- 完善的内容与互动体验
 
 ## 特色功能
 
 ### 1. 主题切换与个性化
-- 支持多套精美主题模板，后台一键切换，实时预览，满足不同审美需求
-- 主题切换无需重启，操作简单，适合所有用户
-- 后续将支持主题色自定义、背景点缀图案开关等更丰富的个性化设置，打造专属博客风格
+- 内置4套精美预置主题，后台一键切换，实时预览
+- 支持主题保存，后续将支持主题色自定义、背景点缀等个性化设置
+- 让你轻松美化专属博客
 
 ### 2. 消息中心
 - 统一收纳评论、点赞、举报等历史消息
 - 支持站内消息和邮件通知
 - 消息分类展示和状态管理
-- 实时消息推送
 
 ### 3. 相册管理
-- 支持图片管理、一键插入
-- 相册分类管理
+- 图片管理与一键插入
+- 相册分类与批量操作
 - 支持本地和又拍云双存储
-- 图片预览和批量操作
 
 ### 4. 内容安全
-- 集成百度智能云文本审核（可配置是否启用）
-- 支持内容举报功能
-- 举报处理流程
+- 集成百度智能云文本审核
+- 支持内容举报与处理
 - 结果通知机制
 
 ### 5. 存储方案
-- 支持本地文件系统存储
-- 支持又拍云对象存储
+- 本地文件系统与又拍云对象存储灵活切换
 - 可配置存储策略
-- 灵活的存储切换
 
 预览地址：
 - 博客前台：[https://caixiaohu.com](https://caixiaohu.com)
@@ -110,46 +105,24 @@
 
 ## 快速开始
 
-### 环境要求
+1. 初始化数据库并导入表结构（/blog-api/nblog.sql）
+2. 复制并配置 /blog-api/src/main/resources/application-dev.properties
+3. 前后端（blog-cms、blog-view）分别安装依赖并启动：
+   ```bash
+   npm install
+   npm run serve
+   ```
+
+## 环境要求
 - **基础环境**
-  - JDK: 1.8+（极低配置要求，适合老旧电脑、云服务器、学生机等）
-  - MySQL: 5.7+（极低配置要求，节省内存和硬盘空间）
+  - JDK: 1.8+（低配置要求，适合大多数电脑和服务器）
+  - MySQL: 5.7+（utf8mb4字符集）
   - Redis: 6.0+
   - Node.js: 12.x+
   - Maven: 3.6+
   - NPM: 6.x+
 
-- **后端技术**
-  - 核心框架：Spring Boot 2.2.7.RELEASE
-  - 安全框架：Spring Security
-  - 数据库：MySQL 5.7+
-  - 缓存：Redis 6.0+
-  - Token：jjwt 0.9.1
-  - ORM：MyBatis + PageHelper
-  - 内容审核：百度智能云文本审核API
-  - 对象存储：又拍云SDK / 本地文件系统
-  - 定时任务：Quartz 2.3.2
-  - 其他：
-    - Markdown渲染：commonmark-java
-    - IP地址库：ip2region
-    - UA解析：yauaa
-
-- **前端技术**
-  - 核心框架：Vue 2.6.x + Vue Router + Vuex
-  - UI组件：Element UI 2.x
-  - 构建工具：Vue CLI 4.x
-  - HTTP：axios
-  - 编辑器：mavonEditor
-  - 可视化：echarts
-  - 工具库：
-    - dayjs（时间处理）
-    - lodash（工具函数）
-    - v-viewer（图片预览）
-    - prismjs（代码高亮）
-
-### 配置说明
-
-#### 核心配置
+## 核心配置
 - **安全配置**
   - `token.secretKey`: JWT密钥（需修改默认值）
   - 默认管理员：用户名`Admin`，密码`123456`
@@ -166,8 +139,7 @@
   - 使用数据库存储任务配置
   - 表结构已内置在nblog.sql中
 
-### 开发环境搭建
-
+## 开发环境搭建
 1. 创建 MySQL 数据库：
 ```sql
 CREATE DATABASE nblog CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -182,20 +154,12 @@ CREATE DATABASE nblog CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 7. 分别在`blog-cms`和`blog-view`目录下执行`npm install`安装依赖
 8. 分别在`blog-cms`和`blog-view`目录下执行`npm run serve`启动前后台页面
 
-## 注意事项
-
-### 配置说明
-- **第三方服务配置**
-  - 百度内容审核：需自行申请API密钥，可选开启
-  - 又拍云存储：需自行申请账号和配置空间，可选用本地存储
-  - 邮箱服务：默认配置QQ邮箱，可切换其他服务商
-
 ## 更新日志
 
-### v2.1.0 (2025-06-09)
+### v2.0.0 (2025-06-09)
 - 新增主题保存与切换功能，支持多套主题模板一键切换并保存，提升个性化体验，美化你的网站。入口：后台管理-系统管理-主题设置
 
-### v2.0.0 (2025-05-21)
+### v1.1.0 (2025-05-21)
 - 新增消息中心功能，统一收纳评论点赞举报的历史消息
 - 优化定时任务系统（基于Quartz），防止不断重启
 - 优化导航路径,更新系统图标,优化用户界面
@@ -228,3 +192,5 @@ CREATE DATABASE nblog CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 ---
 如果你喜欢本项目，欢迎star支持！你的支持是我们持续优化的动力！[![GitHub stars](https://img.shields.io/github/stars/caixiaohu/blog.svg?style=social)](https://github.com/caixiaohu/blog)
+
+欢迎反馈和参与贡献！
