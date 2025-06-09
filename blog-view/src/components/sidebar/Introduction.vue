@@ -141,8 +141,9 @@
 
 <style scoped>
 .theme5-intro {
-	border-radius: 20px;
-	padding: 16px;
+	/* 变量化圆角和内边距 */
+	border-radius: var(--sidebar-radius, 20px);
+	padding: var(--sidebar-padding, 16px);
 	min-height: 36.71rem;
 }
 
@@ -150,11 +151,12 @@
 	margin-bottom: 40px;
 	border-bottom: 1px solid rgba(203, 213, 224, 0.5);
 	padding-bottom: 40px;
+	color: var(--text-color);
 }
 
 .theme5-header {
-	color: #236042;
-	font-size: 1.71rem;
+	color: var(--theme-text-primary);
+	font-size: var(--title-font-size, 1.71rem);
 	font-weight: 600;
 	margin-bottom: 16px;
 }
@@ -166,23 +168,24 @@
 .about-content {
 	padding: 0 0 0 4px;
 	line-height: 1.8;
+	color: var(--text-color);
 }
 
 .name {
-		font-size: 15px;
+	font-size: 15px;
 	font-weight: normal;
-	color: #2d3748;
+	color: var(--text-color);
 	margin-bottom: 6px;
 }
 
 .roll-text {
-	color: #4a5568;
+	color: var(--text-color);
 	font-size: 14px;
 	line-height: 1.8;
 }
-.intro-text {	
-	color: #276749;
-	font-size: 1.12rem;
+.intro-text {
+	color: var(--text-color);
+	font-size: var(--desc-font-size, 1.12rem);
 	letter-spacing: 0.02em;
 	line-height: 1.8;
 	margin-bottom: 1.12rem;
@@ -191,7 +194,8 @@
 .category-section {
 	margin-top: 40px;
 	transition: all 0.3s ease;
-	border-radius: 20px;
+	border-radius: var(--sidebar-radius, 20px);
+	color: var(--text-color);
 }
 
 .category-section:hover {
@@ -202,19 +206,21 @@
 	display: flex;
 	flex-direction: column;
 	padding: 0;
+	color: var(--text-color);
 }
 
 .theme5-category-item {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	color: #4a5568;
-	font-size: 14px;
+	color: var(--text-color);
+	font-size: var(--card-font-size, 14px);
 	transition: all 0.2s ease;
 	line-height: 1;
 	height: 24px;
-	padding: 20px 4px;
+	padding: 0.5rem 1rem;
 	border-bottom: 1px solid rgba(203, 213, 224, 0.3);
+	border-radius: var(--card-radius, 20px);
 }
 
 .theme5-category-item:last-child {
@@ -222,11 +228,12 @@
 }
 
 .theme5-category-item:hover {
-	color: #2F855A;
+	color: var(--primary-color);
 }
 
 .category-name {
 	position: relative;
+	color: var(--text-color);
 }
 
 .category-count {
@@ -235,7 +242,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background-color: #2F855A;
+	background-color: var(--primary-color);
 	color: white;
 	border-radius: 12px;
 	font-size: 12px;
@@ -256,19 +263,22 @@
 	background: rgba(255, 255, 255, 0.9);
 }
 
-.category-section {
-	margin-top: 40px;
-	transition: all 0.3s ease;
-	border-radius: 20px;
-}
-
-.category-section:hover {
-	transform: translateY(-2px);
-	}
-
 /* 增强卡片悬停效果 */
 .theme5-intro:hover {
 	transform: translateY(-5px);
 	box-shadow: 0 10px 25px rgba(47, 133, 90, 0.15);
+}
+
+.about-section h3 {
+  color: var(--theme-text-primary);
+}
+
+.about-content,
+.intro-text,
+.category-section,
+.category-list,
+.theme5-category-item,
+.category-name {
+	color: var(--text-color);
 }
 </style>

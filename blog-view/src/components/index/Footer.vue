@@ -97,14 +97,10 @@
 
 	footer {
 		position: relative;
-		background-color: #8bc594 !important;
-		background-image: linear-gradient(0deg, #8bc594 0%, #a3d4ab 100%),
-			url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cstyle%3E.pattern{fill:%239ed3a7;fill-opacity:0.8}%3C/style%3E%3Crect width='40' height='40' fill='none'/%3E%3Cpath class='pattern' d='M0 0h40v2H0zM0 10h40v2H0zM0 20h40v2H0zM0 30h40v2H0zM0 0h2v40H0zM10 0h2v40h-2zM20 0h2v40h-2zM30 0h2v40h-2z'/%3E%3C/svg%3E") !important;
-		background-repeat: repeat !important;
-		background-position: center !important;
-		background-size: 40px !important;
+		background: transparent !important;
 		padding: 3rem 0 3rem !important;
 		margin-top: 5rem !important;
+		color: var(--text-color, #1a4731) !important;
 	}
 
 	.m-text-thin {
@@ -121,7 +117,7 @@
 
 	.m-opacity-tiny {
 		opacity: 0.9 !important;
-		color: #1a4731 !important;
+		color: var(--text-color, #1a4731) !important;
 	}
 
 	.upyun {
@@ -131,13 +127,13 @@
 	}
 
 	footer a {
-		color: #1a4731 !important;
+		color: var(--text-color, #1a4731) !important;
 		text-decoration: none;
 		transition: all 0.3s ease;
 	}
 
 	footer a:hover {
-		color: #276749 !important;
+		color: var(--primary-color, #276749) !important;
 		text-decoration: underline;
 	}
 </style>

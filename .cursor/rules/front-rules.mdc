@@ -1,0 +1,6 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+1,cms工程前端请求的接口，已经统一添加了admin前缀，无需再额外拼接

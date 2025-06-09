@@ -4,7 +4,7 @@
 			<h2 class="article-header">文章归档</h2>
 			<div class="archives-wrapper">
 				<div class="ui attached segment" style="background: rgba(255, 255, 255, 0.82); border-radius: 1rem; padding: 2rem; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);">
-					<p style="color: #276749; text-align: center; margin-bottom: 2rem;">好! 目前共计 {{ count }} 篇日志。 继续努力。</p>
+					<p style="color: var(--primary-color); text-align: center; margin-bottom: 2rem;">好! 目前共计 {{ count }} 篇日志。 继续努力。</p>
 					<div class="timeline">
 						<div :class="colorObj[index%5]" v-for="(value,key,index) in blogMap" :key="index">
 							<div class="tl-header">
@@ -73,11 +73,7 @@
 
 <style scoped>
 	.article-header {
-		background: linear-gradient(90deg, #1a4731 0%, #38a169 50%, #2F855A 100%);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
-		color: transparent;
+		color: var(--primary-color);
 		font-size: 2rem;
 		font-weight: 600;
 		margin-bottom: 2rem;
@@ -92,7 +88,7 @@
 		left: 0;
 		width: 100px;
 		height: 3px;
-		background: linear-gradient(90deg, #38a169 0%, #68d391 100%);
+		background: var(--primary-color, #38a169);
 		border-radius: 3px;
 	}
 
@@ -120,7 +116,7 @@
 		width: 4.5em;
 		margin-left: -7.5em;
 		text-align: right;
-		color: #276749;
+		color: var(--primary-color);
 	}
 
 	.tl-wrap {
@@ -151,23 +147,23 @@
 	}
 
 	.tl-blue .tl-wrap {
-		color: #3182ce;
+		color: var(--primary-color);
 	}
 
 	.tl-dark .tl-wrap {
-		color: #2d3748;
+		color: var(--text-color);
 	}
 
 	.tl-green .tl-wrap {
-		color: #38a169;
+		color: var(--primary-color);
 	}
 
 	.tl-purple .tl-wrap {
-		color: #805ad5;
+		color: var(--primary-color);
 	}
 
 	.tl-red .tl-wrap {
-		color: #e53e3e;
+		color: var(--primary-color);
 	}
 
 	.tl-blue .tl-wrap::after {
@@ -196,27 +192,27 @@
 		padding: 0.5rem 1rem !important;
 		border-radius: 4px !important;
 		transition: all 0.3s ease !important;
-		color: white !important;
+		color: var(--text-color) !important;
 	}
 
 	.tl-blue .tl-title {
-		background: #3182ce !important;
+		background: var(--primary-color) !important;
 	}
 
 	.tl-dark .tl-title {
-		background: #2d3748 !important;
+		background: var(--text-color) !important;
 	}
 
 	.tl-green .tl-title {
-		background: #38a169 !important;
+		background: var(--primary-color) !important;
 	}
 
 	.tl-purple .tl-title {
-		background: #805ad5 !important;
+		background: var(--primary-color) !important;
 	}
 
 	.tl-red .tl-title {
-		background: #e53e3e !important;
+		background: var(--primary-color) !important;
 	}
 
 	.tl-title:hover {
@@ -243,46 +239,59 @@
 
 	.tl-blue .tl-header a {
 		background: rgba(66, 153, 225, 0.1) !important;
-		color: #3182ce !important;
+		color: var(--primary-color) !important;
 	}
 
 	.tl-blue .tl-item .tl-wrap {
-		border-color: #3182ce;
+		border-color: var(--primary-color);
 	}
 
 	.tl-dark .tl-header a {
 		background: rgba(45, 55, 72, 0.1) !important;
-		color: #2d3748 !important;
+		color: var(--text-color) !important;
 	}
 
 	.tl-dark .tl-item .tl-wrap {
-		border-color: #2d3748;
+		border-color: var(--text-color);
 	}
 
 	.tl-green .tl-header a {
 		background: rgba(72, 187, 120, 0.1) !important;
-		color: #38a169 !important;
+		color: var(--primary-color) !important;
 	}
 
 	.tl-green .tl-item .tl-wrap {
-		border-color: #38a169;
+		border-color: var(--primary-color);
 	}
 
 	.tl-purple .tl-header a {
 		background: rgba(159, 122, 234, 0.1) !important;
-		color: #805ad5 !important;
+		color: var(--primary-color) !important;
 	}
 
 	.tl-purple .tl-item .tl-wrap {
-		border-color: #805ad5;
+		border-color: var(--primary-color);
 	}
 
 	.tl-red .tl-header a {
 		background: rgba(245, 101, 101, 0.1) !important;
-		color: #e53e3e !important;
+		color: var(--primary-color) !important;
 	}
 
 	.tl-red .tl-item .tl-wrap {
-		border-color: #e53e3e;
+		border-color: var(--primary-color);
+	}
+
+	.main-content, .archives-wrapper, .timeline {
+		max-width: 100vw;
+		overflow-x: hidden;
+		box-sizing: border-box;
+	}
+
+	/* timeline、tl-header等宽度限制，防止溢出 */
+	.timeline, .tl-header, .tl-wrap {
+		max-width: 100%;
+		box-sizing: border-box;
+		word-break: break-all;
 	}
 </style>

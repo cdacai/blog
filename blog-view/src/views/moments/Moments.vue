@@ -130,11 +130,7 @@
 }
 
 .article-header {
-	background: linear-gradient(90deg, #1a4731 0%, #38a169 50%, #2F855A 100%);
-	-webkit-background-clip: text;
-	-webkit-text-fill-color: transparent;
-	background-clip: text;
-	color: transparent;
+	color: var(--primary-color);
 	font-size: 2rem;
 	font-weight: 600;
 	margin-bottom: 2rem;
@@ -149,7 +145,7 @@
 	left: 0;
 	width: 100px;
 	height: 3px;
-	background: linear-gradient(90deg, #38a169 0%, #68d391 100%);
+	background: var(--primary-color, #38a169);
 	border-radius: 3px;
 }
 
@@ -196,12 +192,12 @@
 
 .moment-author {
 	font-weight: 600;
-	color: #2F855A;
+	color: var(--primary-color);
 }
 
 .moment-time {
 	font-size: 0.875rem;
-	color: #666;
+	color: var(--text-color);
 }
 
 .moment-content {
@@ -238,7 +234,7 @@
 	gap: 0.5rem;
 	padding: 0.5rem 1rem;
 	border-radius: 0.5rem;
-	color: #2F855A;
+	color: var(--primary-color);
 	background: rgba(47, 133, 90, 0.1);
 	transition: all 0.3s ease;
 	cursor: pointer;
@@ -249,7 +245,7 @@
 }
 
 .like-button .like-color {
-	color: #e53e3e;
+	color: var(--primary-color);
 }
 
 .ui.bottom {
@@ -279,7 +275,7 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	color: #666;
+	color: var(--text-color);
 }
 
 .empty-icon {
@@ -301,7 +297,7 @@
 
 .empty-icon i {
 	font-size: 2.5rem;
-	color: #2F855A;
+	color: var(--primary-color);
 }
 
 .empty-text {
@@ -310,14 +306,14 @@
 
 .empty-text .primary-text {
 	font-size: 1.25rem;
-	color: #2F855A;
+	color: var(--primary-color);
 	font-weight: 500;
 	margin: 0 0 0.5rem 0;
 }
 
 .empty-text .secondary-text {
 	font-size: 1rem;
-	color: #666;
+	color: var(--text-color);
 	margin: 0;
 	opacity: 0.8;
 }

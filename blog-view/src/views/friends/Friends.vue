@@ -97,7 +97,7 @@
 	}
 
 	.card .content * {
-		color: #fff !important;
+		color: var(--text-color) !important;
 	}
 
 	.card .content .header {

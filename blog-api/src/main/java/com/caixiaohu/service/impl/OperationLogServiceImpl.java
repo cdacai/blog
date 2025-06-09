@@ -34,6 +34,14 @@ public class OperationLogServiceImpl implements OperationLogService {
 	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public void saveOperationLog(OperationLog log) {
+		// 兜底保护，description 超长自动截断
+		if (log.getDescription() != null && log.getDescription().length() > 255) {
+			log.setDescription(log.getDescription().substring(0, 255));
+		}
+		// 兜底保护，createTime 为空自动补当前时间
+		if (log.getCreateTime() == null) {
+			log.setCreateTime(new java.util.Date());
+		}
 		String ipSource = IpAddressUtils.getCityInfo(log.getIp());
 		UserAgentDTO userAgentDTO = userAgentUtils.parseOsAndBrowser(log.getUserAgent());
 		log.setIpSource(ipSource);

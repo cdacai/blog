@@ -88,6 +88,14 @@ public class IpAddressUtils {
 	 * @return
 	 */
 	public static String getCityInfo(String ip) {
+		// 本地和内网IP特殊处理
+		if ("127.0.0.1".equals(ip) || "0:0:0:0:0:0:0:1".equals(ip)) {
+			return "本地";
+		}
+		// 内网IP段判断
+		if (ip != null && (ip.startsWith("192.168.") || ip.startsWith("10.") || (ip.startsWith("172.") && ip.length() > 6 && isPrivate172(ip)))) {
+			return "内网";
+		}
 		if (searcher == null || method == null) {
 			try {
 				new IpAddressUtils().initIp2regionResource();
@@ -107,6 +115,18 @@ public class IpAddressUtils {
 			log.error("getCityInfo exception:", e);
 		}
 		return "";
+	}
+
+	// 判断172网段是否为内网
+	private static boolean isPrivate172(String ip) {
+		try {
+			String[] parts = ip.split("\\.");
+			if (parts.length >= 2) {
+				int second = Integer.parseInt(parts[1]);
+				return second >= 16 && second <= 31;
+			}
+		} catch (Exception ignore) {}
+		return false;
 	}
 
 	public static void main(String[] args) throws Exception {

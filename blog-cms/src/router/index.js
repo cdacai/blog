@@ -208,6 +208,12 @@ const routes = [
 				component: () => import('@/views/system/ScheduleJobList'),
 				meta: { title: '定时任务', icon: 'el-icon-alarm-clock' }
 			},
+			{
+				path: 'theme',
+				name: 'ThemeSetting',
+				component: () => import('@/views/system/theme/index.vue'),
+				meta: { title: '主题设置', icon: 'el-icon-magic-stick' }
+			},
 		]
 	},
 

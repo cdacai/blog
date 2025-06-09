@@ -183,10 +183,14 @@
 	left: 0;
 	right: 0;
 	z-index: 1000;
-	padding: 4rem 3rem;
+	padding: 3rem 32px;
 	background: transparent;
 	transition: all 0.3s ease;
 	transform: translateY(0);
+	display: flex;
+	justify-content: center;
+	max-width: var(--theme-content-width, 2200px);
+	margin: 0 auto;
 }
 
 /* 导航栏色块样式 */
@@ -196,7 +200,7 @@
 	right: 10%;
 	width: 80px;
 	height: 80px;
-	background-color: rgba(47, 133, 90, 0.4);
+	background-color: var(--decoration-color, rgba(47,133,90,0.4));
 	transform: rotate(15deg);
 	border-radius: 10px;
 	opacity: 0.15;
@@ -209,7 +213,7 @@
 	left: 15%;
 	width: 60px;
 	height: 60px;
-	background-color: rgba(47, 133, 90, 0.5);
+	background-color: var(--decoration-color, rgba(47,133,90,0.5));
 	transform: rotate(-10deg);
 	border-radius: 10px;
 	opacity: 0.15;
@@ -222,14 +226,15 @@
 	left: 40%;
 	width: 70px;
 	height: 70px;
-	background-color: rgba(47, 133, 90, 0.35);
+	background-color: var(--decoration-color, rgba(47,133,90,0.35));
 	border-radius: 50%;
 	opacity: 0.15;
 	z-index: -1;
 }
 
 .nav-container {
-	max-width: 1125px;
+	max-width: 1200px;
+	width: 100%;
 	margin: 0 auto;
 	display: flex;
 	justify-content: space-between;
@@ -239,13 +244,13 @@
 .blog-title {
 	font-size: 1.5rem;
 	font-weight: 100;
-	color: #2F855A;
+	color: var(--theme-text-primary);
 	text-decoration: none;
 	transition: all 0.3s ease;
 }
 
 .blog-title:hover {
-	color: #276749;
+	color: var(--theme-text-primary);
 }
 
 .nav-container-placeholder {
@@ -254,27 +259,23 @@
 
 .nav-links {
 	display: flex;
-	gap: 3rem;
+	gap: var(--theme-nav-gap, 32px);
 	align-items: center;
 }
 
 .nav-item {
-	font-size: 1.14rem;
-	color: #2F855A;
-
+	font-size: var(--theme-nav-size, 1rem);
+	color: var(--theme-text-primary);
 	text-decoration: none;
-	transition: all 0.3s ease;
-	font-weight: 600;
-	letter-spacing: 0.03em;
+	transition: var(--theme-hover-transition);
+	font-weight: 500;
+	letter-spacing: var(--theme-nav-spacing, 0.01em);
 }
 
-.nav-item:hover {
-	color: #276749;
-}
-
+.nav-item:hover,
 .nav-item.active {
-	color: rgba(44, 82, 60, 0.9);
-	font-weight: 600;
+	color: var(--theme-text-primary);
+	font-weight: 500;
 }
 
 .mobile-toggle {
@@ -328,7 +329,7 @@
 		flex-direction: column;
 		background: transparent;
 		padding: 0.3rem 0;
-		gap: 0;
+		gap: var(--theme-nav-gap, 16px);
 	}
 
 	.nav-hidden {
@@ -339,13 +340,15 @@
 		width: 100%;
 		text-align: center;
 		padding: 0.5rem 0.8rem;
-		font-size: 1rem;
-		color: #2F855A;
+		font-size: var(--theme-nav-size, 1rem);
+		color: var(--theme-text-primary);
 		position: relative;
+		letter-spacing: var(--theme-nav-spacing, 0.01em);
+		font-weight: 500;
 	}
 
 	.nav-item:hover {
-		color: #276749;
+		color: var(--theme-text-primary);
 	}
 
 	.nav-item.active::before {
@@ -356,7 +359,7 @@
 		transform: translateY(-50%);
 		width: 2px;
 		height: 16px;
-		background: #2F855A;
+		background: var(--theme-text-primary);
 		border-radius: 1px;
 	}
 }

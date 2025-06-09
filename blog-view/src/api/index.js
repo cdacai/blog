@@ -13,3 +13,10 @@ export function getSite() {
 		method: 'GET'
 	})
 }
+
+export function getTheme() {
+	return axios({
+		url: 'theme',
+		method: 'GET'
+	})
+}
