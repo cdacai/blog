@@ -44,8 +44,7 @@
               <h3>关于我</h3>
               <p>全栈开发者，专注Web技术，分享开发经验与技术思考。</p>
               <div class="social-links">
-                <a href="#" class="social-link">GitHub</a>
-                <a href="#" class="social-link">Twitter</a>
+                <a href="https://github.com/cdacai/blog" class="social-link" target="_blank">GitHub</a>
               </div>
             </div>
 

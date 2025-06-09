@@ -33,7 +33,7 @@ module.exports = {
 	 * @type {string}
 	 * @description 前台站点地址
 	 */
-	blogUrl: 'https://www.caixiaohu.com',
+	blogUrl: process.env.NODE_ENV === 'development' ? 'http://localhost:8080' : 'https://www.caixiaohu.com',
 
 	/**
 	 * 图片压缩配置

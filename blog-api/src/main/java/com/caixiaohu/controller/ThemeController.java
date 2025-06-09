@@ -35,7 +35,7 @@ public class ThemeController {
     /**
      * 获取当前主题配置（前台/所有用户）
      */
-    @GetMapping("/api/theme")
+    @GetMapping("/theme")
     public ResponseEntity<?> getTheme() {
         SiteConfig config = siteConfigService.getThemeConfig();
         if (config == null) {

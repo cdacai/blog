@@ -15,6 +15,8 @@
 </template>
 
 <script>
+import settings from '@/settings'
+
 export default {
   data() {
     return {
@@ -22,9 +24,8 @@ export default {
     }
   },
   created() {
-    // 兼容vuex和localStorage
-    const token = this.$store.getters.token || localStorage.getItem('token')
-    this.themeSwitcherUrl = `http://localhost:8080/new?token=${token}`
+    const token = localStorage.getItem('token')
+    this.themeSwitcherUrl = `${settings.blogUrl}/new?token=${token}`
   },
   mounted() {
     this._themeMsgHandler = (event) => {

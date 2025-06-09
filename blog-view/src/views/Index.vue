@@ -35,8 +35,7 @@
 								<h3>关于我</h3>
 								<p>全栈开发者，专注Web技术，分享开发经验与技术思考。</p>
 								<div class="social-links">
-									<a href="#" class="social-link">GitHub</a>
-									<a href="#" class="social-link">Twitter</a>
+									<a href="https://github.com/cdacai/blog" class="social-link" target="_blank">GitHub</a>
 								</div>
 							</div>
 							<div class="categories-section">
@@ -61,7 +60,7 @@
 
 <script>
 	// import {getHitokoto, getSite} from '@/api/index'
-	import {getSite} from '@/api/index'
+	import {getSite, getTheme} from '@/api/index'
 	import Nav from "@/components/index/Nav";
 	import Header from "@/components/index/Header";
 	import Footer from "@/components/index/Footer";
@@ -222,9 +221,11 @@
 			},
 			async applyTheme() {
 				try {
-					const res = await axios.get('/blog/api/theme')
-					let config = res.data
-					if (typeof config === 'string') config = JSON.parse(config)
+					const res = await getTheme()
+					let config = res
+					if (res && typeof res === 'string') {
+						try { config = JSON.parse(res) } catch(e) { config = {} }
+					}
 					this.themeConfig = config
 
 					// 适配嵌套结构，注入 CSS 变量
