@@ -140,6 +140,6 @@ Thanks to the following open source projects:
 - Your star and suggestions are our continuous motivation!
 
 ---
-If you like this project, please give it a star! Your support is our motivation to keep improving! [![GitHub stars](https://img.shields.io/github/stars/caixiaohu/blog.svg?style=social)](https://github.com/caixiaohu/blog)
+If you like this project, please give it a star! Your support is our motivation to keep improving! [![GitHub stars](https://img.shields.io/github/stars/cdacai/blog.svg?style=social)](https://github.com/cdacai/blog)
 
 Feedback and contributions are welcome! 

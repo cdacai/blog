@@ -191,6 +191,6 @@ CREATE DATABASE nblog CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 - 你的star和建议是我们持续优化的动力！
 
 ---
-如果你喜欢本项目，欢迎star支持！你的支持是我们持续优化的动力！[![GitHub stars](https://img.shields.io/github/stars/caixiaohu/blog.svg?style=social)](https://github.com/caixiaohu/blog)
+如果你喜欢本项目，欢迎star支持！你的支持是我们持续优化的动力！[![GitHub stars](https://img.shields.io/github/stars/cdacai/blog.svg?style=social)](https://github.com/cdacai/blog)
 
 欢迎反馈和参与贡献！
