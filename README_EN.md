@@ -8,29 +8,41 @@
 [![MySQL](https://img.shields.io/badge/MySQL-5.7+-blue.svg)](https://www.mysql.com/)
 [![Redis](https://img.shields.io/badge/Redis-6.0+-red.svg)](https://redis.io/)
 
-> A modern personal blog system built with Spring Boot + Vue, featuring content management, photo albums, and social interactions. The system adopts a front-end and back-end separation architecture, provides a complete admin panel, and supports both local and cloud storage.
+A modern blog system built with Spring Boot and Vue, featuring a fully decoupled front-end and back-end architecture, designed for content creation and interactive experience.
+Supports theme switching, article, comment, album, and statistics management, with built-in content moderation, message notifications, and scheduled tasks—helping you efficiently operate and beautify your personal blog.
+
+## Why Choose Cai Xiaohu Blog System?
+- Ultra-lightweight, low hardware requirements, suitable for everyone
+- Multiple beautiful themes, one-click switch in admin panel, highly customizable
+- Actively maintained, features keep evolving
+- Comprehensive content management and social interaction
 
 ## Featured Features
 
-### 1. Message Center
+### 1. Theme Switching & Personalization
+- Multiple exquisite theme templates, one-click switch in admin panel, real-time preview, meet different aesthetic needs
+- No restart required for theme switching, easy to use for all users
+- Upcoming: theme color customization, background pattern toggles, and more personalized options to create your unique blog style
+
+### 2. Message Center
 - Unified collection of comment, like, and report history
 - Support for internal messages and email notifications
 - Message categorization and status management
 - Real-time message push
 
-### 2. Photo Album Management
+### 3. Photo Album Management
 - Image management with one-click insertion
 - Album categorization
 - Support for both local and Upyun storage
 - Image preview and batch operations
 
-### 3. Content Security
+### 4. Content Security
 - Integration with Baidu Cloud Text Review (configurable)
 - Content reporting functionality
 - Report processing workflow
 - Result notification mechanism
 
-### 4. Storage Solutions
+### 5. Storage Solutions
 - Local file system storage support
 - Upyun object storage support
 - Configurable storage strategies
@@ -82,6 +94,10 @@ Preview:
   - ![Archive](./pic/blog4.jpg)
 - Comment Report
   - ![Comment Report](./pic/report.png)
+- Message Center
+  - ![Message Center](./pic/msgCenter.png)
+- Theme Switching
+  - ![Theme Switching](./pic/theme-switch.png)
 
 ### Admin Panel
 - Login Page
@@ -92,15 +108,13 @@ Preview:
   - ![Editor Interface](./pic/cms3.png)
 - Photo Album Management
   - ![Photo Album Management](./pic/cms4.jpg)
-- Message Center
-  - ![Message Center](./pic/msgCenter.png)
 
 ## Quick Start
 
 ### Environment Requirements
 - **Basic Environment**
-  - JDK: 1.8+
-  - MySQL: 5.7+ (utf8mb4 charset)
+  - JDK: 1.8+ (very low requirements, suitable for old computers, cloud servers, student devices, etc.)
+  - MySQL: 5.7+ (very low requirements, saves memory and disk space)
   - Redis: 6.0+
   - Node.js: 12.x+
   - Maven: 3.6+
@@ -179,6 +193,9 @@ Then execute `/blog-api/nblog.sql` to initialize table data
 
 ## Changelog
 
+### v2.1.0 (2025-06-09)
+- Added theme saving and switching feature: support for one-click switching and saving of multiple theme templates, improving personalization experience and beautifying your website. Entry: Admin Panel - System Management - Theme Settings
+
 ### v2.0.0 (2025-05-21)
 - Added message center, unified collection of comment/like/report history
 - Optimized task scheduling system (based on Quartz), preventing constant restarts
@@ -192,9 +209,10 @@ Then execute `/blog-api/nblog.sql` to initialize table data
 - Integrated content moderation functionality
 
 ### Development Plan
-- Editor upgrade: Replace with rich text editor
-- Dynamic module enhancement: Support dynamic comments
-- Theme customization: Support multiple theme templates
+- Theme personalization upgrade: theme color customization, background pattern toggles, and more personalized features coming soon
+- Editor upgrade: replace with rich text editor
+- Dynamic module enhancement: support dynamic comments
+- Welcome star and issues, features are continuously updated!
 
 ## License
 
@@ -206,4 +224,8 @@ Thanks to the following open source projects:
 - [Spring Boot](https://github.com/spring-projects/spring-boot)
 - [Vue](https://github.com/vuejs/vue)
 - [Element UI](https://github.com/ElemeFE/element)
-- And all other open source dependencies mentioned in this README 
+- And all other open source dependencies mentioned in this README
+- Your star and suggestions are our continuous motivation!
+
+---
+If you like this project, please give it a star! Your support is our motivation to keep improving! [![GitHub stars](https://img.shields.io/github/stars/caixiaohu/blog.svg?style=social)](https://github.com/caixiaohu/blog) 
