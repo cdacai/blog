@@ -329,7 +329,7 @@
 		flex-direction: column;
 		background: transparent;
 		padding: 0.3rem 0;
-		gap: var(--theme-nav-gap, 16px);
+		gap: var(--theme-nav-gap-mobile, 8px);
 	}
 
 	.nav-hidden {

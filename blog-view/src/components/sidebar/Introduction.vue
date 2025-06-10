@@ -249,7 +249,7 @@
 }
 
 .about-me {
-	background: rgba(255, 255, 255, 0.82);
+	background: var(--theme-card-bg, #fff);
 	backdrop-filter: blur(10px);
 	border-radius: 20px;
 	margin-bottom: 2rem;
@@ -260,7 +260,7 @@
 .about-me:hover {
 	transform: translateY(-2px);
 	box-shadow: 0 4px 20px rgba(26, 71, 49, 0.08);
-	background: rgba(255, 255, 255, 0.9);
+	background: var(--theme-card-bg, #ffffffee);
 }
 
 /* 增强卡片悬停效果 */

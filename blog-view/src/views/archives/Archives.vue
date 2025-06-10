@@ -192,27 +192,19 @@
 		padding: 0.5rem 1rem !important;
 		border-radius: 4px !important;
 		transition: all 0.3s ease !important;
-		color: var(--text-color) !important;
+		color: var(--timeline-title-color, #fff) !important;
 	}
 
-	.tl-blue .tl-title {
+	.tl-blue .tl-title,
+	.tl-green .tl-title,
+	.tl-purple .tl-title,
+	.tl-red .tl-title {
 		background: var(--primary-color) !important;
 	}
 
 	.tl-dark .tl-title {
 		background: var(--text-color) !important;
-	}
-
-	.tl-green .tl-title {
-		background: var(--primary-color) !important;
-	}
-
-	.tl-purple .tl-title {
-		background: var(--primary-color) !important;
-	}
-
-	.tl-red .tl-title {
-		background: var(--primary-color) !important;
+		color: #fff !important;
 	}
 
 	.tl-title:hover {

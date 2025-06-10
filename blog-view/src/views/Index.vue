@@ -410,7 +410,7 @@
 	}
 
 	.sidebar-content {
-		background-color: #fff;
+		background-color: var(--theme-card-bg, #fff);
 		border-radius: var(--theme-sidebar-radius, 20px);
 		padding: var(--theme-sidebar-padding, 32px);
 		box-shadow: 0 8px 32px rgba(0,0,0,0.10);
@@ -418,7 +418,7 @@
 		transition: background 0.3s, box-shadow 0.3s;
 	}
 	.sidebar-content:hover {
-		background-color: #ffffffee;
+		background-color: var(--theme-card-bg, #ffffffee);
 	}
 
 	.about-section,
@@ -746,13 +746,13 @@
 	  /* 只保留圆角、阴影、背景色，彻底移除padding */
 	  border-radius: var(--card-radius, 20px);
 	  box-shadow: 0 8px 32px rgba(0,0,0,0.10);
-	  background-color: #fff;
+	  background-color: var(--theme-card-bg, #fff);
 	  transition: var(--theme-hover-transition);
 	  font-size: var(--card-font-size, 1rem);
 	}
 	.article-card:hover {
 	  transform: translateY(-2px);
-	  background-color: #ffffffee;
+	  background-color: var(--theme-card-bg, #ffffffee);
 	}
 
 	/* 文章卡片标题、描述、meta */
@@ -837,7 +837,7 @@
 
 	/* 侧边栏卡片样式 */
 	.sidebar-content {
-	  background-color: #fff;
+	  background-color: var(--theme-card-bg, #fff);
 	  border-radius: var(--theme-sidebar-radius, 20px);
 	  padding: var(--theme-sidebar-padding, 32px);
 	  box-shadow: 0 8px 32px rgba(0,0,0,0.10);
@@ -845,7 +845,7 @@
 	  transition: background 0.3s, box-shadow 0.3s;
 	}
 	.sidebar-content:hover {
-	  background-color: #ffffffee;
+	  background-color: var(--theme-card-bg, #ffffffee);
 	}
 	.about-section,
 	.categories-section {
@@ -1048,11 +1048,11 @@
 	.article-card {
 	  border-radius: var(--card-radius, 20px);
 	  box-shadow: 0 8px 32px rgba(0,0,0,0.10);
-	  background-color: #fff;
+	  background-color: var(--theme-card-bg, #fff);
 	  transition: var(--theme-hover-transition);
 	}
 	.article-card:hover {
-	  background-color: #ffffffee;
+	  background-color: var(--theme-card-bg, #ffffffee);
 	}
 
 	.sidebar {
@@ -1063,7 +1063,7 @@
 	}
 
 	.sidebar-content {
-	  background-color: #fff;
+	  background-color: var(--theme-card-bg, #fff);
 	  border-radius: var(--theme-sidebar-radius, 20px);
 	  padding: var(--theme-sidebar-padding, 32px);
 	  box-shadow: 0 8px 32px rgba(0,0,0,0.10);
@@ -1071,7 +1071,7 @@
 	  transition: background 0.3s, box-shadow 0.3s;
 	}
 	.sidebar-content:hover {
-	  background-color: #ffffffee;
+	  background-color: var(--theme-card-bg, #ffffffee);
 	}
 
 	.about-section,

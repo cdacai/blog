@@ -181,6 +181,7 @@ export default {
 <style scoped>
 .report-dialog {
 	border-radius: 8px;
+	background-color: var(--theme-card-bg, #fff);
 }
 
 .form-content {
@@ -198,14 +199,16 @@ export default {
 
 /* 修改按钮样式 */
 .el-button--primary {
-	background-color: #2F855A;
-	border-color: #2F855A;
+	background-color: var(--primary-color, #2F855A);
+	border-color: var(--primary-color, #2F855A);
+	color: #fff;
 }
 
 .el-button--primary:hover,
 .el-button--primary:focus {
-	background-color: #276749;
-	border-color: #276749;
+	background-color: var(--primary-color, #276749);
+	border-color: var(--primary-color, #276749);
+	color: #fff;
 }
 
 /* 全局弹窗样式 */
@@ -219,6 +222,7 @@ export default {
 	max-height: 90vh;
 	display: flex;
 	flex-direction: column;
+	background-color: var(--theme-card-bg, #fff);
 }
 
 :deep(.el-dialog__body) {

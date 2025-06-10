@@ -163,7 +163,7 @@
 }
 
 .moment-card {
-	background: rgba(255, 255, 255, 0.82);
+	background: var(--theme-card-bg, #fff);
 	border-radius: 1rem;
 	padding: 1.5rem;
 	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
@@ -238,10 +238,11 @@
 	background: rgba(47, 133, 90, 0.1);
 	transition: all 0.3s ease;
 	cursor: pointer;
+	background: color-mix(in srgb, var(--primary-color) 10%, transparent);
 }
 
 .like-button:hover {
-	background: rgba(47, 133, 90, 0.2);
+	background: color-mix(in srgb, var(--primary-color) 20%, transparent);
 }
 
 .like-button .like-color {
@@ -267,7 +268,7 @@
 }
 
 .empty-moments {
-	background: rgba(255, 255, 255, 0.82);
+	background: var(--theme-card-bg, #fff);
 	border-radius: 1rem;
 	padding: 6rem 2rem;
 	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);

@@ -128,7 +128,7 @@ export default {
 }
 .blog-card {
 	position: relative;
-	background: rgba(255, 255, 255, 0.82);
+	background: var(--theme-card-bg, #fff);
 	backdrop-filter: blur(10px);
 	border-radius: var(--card-radius, 20px); /* 变量化圆角 */
 	margin-bottom: 3.5rem;
@@ -141,7 +141,7 @@ export default {
 .blog-card:hover {
 	transform: translateY(-2px);
 	box-shadow: 0 4px 20px rgba(26, 71, 49, 0.08);
-	background: rgba(255, 255, 255, 0.9);
+	background: var(--theme-card-bg, #ffffffee);
 }
 
 .top-label {
@@ -381,7 +381,7 @@ export default {
 }
 
 .blog-item {
-	background: rgba(255, 255, 255, 0.82);
+	background: var(--theme-card-bg, #fff);
 	border-radius: 1rem;
 	padding: 2rem;
 	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);

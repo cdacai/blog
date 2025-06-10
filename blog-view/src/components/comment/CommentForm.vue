@@ -91,15 +91,14 @@
 						<span class="switch-label">订阅回复</span>
 						<el-switch
 							v-model="commentForm.notice"
-							active-color="#2F855A"
-							inactive-color="#dcdfe6">
+							:active-color="primaryColor"
+							:inactive-color="'#dcdfe6'">
 						</el-switch>
 					</div>
 					<el-button 
 						type="success" 
 						size="mini"
-						v-throttle="[postForm,'click',3000]"
-						style="background-color: rgb(47, 133, 90); border-color: rgb(47, 133, 90);">发表评论</el-button>
+						v-throttle="[postForm,'click',3000]">发表评论</el-button>
 				</div>
 			</div>
 		</el-form>
@@ -117,7 +116,10 @@
 	export default {
 		name: "CommentForm",
 		computed: {
-			...mapState(['parentCommentId', 'commentForm', 'commentQuery'])
+			...mapState(['parentCommentId', 'commentForm', 'commentQuery']),
+			primaryColor() {
+				return getComputedStyle(document.documentElement).getPropertyValue('--primary-color') || '#2F855A'
+			}
 		},
 		data() {
 			return {
@@ -224,19 +226,19 @@
 
 .cancel-reply {
 	font-size: 0.875rem;
-	background-color: #fff !important;
-	border-color: #d1d5db !important;
-	color: #4b5563 !important;
+	background-color: var(--theme-card-bg, #fff) !important;
+	border-color: var(--primary-color, #2F855A) !important;
+	color: var(--primary-color, #2F855A) !important;
 }
 
 .cancel-reply:hover {
-	background-color: #f9fafb !important;
-	border-color: #9ca3af !important;
-	color: #374151 !important;
+	background-color: var(--theme-card-bg, #f9fafb) !important;
+	border-color: var(--primary-color, #2F855A) !important;
+	color: var(--primary-color, #276749) !important;
 }
 
 .comment-form {
-	background-color: #fff;
+	background-color: var(--theme-card-bg, #fff);
 	border-radius: 8px;
 }
 
@@ -301,7 +303,7 @@
 	top: 50%;
 	transform: translate(-50%, -50%);
 	padding: 0;
-	background-color: #fff;
+	background-color: var(--theme-card-bg, #fff);
 	border: 1px solid #ddd;
 	border-radius: 8px;
 	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
@@ -422,6 +424,46 @@
 	color: #606266;
 }
 
+.notice-switch .el-switch {
+	--el-switch-on-color: var(--primary-color, #2F855A);
+	--el-switch-off-color: #dcdfe6;
+}
+
+.notice-switch .el-switch .el-switch__core {
+	background-color: var(--el-switch-off-color) !important;
+}
+
+.notice-switch .el-switch.is-checked .el-switch__core {
+	background-color: var(--primary-color, #2F855A) !important;
+	border-color: var(--primary-color, #2F855A) !important;
+}
+
+.form-actions .el-button.cancel-reply {
+	background-color: var(--theme-card-bg, #fff) !important;
+	border-color: var(--primary-color, #2F855A) !important;
+	color: var(--primary-color, #2F855A) !important;
+}
+
+.form-actions .el-button.cancel-reply:hover {
+	background-color: var(--theme-card-bg, #f9fafb) !important;
+	border-color: var(--primary-color, #2F855A) !important;
+	color: var(--primary-color, #276749) !important;
+}
+
+.form-actions .el-button[type="success"],
+.form-actions .el-button--success {
+	background-color: var(--primary-color, #2F855A) !important;
+	border-color: var(--primary-color, #2F855A) !important;
+	color: #fff !important;
+}
+
+.form-actions .el-button[type="success"]:hover,
+.form-actions .el-button--success:hover {
+	background-color: var(--primary-color, #276749) !important;
+	border-color: var(--primary-color, #276749) !important;
+	color: #fff !important;
+}
+
 @media screen and (max-width: 768px) {
 	.form-row {
 		flex-direction: column;
@@ -455,6 +497,16 @@
 	.mask {
 		background-color: rgba(0, 0, 0, 0.5);
 	}
+}
+
+:deep(.el-switch.is-checked .el-switch__core) {
+	background-color: var(--primary-color, #2F855A) !important;
+	border-color: var(--primary-color, #2F855A) !important;
+}
+
+:deep(.el-switch__core) {
+	background-color: #dcdfe6 !important;
+	border-color: #dcdfe6 !important;
 }
 </style>
 

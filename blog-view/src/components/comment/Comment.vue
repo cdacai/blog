@@ -246,14 +246,14 @@
 	}
 
 	.reply-btn {
-		background-color: #2F855A;
-		border-color: #2F855A;
-		color: white;
+		background-color: var(--primary-color, #2F855A);
+		border-color: var(--primary-color, #2F855A);
+		color: #fff;
 	}
 
 	.reply-btn:hover {
-		background-color: #276749;
-		border-color: #276749;
+		background-color: var(--primary-color, #276749);
+		border-color: var(--primary-color, #276749);
 		transform: translateY(-1px);
 	}
 
@@ -389,18 +389,20 @@
 
 	/* 修改回复按钮样式 */
 	.el-button--primary {
-		background-color: #2F855A;
-		border-color: #2F855A;
+		background-color: var(--primary-color, #2F855A);
+		border-color: var(--primary-color, #2F855A);
 		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 		font-weight: 500;
+		color: #fff;
 	}
 
 	.el-button--primary:hover,
 	.el-button--primary:focus {
-		background-color: #276749;
-		border-color: #276749;
+		background-color: var(--primary-color, #276749);
+		border-color: var(--primary-color, #276749);
 		transform: translateY(-1px);
 		box-shadow: 0 2px 4px rgba(39, 103, 73, 0.2);
+		color: #fff;
 	}
 
 	.el-button--primary:active {
@@ -475,14 +477,14 @@
 	}
 
 	.reply-btn {
-		background-color: #2F855A;
-		border-color: #2F855A;
-		color: white;
+		background-color: var(--primary-color, #2F855A);
+		border-color: var(--primary-color, #2F855A);
+		color: #fff;
 	}
 
 	.reply-btn:hover {
-		background-color: #276749;
-		border-color: #276749;
+		background-color: var(--primary-color, #276749);
+		border-color: var(--primary-color, #276749);
 		transform: translateY(-1px);
 	}
 
