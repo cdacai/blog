@@ -102,14 +102,19 @@
 	.ui.bottom {
 		margin-top: 7rem;
 		width: 100%;
-		overflow-x: auto;
 		max-width: 100vw;
+		overflow-x: auto;
+		overflow-y: hidden;
+		box-sizing: border-box;
+		padding-bottom: 2px;
 	}
 
 	@media screen and (max-width: 768px) {
 		.ui.bottom {
 			max-width: 100vw;
 			overflow-x: auto;
+			overflow-y: hidden;
+			padding-bottom: 2px;
 		}
 		.el-pagination {
 			white-space: nowrap;
@@ -122,11 +127,12 @@
 		.el-pagination.is-background .btn-next, 
 		.el-pagination.is-background .btn-prev, 
 		.el-pagination.is-background .el-pager li {
-			margin: 0 2px !important;
-			width: 26px !important;
-			height: 26px !important;
-			line-height: 26px !important;
-			min-width: 26px !important;
+			margin: 0 1px !important;
+			width: 22px !important;
+			height: 22px !important;
+			line-height: 22px !important;
+			min-width: 22px !important;
+			font-size: 13px !important;
 		}
 	}
 </style>
