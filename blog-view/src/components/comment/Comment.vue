@@ -328,7 +328,7 @@
 	}
 
 	.nickname:hover {
-		color: #2F855A;
+		color: var(--primary-color, #2F855A);
 		text-decoration: underline;
 	}
 
@@ -411,9 +411,9 @@
 
 	/* 修改管理员标签样式 */
 	.ui.black.left.pointing.label {
-		background-color: #2F855A !important;
-		border-color: #2F855A !important;
-		color: white !important;
+		background-color: var(--primary-color, #2F855A) !important;
+		border-color: var(--primary-color, #2F855A) !important;
+		color: #fff !important;
 		padding: 0.5em 1em !important;
 		border-radius: 4px !important;
 		font-weight: 500 !important;
@@ -422,14 +422,14 @@
 
 	.ui.dividing.header {
 		color: #2d3748;
-		border-bottom: 2px solid rgba(47, 133, 90, 0.1);
+		border-bottom: 2px solid var(--primary-color, rgba(47, 133, 90, 0.1));
 		padding-bottom: 1rem;
 		margin-bottom: 2rem;
 		font-weight: 600;
 	}
 
 	.comments + .border {
-		border-color: rgba(47, 133, 90, 0.15);
+		border-color: var(--primary-color, rgba(47, 133, 90, 0.15));
 	}
 
 	.comment-header {
@@ -546,14 +546,14 @@
 	/* 修改取消回复按钮样式 */
 	.cancel-reply {
 		background-color: transparent !important;
-		border-color: #2F855A !important;
-		color: #2F855A !important;
+		border-color: var(--primary-color, #2F855A) !important;
+		color: var(--primary-color, #2F855A) !important;
 	}
 
 	.cancel-reply:hover {
 		background-color: rgba(47, 133, 90, 0.1) !important;
-		color: #276749 !important;
-		border-color: #276749 !important;
+		color: var(--primary-color, #276749) !important;
+		border-color: var(--primary-color, #276749) !important;
 	}
 
 	@media screen and (max-width: 768px) {

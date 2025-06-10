@@ -226,6 +226,34 @@
 </script>
 
 <style scoped>
+.blog-container,
+.typo,
+.ui.attached.positive.message,
+.ui.bottom.attached.segment.threaded.comments {
+	max-width: 100%;
+	overflow-x: auto;
+	box-sizing: border-box;
+	word-break: break-all;
+}
+
+.blog-info-container,
+.time-info,
+.comment-actions,
+.user-info {
+	min-width: 0;
+}
+
+.typo table {
+	max-width: 100%;
+	overflow-x: auto;
+	display: block;
+}
+
+.typo pre {
+	max-width: 100%;
+	overflow-x: auto;
+}
+
 .blog-container {
 	background-color: white;
 	border-radius: 8px 8px 0 0;

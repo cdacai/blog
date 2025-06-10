@@ -409,16 +409,27 @@
 		margin-top: var(--theme-sidebar-margin-top, 32px);
 	}
 
-	.sidebar-content {
+	.sidebar > div {
 		background-color: var(--theme-card-bg, #fff);
-		border-radius: var(--theme-sidebar-radius, 20px);
-		padding: var(--theme-sidebar-padding, 32px);
-		box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+		border-radius: var(--sidebar-radius, var(--theme-sidebar-radius, 24px));
+		padding: var(--sidebar-padding, 32px 32px 28px 32px);
+		box-shadow: var(--theme-shadow-card, 0 8px 32px rgba(0,0,0,0.10));
 		margin-bottom: 2rem;
 		transition: background 0.3s, box-shadow 0.3s;
 	}
+
+	.sidebar-content {
+		background-color: var(--theme-card-bg, #fff);
+		border-radius: var(--sidebar-radius, var(--theme-sidebar-radius, 24px));
+		padding: var(--sidebar-padding, 32px 32px 28px 32px);
+		box-shadow: var(--theme-shadow-card, 0 8px 32px rgba(0,0,0,0.10));
+		margin-bottom: 2rem;
+		transition: background 0.3s, box-shadow 0.3s;
+	}
+
 	.sidebar-content:hover {
 		background-color: var(--theme-card-bg, #ffffffee);
+		box-shadow: var(--theme-shadow-hover, 0 12px 40px rgba(0,0,0,0.13));
 	}
 
 	.about-section,
@@ -743,16 +754,17 @@
 
 	/* 文章卡片样式 */
 	.article-card {
-	  /* 只保留圆角、阴影、背景色，彻底移除padding */
-	  border-radius: var(--card-radius, 20px);
-	  box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+	  border-radius: var(--card-radius, var(--theme-card-radius, 20px));
+	  box-shadow: var(--theme-shadow-card, 0 8px 32px rgba(0,0,0,0.10));
 	  background-color: var(--theme-card-bg, #fff);
-	  transition: var(--theme-hover-transition);
-	  font-size: var(--card-font-size, 1rem);
+	  transition: var(--theme-hover-transition, all 0.3s);
+	  font-size: var(--card-font-size, var(--theme-card-font-size, 1rem));
+	  padding: var(--card-padding, var(--theme-card-padding, 32px));
 	}
 	.article-card:hover {
 	  transform: translateY(-2px);
 	  background-color: var(--theme-card-bg, #ffffffee);
+	  box-shadow: var(--theme-shadow-hover, 0 12px 40px rgba(0,0,0,0.13));
 	}
 
 	/* 文章卡片标题、描述、meta */
@@ -768,13 +780,17 @@
 	  color: var(--theme-text-primary);
 	  text-decoration: none;
 	  font-weight: normal;
+	  font-size: var(--title-font-size, 1.5rem);
+	  letter-spacing: var(--theme-title-spacing, 0);
+	  line-height: var(--theme-title-line-height, 1.2);
+	  font-weight: var(--theme-title-weight, 700);
 	}
 	.article-description {
 	  color: var(--theme-text-secondary);
 	  font-size: var(--desc-font-size, var(--theme-desc-font-size, 1rem));
-	  line-height: var(--theme-description-line-height);
-	  margin-bottom: var(--theme-article-desc-margin);
-	  letter-spacing: var(--theme-description-spacing);
+	  line-height: var(--theme-description-line-height, 1.8);
+	  margin-bottom: var(--theme-article-desc-margin, 16px);
+	  letter-spacing: var(--theme-description-spacing, 0);
 	}
 	.article-meta {
 	  display: flex;
@@ -807,8 +823,9 @@
 	  display: flex;
 	  justify-content: space-between;
 	  align-items: center;
-	  font-size: var(--theme-footer-size);
-	  letter-spacing: var(--theme-footer-spacing);
+	  font-size: var(--theme-footer-size, 1rem);
+	  letter-spacing: var(--theme-footer-spacing, 0);
+	  gap: var(--element-gap, 24px);
 	}
 	.article-comment {
 	  color: var(--theme-primary);
@@ -827,9 +844,9 @@
 	  gap: 4px;
 	  opacity: 0.9;
 	  transition: opacity 0.2s;
-	  font-size: var(--theme-button-font-size, 1rem);
-	  border-radius: var(--theme-button-radius, 8px);
-	  padding: var(--theme-button-padding, 12px 24px);
+	  font-size: var(--button-font-size, var(--theme-button-font-size, 1rem));
+	  border-radius: var(--button-radius, var(--theme-button-radius, 8px));
+	  padding: var(--button-padding, var(--theme-button-padding, 12px 24px));
 	}
 	.read-more:hover {
 	  opacity: 1;
