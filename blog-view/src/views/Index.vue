@@ -231,7 +231,7 @@
 					// 适配嵌套结构，注入 CSS 变量
 					const root = document.documentElement
 					// 主色
-					let mainColor = (config.colors && config.colors.primary) || config.primaryColor || '#2F855A'
+					let mainColor = (config.colors && config.colors.primary) || config.primaryColor || '#ffffff'
 					// 装饰色
 					let decorationColor = config.decorationColor || mainColor
 					root.style.setProperty('--primary-color', mainColor)
@@ -268,7 +268,7 @@
 					root.style.setProperty('--primary-color', '#2F855A')
 					root.style.setProperty('--background', '#fff')
 					root.style.setProperty('--text-color', '#222')
-					root.style.setProperty('--decoration-color', '#2F855A')
+					root.style.setProperty('--decoration-color', '#fff')
 					root.style.setProperty('--theme-text-primary', '#222')
 					// 降级波浪
 					const waveBgs = document.querySelectorAll('.wave-bg')

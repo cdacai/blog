@@ -200,7 +200,7 @@
 	right: 10%;
 	width: 80px;
 	height: 80px;
-	background-color: var(--decoration-color, rgba(47,133,90,0.4));
+	background-color: var(--decoration-color, #ffffff);	
 	transform: rotate(15deg);
 	border-radius: 10px;
 	opacity: 0.15;
@@ -213,7 +213,7 @@
 	left: 15%;
 	width: 60px;
 	height: 60px;
-	background-color: var(--decoration-color, rgba(47,133,90,0.5));
+	background-color: var(--decoration-color, #ffffff);
 	transform: rotate(-10deg);
 	border-radius: 10px;
 	opacity: 0.15;
@@ -226,7 +226,7 @@
 	left: 40%;
 	width: 70px;
 	height: 70px;
-	background-color: var(--decoration-color, rgba(47,133,90,0.35));
+	background-color: var(--decoration-color, #ffffff);
 	border-radius: 50%;
 	opacity: 0.15;
 	z-index: -1;
