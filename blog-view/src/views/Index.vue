@@ -1256,26 +1256,3 @@
 	}
 </style>
 
-<!-- 全局滚动条样式，确保不被scoped影响 -->
-<style>
-::-webkit-scrollbar {
-  width: 1px;
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: var(--primary-color, #2F855A);
-  border-radius: 8px;
-  min-height: 40px;
-  transition: background 0.2s;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--primary-color, #24915a);
-}
-::-webkit-scrollbar-corner {
-  background: transparent;
-}
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--primary-color, #2F855A) transparent;
-}
-</style>
