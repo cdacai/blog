@@ -42,7 +42,7 @@
 								<h3>文章分类</h3>
 								<ul class="category-list">
 									<li v-for="category in categoryList" :key="category.name" class="category-item">
-										<router-link :to="`/category/${category.name}`" class="category-link">
+										<router-link :to="`/category/${encodeURIComponent(category.name)}`" class="category-link">
 											<span class="category-name">{{ category.name }}</span>
 											<span class="category-count">{{ category.blogCount }}</span>
 										</router-link>
