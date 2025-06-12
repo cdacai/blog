@@ -42,8 +42,10 @@
 								<h3>文章分类</h3>
 								<ul class="category-list">
 									<li v-for="category in categoryList" :key="category.name" class="category-item">
-										<span class="category-name">{{ category.name }}</span>
-										<span class="category-count">{{ category.blogCount }}</span>
+										<router-link :to="`/category/${category.name}`" class="category-link">
+											<span class="category-name">{{ category.name }}</span>
+											<span class="category-count">{{ category.blogCount }}</span>
+										</router-link>
 									</li>
 								</ul>
 							</div>
@@ -1234,4 +1236,46 @@
 	    padding: 0 1.5rem;
 	  }
 	}
+
+	.category-link {
+	  display: flex;
+	  align-items: center;
+	  justify-content: space-between;
+	  width: 100%;
+	  color: inherit;
+	  text-decoration: none;
+	  cursor: pointer;
+	  transition: background 0.2s;
+	}
+	.category-link:hover .category-name {
+	  color: var(--theme-primary);
+	}
+	.category-link:hover .category-count {
+	  background-color: var(--theme-primary);
+	  opacity: 1;
+	}
+</style>
+
+<!-- 全局滚动条样式，确保不被scoped影响 -->
+<style>
+::-webkit-scrollbar {
+  width: 1px;
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color, #2F855A);
+  border-radius: 8px;
+  min-height: 40px;
+  transition: background 0.2s;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-color, #24915a);
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-color, #2F855A) transparent;
+}
 </style>

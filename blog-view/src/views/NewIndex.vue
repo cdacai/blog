@@ -647,27 +647,19 @@ export default {
   margin-top: var(--theme-sidebar-margin-top, 32px);
 }
 
-.sidebar > div {
-  background-color: #fff;
-  border-radius: 24px;
-  padding: 32px 32px 28px 32px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.10);
-  margin-bottom: 2rem;
-  transition: background 0.3s, box-shadow 0.3s;
-}
-
+.sidebar > div,
 .sidebar-content {
-  background-color: #fff;
-  border-radius: 24px;
-  padding: 32px 32px 28px 32px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+  background-color: var(--theme-card-bg, #fff);
+  border-radius: var(--sidebar-radius, var(--theme-sidebar-radius, 24px));
+  padding: var(--sidebar-padding, 32px 32px 28px 32px);
+  box-shadow: var(--theme-shadow-card, 0 8px 32px rgba(0,0,0,0.10));
   margin-bottom: 2rem;
   transition: background 0.3s, box-shadow 0.3s;
 }
 
 .sidebar-content:hover {
-  background-color: #fff;
-  box-shadow: 0 12px 40px rgba(0,0,0,0.13);
+  background-color: var(--theme-card-bg, #ffffffee);
+  box-shadow: var(--theme-shadow-hover, 0 12px 40px rgba(0,0,0,0.13));
 }
 
 .about-section,
@@ -684,17 +676,18 @@ export default {
 }
 
 .about-section h3 {
-  font-size: 1.18rem;
+  font-size: var(--theme-sidebar-about-title-size, var(--sidebar-title-size, var(--theme-sidebar-title-size, 1.5rem)));
   margin-bottom: 16px;
   color: var(--theme-text-primary);
-  font-weight: 700;
-  letter-spacing: 0.01em;
+  font-weight: var(--theme-sidebar-about-title-weight, var(--sidebar-title-weight, var(--theme-sidebar-title-weight, 700)));
+  letter-spacing: var(--theme-sidebar-about-title-spacing, var(--sidebar-title-spacing, var(--theme-sidebar-title-spacing, 0)));
 }
 
 .about-section p {
   color: var(--theme-text-secondary);
-  line-height: 1.8;
-  font-size: 1rem;
+  line-height: var(--theme-sidebar-about-desc-line-height, var(--sidebar-text-line-height, var(--theme-sidebar-text-line-height, 1.8)));
+  font-size: var(--theme-sidebar-about-desc-size, var(--sidebar-text-size, var(--theme-sidebar-text-size, 1rem)));
+  letter-spacing: var(--theme-sidebar-text-spacing);
   margin-bottom: 16px;
 }
 
@@ -723,8 +716,8 @@ export default {
 }
 
 .categories-section h3 {
-  font-size: 1.13rem;
-  font-weight: 700;
+  font-size: var(--theme-sidebar-categories-title-size, 1.13rem);
+  font-weight: var(--theme-sidebar-categories-title-weight, 700);
   margin-bottom: 18px;
   color: var(--theme-text-primary);
 }
@@ -741,9 +734,9 @@ export default {
   justify-content: space-between;
   padding: 10px 0;
   color: var(--theme-text-secondary);
-  font-size: 1rem;
+  font-size: var(--theme-sidebar-categories-item-size, 1rem);
   line-height: 1.7;
-  letter-spacing: 0.01em;
+  letter-spacing: var(--theme-sidebar-categories-item-spacing, 0.01em);
   border-bottom: 1px solid rgba(0, 0, 0, 0.04);
   gap: 12px;
 }
