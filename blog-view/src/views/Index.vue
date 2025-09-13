@@ -63,6 +63,7 @@
 <script>
 	// import {getHitokoto, getSite} from '@/api/index'
 	import {getSite, getTheme} from '@/api/index'
+	import {themes} from '@/themes/index'
 	import Nav from "@/components/index/Nav";
 	import Header from "@/components/index/Header";
 	import Footer from "@/components/index/Footer";
@@ -101,7 +102,8 @@
 				newBlogList: [],
 				// hitokoto: {},
         themeConfig: { ...defaultTheme },
-        blogList: []
+        blogList: [],
+        themes: themes
 			}
 		},
 		computed: {
@@ -114,8 +116,13 @@
 				const { colors = {}, spacing = {}, typography = {}, borderRadius = {}, transitions = {} } = this.theme
 				const { text = {}, nav = {}, card = {}, gradients = {} } = colors
 				const themeTextPrimary = (text && text.primary) || this.theme.textColor || (this.theme.text && this.theme.text.primary) || '#222'
+				console.log('this.themeConfig', this.themeConfig);
+				console.log('colors', colors);
+				console.log('text', text);
 				return {
-					'--theme-primary': colors.primary || '',
+					// 与applyTheme方法保持一致的颜色获取逻辑
+					// 优先使用themeConfig.colors.primary，其次是themeConfig.primaryColor，最后是默认值
+					'--theme-primary': (this.themeConfig.colors && this.themeConfig.colors.primary) || this.themeConfig.primaryColor || '#2F855A',
 					'--theme-bg': colors.background || '',
 					'--theme-bg-gradient': (gradients.background && gradients.background.image) || gradients.background || '',
 					'--theme-text-primary': themeTextPrimary,
@@ -222,70 +229,85 @@
 				})
 			},
 			async applyTheme() {
-				try {
-					const res = await getTheme()
-					let config = res
-					if (res && typeof res === 'string') {
-						try { config = JSON.parse(res) } catch(e) { config = {} }
-					}
-					this.themeConfig = config
+			try {
+				const res = await getTheme()
+				let config = res
+				if (res && typeof res === 'string') {
+					try { config = JSON.parse(res) } catch(e) { config = {} }
+				}
+				this.themeConfig = config
 
-					// 适配嵌套结构，注入 CSS 变量
-					const root = document.documentElement
-					// 主色
-					let mainColor = (config.colors && config.colors.primary) || config.primaryColor || '#ffffff'
-					// 装饰色
-					let decorationColor = config.decorationColor || mainColor
-					root.style.setProperty('--primary-color', mainColor)
-					root.style.setProperty('--background', (config.colors && config.colors.background) || config.background || '#fff')
-					root.style.setProperty('--text-color', (config.colors && config.colors.text && config.colors.text.primary) || config.textColor || (config.text && config.text.primary) || '#222')
-					root.style.setProperty('--decoration-color', decorationColor)
-					root.style.setProperty('--theme-text-primary', (config.colors && config.colors.text && config.colors.text.primary) || config.textColor || (config.text && config.text.primary) || '#222')
-
-					// 注入主题尺寸参数，适配多层嵌套结构
-					root.style.setProperty('--card-radius', (config.borderRadius && config.borderRadius.card) || '20px')
-					root.style.setProperty('--button-radius', (config.borderRadius && config.borderRadius.button) || '8px')
-					root.style.setProperty('--sidebar-radius', (config.borderRadius && config.borderRadius.sidebar) || '20px')
-					root.style.setProperty('--card-padding', (config.spacing && config.spacing.padding && config.spacing.padding.card) || '32px')
-					root.style.setProperty('--sidebar-padding', (config.spacing && config.spacing.padding && config.spacing.padding.sidebar) || '32px')
-					root.style.setProperty('--card-font-size',
-						(config.typography && config.typography.description && config.typography.description.size)
-						|| (config.typography && config.typography.article && config.typography.article.description && config.typography.article.description.size)
-						|| '1rem'
-					)
-					root.style.setProperty('--button-font-size',
-						(config.typography && config.typography.nav && config.typography.nav.size)
-						|| (config.typography && config.typography.base && config.typography.base.size)
-						|| '1rem'
-					)
-					root.style.setProperty('--title-font-size', (config.typography && config.typography.title && config.typography.title.size) || '1.5rem')
-					root.style.setProperty('--desc-font-size', (config.typography && config.typography.description && config.typography.description.size) || '1rem')
-					root.style.setProperty('--element-gap', (config.spacing && config.spacing.gap && config.spacing.gap.articles) || '15px')
+				// 适配嵌套结构，注入 CSS 变量
+				const root = document.documentElement
+				// 主色
+				let mainColor = (config.colors && config.colors.primary) || config.primaryColor || '#2F855A'
+				// 装饰色
+				let decorationColor = config.decorationColor || mainColor
+				root.style.setProperty('--primary-color', mainColor)
+				// 同时设置--theme-primary变量以确保所有元素颜色一致
+				root.style.setProperty('--theme-primary', mainColor)
+				// 将十六进制颜色转换为RGB格式并设置--primary-color-rgb变量
+				const rgbValues = this.hexToRgb(mainColor) || '47,133,90'
+				root.style.setProperty('--primary-color-rgb', rgbValues)
+				
+				// 关键修复：更新Vuex store中的主题，确保rootStyles计算属性使用最新主题配置
+				// 如果API返回的主题配置中包含theme字段，使用它更新store
+				if (config.theme && Object.keys(this.themes || {}).includes(config.theme)) {
+					this.$store.dispatch('theme/switchTheme', config.theme)
+				}
+				root.style.setProperty('--background', (config.colors && config.colors.background) || config.background || '#fff')
+				root.style.setProperty('--text-color', (config.colors && config.colors.text && config.colors.text.primary) || config.textColor || (config.text && config.text.primary) || '#222')
+				root.style.setProperty('--decoration-color', decorationColor)
+				root.style.setProperty('--theme-text-primary', (config.colors && config.colors.text && config.colors.text.primary) || config.textColor || (config.text && config.text.primary) || '#222')
+				
+				// 注入主题尺寸参数，适配多层嵌套结构
+				root.style.setProperty('--card-radius', (config.borderRadius && config.borderRadius.card) || '20px')
+				root.style.setProperty('--button-radius', (config.borderRadius && config.borderRadius.button) || '8px')
+				root.style.setProperty('--sidebar-radius', (config.borderRadius && config.borderRadius.sidebar) || '20px')
+				root.style.setProperty('--card-padding', (config.spacing && config.spacing.padding && config.spacing.padding.card) || '32px')
+				root.style.setProperty('--sidebar-padding', (config.spacing && config.spacing.padding && config.spacing.padding.sidebar) || '32px')
+				root.style.setProperty('--card-font-size',
+					(config.typography && config.typography.description && config.typography.description.size)
+					|| (config.typography && config.typography.article && config.typography.article.description && config.typography.article.description.size)
+					|| '1rem'
+				)
+				root.style.setProperty('--button-font-size',
+					(config.typography && config.typography.nav && config.typography.nav.size)
+					|| (config.typography && config.typography.base && config.typography.base.size)
+					|| '1rem'
+				)
+				root.style.setProperty('--title-font-size', (config.typography && config.typography.title && config.typography.title.size) || '1.5rem')
+				root.style.setProperty('--desc-font-size', (config.typography && config.typography.description && config.typography.description.size) || '1rem')
+				root.style.setProperty('--element-gap', (config.spacing && config.spacing.gap && config.spacing.gap.articles) || '15px')
 
 					// 动态设置所有波浪SVG背景色
 					this.injectWaveBg()
-				} catch (e) {
-					// 降级
-					const root = document.documentElement
-					root.style.setProperty('--primary-color', '#2F855A')
-					root.style.setProperty('--background', '#fff')
-					root.style.setProperty('--text-color', '#222')
-					root.style.setProperty('--decoration-color', '#fff')
-					root.style.setProperty('--theme-text-primary', '#222')
-					// 降级波浪
-					const waveBgs = document.querySelectorAll('.wave-bg')
-					if (waveBgs && waveBgs.length) {
-						const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'>
-							<path d='M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z' opacity='.15' fill='#2F855A'/>
-							<path d='M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z' opacity='.1' fill='#2F855A'/>
-							<path d='M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z' opacity='.1' fill='#2F855A'/>
-						</svg>`
-						const bg = `url("data:image/svg+xml,${encodeURIComponent(svg)}")`
-						waveBgs.forEach(waveBg => {
-							waveBg.style.backgroundImage = bg
-						})
-					}
+			} catch (e) {
+				// 降级
+				const root = document.documentElement
+				root.style.setProperty('--primary-color', '#2F855A')
+				// 降级时也设置--theme-primary变量
+				root.style.setProperty('--theme-primary', '#2F855A')
+				// 降级时也设置--primary-color-rgb变量
+				root.style.setProperty('--primary-color-rgb', '47,133,90')
+				root.style.setProperty('--background', '#fff')
+				root.style.setProperty('--text-color', '#222')
+				root.style.setProperty('--decoration-color', '#fff')
+				root.style.setProperty('--theme-text-primary', '#222')
+				// 降级波浪
+				const waveBgs = document.querySelectorAll('.wave-bg')
+				if (waveBgs && waveBgs.length) {
+					const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'>
+						<path d='M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z' opacity='.15' fill='#2F855A'/>
+						<path d='M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z' opacity='.1' fill='#2F855A'/>
+						<path d='M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z' opacity='.1' fill='#2F855A'/>
+					</svg>`
+					const bg = `url("data:image/svg+xml,${encodeURIComponent(svg)}")`
+					waveBgs.forEach(waveBg => {
+						waveBg.style.backgroundImage = bg
+					})
 				}
+			}
 			},
 			injectWaveBg() {
 				// 主题切换时动态设置所有波浪SVG背景色
@@ -302,6 +324,25 @@
 				waveBgs.forEach(waveBg => {
 					waveBg.style.backgroundImage = bg;
 				});
+			},
+			hexToRgb(hex) {
+				// 移除#号（如果有）
+				hex = hex.replace(/^#/, '');
+				// 解析RGB值
+				let r = 0, g = 0, b = 0;
+				if (hex.length === 3) {
+					// 简写形式 #RGB
+					r = parseInt(hex.charAt(0) + hex.charAt(0), 16);
+					g = parseInt(hex.charAt(1) + hex.charAt(1), 16);
+					b = parseInt(hex.charAt(2) + hex.charAt(2), 16);
+				} else if (hex.length === 6) {
+					// 标准形式 #RRGGBB
+					r = parseInt(hex.charAt(0) + hex.charAt(1), 16);
+					g = parseInt(hex.charAt(2) + hex.charAt(3), 16);
+					b = parseInt(hex.charAt(4) + hex.charAt(5), 16);
+				}
+				// 返回RGB格式的字符串
+				return `${r},${g},${b}`;
 			},
 			//获取一言
 			// getHitokoto() {
@@ -409,15 +450,6 @@
 		max-width: var(--theme-sidebar-width, 260px);
 		min-width: 220px;
 		margin-top: var(--theme-sidebar-margin-top, 32px);
-	}
-
-	.sidebar > div {
-		background-color: var(--theme-card-bg, #fff);
-		border-radius: var(--sidebar-radius, var(--theme-sidebar-radius, 24px));
-		padding: var(--sidebar-padding, 32px 32px 28px 32px);
-		box-shadow: var(--theme-shadow-card, 0 8px 32px rgba(0,0,0,0.10));
-		margin-bottom: 2rem;
-		transition: background 0.3s, box-shadow 0.3s;
 	}
 
 	.sidebar-content {
@@ -781,7 +813,6 @@
 	.article-title a {
 	  color: var(--theme-text-primary);
 	  text-decoration: none;
-	  font-weight: normal;
 	  font-size: var(--title-font-size, 1.5rem);
 	  letter-spacing: var(--theme-title-spacing, 0);
 	  line-height: var(--theme-title-line-height, 1.2);
@@ -948,240 +979,6 @@
 	.category-name {
 	  flex: 1;
 	}
-	/* === END === */
-
-	/* === 标题统一 === */
-	.section-title,
-	.about-section h3,
-	.categories-section h3 {
-	  font-size: 1.18rem;
-	  font-weight: 700;
-	  color: var(--theme-text-primary);
-	  letter-spacing: 0.01em;
-	  margin-bottom: 16px;
-	}
-
-	/* === 文章卡片标题统一 === */
-	.article-title {
-	  font-size: var(--theme-title-size, 1.5rem);
-	  font-weight: var(--theme-title-weight, 700);
-	  color: var(--theme-text-primary);
-	  margin: 0;
-	  margin-bottom: var(--theme-article-title-margin);
-	  letter-spacing: var(--theme-title-spacing);
-	}
-	.article-title a {
-	  color: var(--theme-text-primary);
-	  text-decoration: none;
-	  font-weight: normal;
-	}
-
-	/* === 文章卡片宽度统一 === */
-	.article-section {
-	  width: var(--theme-article-section-width, 1200px);
-	  min-width: 0;
-	}
-	.article-list {
-	  display: flex;
-	  flex-direction: column;
-	  gap: var(--theme-articles-gap, 32px);
-	}
-
-	/* === 分类数量样式修复 === */
-	.category-count {
-	  color: #fff;
-	  font-size: 1.02rem;
-	  font-weight: 700;
-	  flex-shrink: 0;
-	  background-color: var(--theme-primary);
-	  border-radius: 12px;
-	  padding: 2px 14px;
-	  min-width: 28px;
-	  text-align: center;
-	  line-height: 1.7;
-	  opacity: 0.95;
-	  display: flex;
-	  align-items: center;
-	  justify-content: center;
-	}
-	.category-item {
-	  display: flex;
-	  align-items: center;
-	  justify-content: space-between;
-	  padding: 10px 0;
-	  color: var(--theme-text-secondary);
-	  font-size: 1rem;
-	  line-height: 1.7;
-	  letter-spacing: 0.01em;
-	  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
-	  gap: 12px;
-	}
-	.category-item:last-child {
-	  border-bottom: none;
-	}
-
-	/* 彻底同步NewIndex.vue结构和变量，修复所有视觉细节不一致问题 */
-
-	.section-title {
-	  font-size: var(--title-font-size, var(--theme-title-font-size, 1.5rem));
-	  font-weight: var(--theme-section-title-weight, 700);
-	  color: var(--theme-text-primary);
-	  letter-spacing: var(--theme-section-title-spacing, 0.01em);
-	  margin-bottom: var(--theme-section-title-margin, 16px);
-	}
-
-	.article-title {
-	  font-size: var(--theme-title-size, 1.5rem);
-	  font-weight: var(--theme-title-weight, 700);
-	  color: var(--theme-text-primary);
-	  margin: 0;
-	  margin-bottom: var(--theme-article-title-margin, 16px);
-	  letter-spacing: var(--theme-title-spacing);
-	  line-height: var(--theme-title-line-height);
-	}
-	.article-title a {
-	  color: var(--theme-text-primary);
-	  text-decoration: none;
-	  font-weight: normal;
-	}
-
-	.article-description {
-	  color: var(--theme-text-secondary);
-	  font-size: var(--desc-font-size, var(--theme-desc-font-size, 1rem));
-	  font-weight: var(--theme-desc-font-weight, 400);
-	  line-height: var(--theme-description-line-height, 1.8);
-	  margin-bottom: var(--theme-article-desc-margin, 16px);
-	  letter-spacing: var(--theme-description-spacing);
-	}
-
-	.article-section {
-	  width: var(--theme-article-section-width, 1200px);
-	  min-width: 0;
-	}
-	.article-list {
-	  display: flex;
-	  flex-direction: column;
-	  gap: var(--theme-articles-gap, 32px);
-	}
-
-	.article-card {
-	  border-radius: var(--card-radius, 20px);
-	  box-shadow: 0 8px 32px rgba(0,0,0,0.10);
-	  background-color: var(--theme-card-bg, #fff);
-	  transition: var(--theme-hover-transition);
-	}
-	.article-card:hover {
-	  background-color: var(--theme-card-bg, #ffffffee);
-	}
-
-	.sidebar {
-	  flex: 0 0 var(--theme-sidebar-width, 260px);
-	  max-width: var(--theme-sidebar-width, 260px);
-	  min-width: 220px;
-	  margin-top: var(--theme-sidebar-margin-top, 32px);
-	}
-
-	.sidebar-content {
-	  background-color: var(--theme-card-bg, #fff);
-	  border-radius: var(--theme-sidebar-radius, 20px);
-	  padding: var(--theme-sidebar-padding, 32px);
-	  box-shadow: 0 8px 32px rgba(0,0,0,0.10);
-	  margin-bottom: 2rem;
-	  transition: background 0.3s, box-shadow 0.3s;
-	}
-	.sidebar-content:hover {
-	  background-color: var(--theme-card-bg, #ffffffee);
-	}
-
-	.about-section,
-	.categories-section {
-	  background-color: transparent;
-	  padding: 0;
-	  margin-bottom: 32px;
-	  border-radius: 0;
-	}
-	.about-section {
-	  padding-bottom: 32px;
-	  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-	}
-	.about-section h3 {
-	  font-size: 1.18rem;
-	  font-weight: 700;
-	  color: var(--theme-text-primary);
-	  letter-spacing: 0.01em;
-	  margin-bottom: 16px;
-	}
-	.about-section p {
-	  color: var(--theme-text-secondary);
-	  line-height: 1.8;
-	  font-size: 1rem;
-	  margin-bottom: 16px;
-	}
-	.social-links {
-	  display: flex;
-	  gap: 18px;
-	  margin-top: 0;
-	  opacity: 0.9;
-	}
-	.social-link {
-	  color: var(--theme-primary);
-	  text-decoration: none;
-	  font-size: 14px;
-	  letter-spacing: 0.02em;
-	  font-weight: 500;
-	  transition: opacity 0.2s;
-	}
-	.social-link:hover {
-	  opacity: 0.8;
-	}
-	.categories-section {
-	  margin-bottom: 0;
-	}
-	.categories-section h3 {
-	  font-size: 1.13rem;
-	  font-weight: 700;
-	  margin-bottom: 18px;
-	  color: var(--theme-text-primary);
-	}
-	.category-list {
-	  list-style: none;
-	  padding: 0;
-	  margin: 0;
-	}
-	.category-item {
-	  display: flex;
-	  align-items: center;
-	  justify-content: space-between;
-	  padding: 10px 0;
-	  color: var(--theme-text-secondary);
-	  font-size: 1rem;
-	  line-height: 1.7;
-	  letter-spacing: 0.01em;
-	  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
-	  gap: 12px;
-	}
-	.category-item:last-child {
-	  border-bottom: none;
-	}
-	.category-count {
-	  color: #fff;
-	  font-size: 1.02rem;
-	  font-weight: 700;
-	  flex-shrink: 0;
-	  background-color: var(--theme-primary);
-	  border-radius: 12px;
-	  padding: 2px 14px;
-	  min-width: 28px;
-	  text-align: center;
-	  line-height: 1.7;
-	  opacity: 0.95;
-	  display: flex;
-	  align-items: center;
-	  justify-content: center;
-	}
-	.category-name {
-	  flex: 1;
-	}
 
 	/* Nav组件变量化 */
 	.nav {
@@ -1242,10 +1039,13 @@
 	  align-items: center;
 	  justify-content: space-between;
 	  width: 100%;
-	  color: inherit;
+	  color: var(--theme-primary);
 	  text-decoration: none;
 	  cursor: pointer;
 	  transition: background 0.2s;
+	}
+	.category-link:hover {
+	  color: var(--theme-primary);
 	}
 	.category-link:hover .category-name {
 	  color: var(--theme-primary);

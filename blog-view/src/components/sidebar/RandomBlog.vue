@@ -101,7 +101,7 @@
 
 .ui.divided.items .theme5-item .info {
 	z-index: 1;
-	background: linear-gradient(to bottom, rgba(47, 133, 90, 0), rgba(47, 133, 90, 0.9));
+	background: linear-gradient(to bottom, rgba(var(--primary-color-rgb,47,133,90), 0), rgba(var(--primary-color-rgb,47,133,90), 0.9));
 	position: absolute;
 	left: 0;
 	right: 0;

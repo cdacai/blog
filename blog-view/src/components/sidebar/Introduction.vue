@@ -253,20 +253,20 @@
 	backdrop-filter: blur(10px);
 	border-radius: 20px;
 	margin-bottom: 2rem;
-	box-shadow: 0 4px 20px rgba(26, 71, 49, 0.04);
+	box-shadow: 0 4px 20px rgba(var(--primary-color-rgb,47,133,90), 0.04);
 	transition: all 0.3s ease;
 }
 
 .about-me:hover {
 	transform: translateY(-2px);
-	box-shadow: 0 4px 20px rgba(26, 71, 49, 0.08);
+	box-shadow: 0 4px 20px rgba(var(--primary-color-rgb,47,133,90), 0.08);
 	background: var(--theme-card-bg, #ffffffee);
 }
 
 /* 增强卡片悬停效果 */
 .theme5-intro:hover {
 	transform: translateY(-5px);
-	box-shadow: 0 10px 25px rgba(47, 133, 90, 0.15);
+	box-shadow: 0 10px 25px rgba(var(--primary-color-rgb,47,133,90), 0.15);
 }
 
 .about-section h3 {

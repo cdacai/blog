@@ -82,6 +82,14 @@ import { mapGetters } from 'vuex'
 import ThemeSwitcher from '@/components/ThemeSwitcher.vue'
 import axios from '@/plugins/axios'
 
+// 默认主题配置
+const defaultTheme = {
+  theme: 'theme1',
+  primaryColor: '#2F855A',
+  background: '#fff',
+  textColor: '#222'
+}
+
 export default {
   name: 'NewIndex',
   components: {
@@ -126,7 +134,8 @@ export default {
       hasMore: false,
       site: null,
       isFullscreen: false, // 全屏状态
-      hasToken: false // 是否有token
+      hasToken: false, // 是否有token
+      themeConfig: { ...defaultTheme } // 添加themeConfig属性
     }
   },
   computed: {
@@ -143,7 +152,7 @@ export default {
 
       return {
         // 颜色
-        '--theme-primary': colors.primary || '',
+        '--theme-primary': colors.primary || this.themeConfig.primaryColor || '#2F855A',
         '--theme-bg': colors.background || '',
         '--theme-bg-gradient': (gradients.background && gradients.background.image) || gradients.background || '',
         '--theme-text-primary': themeTextPrimary,
@@ -276,8 +285,49 @@ export default {
     const urlParams = new URLSearchParams(window.location.search)
     const token = urlParams.get('token') || localStorage.getItem('token') || ''
     this.hasToken = !!token
+    
+    // 应用主题配置
+    this.applyTheme()
   },
   methods: {
+    // 应用主题配置
+    applyTheme() {
+      const root = document.documentElement
+      const config = this.themeConfig
+      
+      // 主色
+      let mainColor = (config.colors && config.colors.primary) || config.primaryColor || '#2F855A'
+      
+      // 设置CSS变量
+      root.style.setProperty('--primary-color', mainColor)
+      root.style.setProperty('--theme-primary', mainColor)
+      
+      // 将十六进制颜色转换为RGB格式并设置--primary-color-rgb变量
+      const rgbValues = this.hexToRgb(mainColor) || '47,133,90'
+      root.style.setProperty('--primary-color-rgb', rgbValues)
+    },
+    
+    // 将十六进制颜色转换为RGB格式
+    hexToRgb(hex) {
+      // 移除#号
+      hex = hex.replace(/^#/, '')
+      
+      // 解析RGB值
+      let r, g, b
+      if (hex.length === 3) {
+        // 简写形式: #RGB
+        r = parseInt(hex[0] + hex[0], 16)
+        g = parseInt(hex[1] + hex[1], 16)
+        b = parseInt(hex[2] + hex[2], 16)
+      } else if (hex.length === 6) {
+        // 标准形式: #RRGGBB
+        r = parseInt(hex.substring(0, 2), 16)
+        g = parseInt(hex.substring(2, 4), 16)
+        b = parseInt(hex.substring(4, 6), 16)
+      }
+      
+      return r !== undefined && g !== undefined && b !== undefined ? `${r},${g},${b}` : null
+    },
     async fetchArticles() {
       if (this.loading || !this.hasMore) return
       
@@ -884,4 +934,4 @@ export default {
   width: var(--theme-article-section-width, 1200px);
   min-width: 0;
 }
-</style> 
+</style>

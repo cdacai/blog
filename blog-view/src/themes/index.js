@@ -1692,7 +1692,8 @@ export const themes = {
 
 // 获取主题
 export const getTheme = (themeName) => {
-    return themes[themeName] || theme1
+    // 默认使用theme5(绿色主题)而不是theme1(粉红色主题)
+    return themes[themeName] || themes.theme5 || theme1
 }
 
 // 添加 zIndex 配置
@@ -1700,4 +1701,4 @@ export const zIndex = {
     header: 100,
     dropdown: 1000,
     modal: 2000
-} 
+}

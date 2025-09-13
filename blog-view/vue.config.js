@@ -96,6 +96,7 @@ module.exports = {
 		}
 	},
 	devServer: {
+		port: 8080,
 		proxy: {
 			'/blog/api': {
 				target: 'http://localhost:8090',

@@ -54,19 +54,19 @@
 	}
 
 	.theme5-tag {
-		background: rgba(47, 133, 90, 0.1) !important;
-		color: #2F855A !important;
-		border: none !important;
-		border-radius: 0.5rem !important;
-		padding: 0.5rem 1rem !important;
-		margin: 0.3rem !important;
-		font-weight: 500 !important;
-		transition: all 0.3s ease !important;
-	}
+	background: rgba(var(--primary-color-rgb,47,133,90), 0.1);
+	color: var(--primary-color);
+	border: none;
+	border-radius: 0.5rem;
+	padding: 0.5rem 1rem;
+	margin: 0.3rem;
+	font-weight: 500;
+	transition: all 0.3s ease;
+}
 
-	.theme5-tag:hover {
-		background: rgba(47, 133, 90, 0.2) !important;
-		transform: translateY(-2px);
-		box-shadow: 0 2px 8px rgba(47, 133, 90, 0.1);
-	}
+.theme5-tag:hover {
+	background: rgba(var(--primary-color-rgb,47,133,90), 0.2);
+	transform: translateY(-2px);
+	box-shadow: 0 2px 8px rgba(var(--primary-color-rgb,47,133,90), 0.1);
+}
 </style>
