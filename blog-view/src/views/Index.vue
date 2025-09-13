@@ -113,7 +113,7 @@
 				if (!this.theme) {
 					return {}
 				}
-				const { colors = {}, spacing = {}, typography = {}, borderRadius = {}, transitions = {} } = this.theme
+				const { colors = {}, spacing = {}, typography = {}, borderRadius = {}, transitions = {} } = this.themeConfig
 				const { text = {}, nav = {}, card = {}, gradients = {} } = colors
 				const themeTextPrimary = (text && text.primary) || this.theme.textColor || (this.theme.text && this.theme.text.primary) || '#222'
 				console.log('this.themeConfig', this.themeConfig);
@@ -1039,7 +1039,7 @@
 	  align-items: center;
 	  justify-content: space-between;
 	  width: 100%;
-	  color: var(--theme-primary);
+	  color: var(--theme-text-secondary);
 	  text-decoration: none;
 	  cursor: pointer;
 	  transition: background 0.2s;
