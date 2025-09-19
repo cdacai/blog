@@ -68,7 +68,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="ui attached positive message" style="background-color: white;">
+		<div class="ui attached positive message">
 			<div class="time-info">
 				<div class="time-item">
 					<span class="time-label">Created</span>

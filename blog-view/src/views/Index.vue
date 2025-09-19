@@ -739,7 +739,7 @@
 
 	.pagination {
 		text-align: center;
-		margin-top: 7rem;
+		margin-top: 2rem;
 	}
 
 	/* 统一主要区域尺寸变量化 */
