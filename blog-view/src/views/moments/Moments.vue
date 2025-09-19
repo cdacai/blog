@@ -151,7 +151,7 @@
 
 .moments-wrapper {
 	border-radius: 1rem;
-	padding: 2rem;
+	padding: 0;
 	box-shadow: none;
 	background: none;
 }

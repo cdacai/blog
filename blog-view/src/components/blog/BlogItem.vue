@@ -129,7 +129,6 @@ export default {
 .blog-card {
 	position: relative;
 	background: rgba(255, 255, 255, 0.82);
-	backdrop-filter: blur(10px);
 	border-radius: var(--card-radius, 20px); /* 变量化圆角 */
 	margin-bottom: 3rem !important;
 	box-shadow: 0 4px 20px rgba(26, 71, 49, 0.04);
