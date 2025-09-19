@@ -225,7 +225,12 @@
 	@media screen and (max-width: 768px) {
 		.main-content {
 			flex: 0 0 100%;
-			padding: 0 1.5rem;
+			padding: 0 0.5rem;
+		}
+
+		/* 移动端统一标题字体大小与最新文章一致 */
+		.article-header {
+			font-size: 1.5rem !important;
 		}
 	}
 

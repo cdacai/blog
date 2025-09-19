@@ -289,13 +289,22 @@
 	}
 
 	@media screen and (max-width: 768px) {
+		/* 评论操作按钮样式 */
 		.comment-actions {
 			flex-wrap: wrap;
 			gap: 8px;
+			width: 100%;
+			justify-content: flex-end;
+			margin-top: 8px;
 		}
 
 		.action-btn {
 			padding: 4px 8px;
+			font-size: 12px;
+			height: 24px;
+		}
+
+		.action-btn i {
 			font-size: 12px;
 		}
 
@@ -305,6 +314,24 @@
 			font-size: 12px;
 		}
 
+		/* 评论头部样式 */
+		.comment-header {
+			flex-wrap: wrap;
+			gap: 8px;
+			margin-bottom: 8px;
+		}
+
+		.user-info {
+			max-width: 100%;
+			margin-bottom: 4px;
+		}
+
+		.metadata {
+			width: 100%;
+			margin: 4px 0;
+		}
+
+		/* 报告对话框移动端样式 */
 		.report-dialog-mobile :deep(.el-dialog) {
 			width: 90% !important;
 			margin: 10vh auto !important;
@@ -506,42 +533,6 @@
 		transform: translateY(-1px);
 	}
 
-	@media screen and (max-width: 768px) {
-		.comment-header {
-			flex-wrap: wrap;
-			gap: 8px;
-		}
-
-		.user-info {
-			max-width: 100%;
-			margin-bottom: 4px;
-		}
-
-		.metadata {
-			width: 100%;
-			margin: 4px 0;
-		}
-
-		.comment-actions {
-			width: 100%;
-			justify-content: flex-end;
-			margin-top: 4px;
-		}
-
-		.action-btn {
-			padding: 4px 8px;
-			font-size: 12px;
-			height: 24px;
-		}
-
-		.action-btn i {
-			font-size: 12px;
-		}
-
-		.report-btn {
-			opacity: 1;
-		}
-	}
 
 	/* 修改取消回复按钮样式 */
 	.cancel-reply {
@@ -556,35 +547,4 @@
 		border-color: var(--primary-color, #276749) !important;
 	}
 
-	@media screen and (max-width: 768px) {
-		.comment-header {
-			margin-bottom: 8px;
-		}
-
-		.user-info {
-			margin-bottom: 4px;
-		}
-
-		.metadata {
-			margin: 4px 0;
-		}
-
-		.comment-actions {
-			margin-top: 8px;
-		}
-
-		.action-btn {
-			padding: 4px 8px;
-			font-size: 12px;
-			height: 24px;
-		}
-
-		.action-btn i {
-			font-size: 12px;
-		}
-
-		.report-btn {
-			opacity: 1;
-		}
-	}
 </style>

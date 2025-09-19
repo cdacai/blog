@@ -163,7 +163,7 @@
 }
 
 .moment-card {
-	background: var(--theme-card-bg, #fff);
+	background: rgba(255, 255, 255, 0.82);
 	border-radius: 1rem;
 	padding: 1.5rem;
 	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
@@ -255,7 +255,12 @@
 
 @media screen and (max-width: 768px) {
 	.moments-wrapper {
-		padding: 1rem;
+		padding: 0.5rem;
+	}
+
+	/* 移动端统一标题字体大小与最新文章一致 */
+	.article-header {
+		font-size: 1.5rem !important;
 	}
 
 	.moment-card {
@@ -268,7 +273,7 @@
 }
 
 .empty-moments {
-	background: var(--theme-card-bg, #fff);
+	background: rgba(255, 255, 255, 0.82);
 	border-radius: 1rem;
 	padding: 6rem 2rem;
 	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);

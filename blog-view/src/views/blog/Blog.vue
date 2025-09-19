@@ -255,7 +255,7 @@
 }
 
 .blog-container {
-	background-color: white;
+	background-color: rgba(255, 255, 255, 0.82);
 	border-radius: 8px 8px 0 0;
 	padding: 2rem;
 	position: relative;
@@ -313,6 +313,9 @@
 	cursor: pointer;
 	transition: opacity 0.3s ease;
 	z-index: 1;
+	/* 定位到blog-container的边角，考虑其padding */
+	margin-top: 0;
+	margin-right: 7px;
 }
 
 .top-icon {
@@ -455,7 +458,7 @@
 	border-top: 1px solid rgba(var(--primary-color), 0.1);
 	box-shadow: none;
 	margin: 0;
-	background-color: white;
+	background-color: rgba(255, 255, 255, 0.82);
 }
 
 .time-info {
@@ -502,7 +505,7 @@
 	border: none;
 	box-shadow: none;
 	margin: 0;
-	background-color: white;
+	background-color: rgba(255, 255, 255, 0.82);
 	border-radius: 0 0 8px 8px;
 	padding: 2rem;
 }

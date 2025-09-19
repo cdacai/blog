@@ -278,6 +278,25 @@
 	font-weight: 500;
 }
 
+/* 桌面端active状态下划线 */
+.nav-item.active {
+	position: relative;
+}
+
+/* 只在桌面端显示下划线 */
+@media screen and (min-width: 769px) {
+	.nav-item.active::after {
+		content: '';
+		position: absolute;
+		bottom: -4px;
+		left: 0;
+		right: 0;
+		height: 2px;
+		background: var(--theme-primary);
+		border-radius: 1px;
+	}
+}
+
 .mobile-toggle {
 	display: none;
 	background: none;
