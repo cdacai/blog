@@ -151,7 +151,7 @@
 
 .moments-wrapper {
 	border-radius: 1rem;
-	padding: 0;
+	padding: 2rem;
 	box-shadow: none;
 	background: none;
 }
@@ -254,8 +254,12 @@
 }
 
 @media screen and (max-width: 768px) {
+	.moments-container {
+		padding: 0;
+	}
+
 	.moments-wrapper {
-		padding: 0.5rem;
+		padding: 0;
 	}
 
 	/* 移动端统一标题字体大小与最新文章一致 */
