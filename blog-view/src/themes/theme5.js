@@ -3,11 +3,11 @@ export const theme5 = {
     name: '自然',
     colors: {
         primary: '#2F855A',
-        background: '#8bc594',
+        background: '#f0f9f4',
         text: {
-            primary: '#1A4731',
-            secondary: '#276749',
-            meta: '#2F855A',
+            primary: '#1a365d',
+            secondary: '#2F855A',
+            meta: '#64748b',
             code: '#234E52',
             accent: '#38A169'
         },

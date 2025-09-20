@@ -68,6 +68,7 @@ export default {
           return theme.colors.primary
         case '翡翠': // theme7 使用深色背景
         case '雅致': // theme2 使用背景色
+        case '自然': // theme5 使用背景色
           return theme.colors.background || theme.colors.primary
         default:
           // 其他主题优先使用背景色，如果没有则使用强调色
