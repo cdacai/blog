@@ -238,8 +238,10 @@
 }
 
 .comment-form {
-	background-color: var(--theme-card-bg, #fff);
+	background-color: var(--theme-card-bg, rgba(255, 255, 255, 0.82));
 	border-radius: 8px;
+	padding: 2rem;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
 .form-row {
@@ -303,7 +305,7 @@
 	top: 50%;
 	transform: translate(-50%, -50%);
 	padding: 0;
-	background-color: var(--theme-card-bg, #fff);
+	background-color: var(--theme-card-bg, rgba(255, 255, 255, 0.82));
 	border: 1px solid #ddd;
 	border-radius: 8px;
 	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);

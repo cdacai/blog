@@ -4,7 +4,7 @@ import { getTheme } from '@/themes'
 const theme = {
     namespaced: true,
     state: {
-        currentTheme: localStorage.getItem('nblog-preferred-theme') || 'theme1'
+        currentTheme: localStorage.getItem('nblog-preferred-theme') || 'theme5'
     },
     mutations: {
         SET_THEME(state, themeName) {

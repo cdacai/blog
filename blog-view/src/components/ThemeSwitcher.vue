@@ -25,7 +25,7 @@
         >
           <span 
             class="nblog-theme-color" 
-            :style="{ backgroundColor: theme.colors.primary }"
+            :style="{ backgroundColor: getThemeDisplayColor(theme) }"
             aria-hidden="true"
           ></span>
           {{ theme.name }}
@@ -57,6 +57,31 @@ export default {
   },
   methods: {
     ...mapActions('theme', ['switchTheme']),
+    getThemeDisplayColor(theme) {
+      // 根据主题名称决定使用哪种颜色
+      switch(theme.name) {
+        case '极简': // theme3 使用强调色
+          return theme.colors.primary
+        case '二次元': // theme9 使用灰粉色体现可爱风格
+          return theme.colors.text.meta || theme.colors.primary
+        case '赛博': // theme8 使用红色强调色体现赛博朋克风格
+          return theme.colors.primary
+        case '翡翠': // theme7 使用深色背景
+        case '雅致': // theme2 使用背景色
+          return theme.colors.background || theme.colors.primary
+        default:
+          // 其他主题优先使用背景色，如果没有则使用强调色
+          if (theme.colors.background) {
+            return theme.colors.background
+          }
+          // 如果有gradients.background.color，使用该颜色
+          if (theme.colors.gradients && theme.colors.gradients.background && theme.colors.gradients.background.color) {
+            return theme.colors.gradients.background.color
+          }
+          // 最后回退到primary颜色
+          return theme.colors.primary
+      }
+    },
     toggleDropdown() {
       this.isOpen = !this.isOpen
       // 在移动端打开时添加滚动锁定
