@@ -31,24 +31,7 @@
 					<!-- 侧边栏结构和样式与NewIndex.vue一致 -->
 					<aside class="sidebar">
 						<div class="sidebar-content">
-							<div class="about-section">
-								<h3>关于我</h3>
-								<p>全栈开发者，专注Web技术，分享开发经验与技术思考。</p>
-								<div class="social-links">
-									<a href="https://github.com/cdacai/blog" class="social-link" target="_blank">GitHub</a>
-								</div>
-							</div>
-							<div class="categories-section">
-								<h3>文章分类</h3>
-								<ul class="category-list">
-									<li v-for="category in categoryList" :key="category.name" class="category-item">
-										<router-link :to="`/category/${encodeURIComponent(category.name)}`" class="category-link">
-											<span class="category-name">{{ category.name }}</span>
-											<span class="category-count">{{ category.blogCount }}</span>
-										</router-link>
-									</li>
-								</ul>
-							</div>
+							<Introduction :category-list="categoryList"/>
 						</div>
 					</aside>
 				</div>
@@ -872,12 +855,12 @@
 	.article-meta {
 	  display: flex;
 	  align-items: center;
-	  gap: var(--theme-meta-gap);
-	  color: var(--theme-text-meta);
-	  font-size: var(--theme-meta-size);
-	  margin-bottom: var(--theme-article-meta-margin);
+	  gap: var(--theme-meta-gap, 12px);
+	  color: var(--theme-text-meta, #666);
+	  font-size: var(--theme-meta-size, 0.875rem);
+	  margin-bottom: var(--theme-article-meta-margin, 1rem);
 	  font-weight: normal;
-	  letter-spacing: var(--theme-meta-spacing);
+	  letter-spacing: var(--theme-meta-spacing, 0);
 	}
 	.article-meta > span {
 	  position: relative;

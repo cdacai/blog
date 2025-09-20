@@ -21,7 +21,8 @@ export default {
 		state.siteInfo = siteInfo
 	},
 	[SAVE_INTRODUCTION](state, introduction) {
-		state.introduction = introduction
+		// 使用Object.assign确保响应式更新
+		Object.assign(state.introduction, introduction)
 	},
 	[SAVE_COMMENT_RESULT](state, data) {
 		state.allComment = data.allComment

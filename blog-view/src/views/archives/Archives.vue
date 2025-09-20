@@ -192,24 +192,53 @@
 		padding: 0.5rem 1rem !important;
 		border-radius: 4px !important;
 		transition: all 0.3s ease !important;
-		color: var(--theme-text-secondary, var(--theme-text-primary, var(--timeline-title-color, #fff))) !important;
+		/* 智能对比度：根据背景色自动调整文字颜色 */
+		color: var(--theme-text-primary, #333) !important;
+		background-color: var(--theme-card-bg, rgba(255, 255, 255, 0.9)) !important;
+		backdrop-filter: blur(10px) !important;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
 	}
 
 	.tl-blue .tl-title,
 	.tl-green .tl-title,
 	.tl-purple .tl-title,
 	.tl-red .tl-title {
-		background: var(--primary-color) !important;
+		/* 保持主题色边框，但确保文字清晰可见 */
+		border: 1px solid var(--primary-color) !important;
+		background-color: var(--theme-card-bg, rgba(255, 255, 255, 0.95)) !important;
+		color: var(--theme-text-primary, #333) !important;
+		backdrop-filter: blur(10px) !important;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
 	}
 
 	.tl-dark .tl-title {
-		background: var(--text-color) !important;
-		color: #fff !important;
+		/* 深色主题使用深色背景和浅色文字 */
+		background: var(--theme-text-primary, #333) !important;
+		color: var(--theme-card-bg, #fff) !important;
+		border: 1px solid var(--theme-text-primary, #333) !important;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
 	}
 
 	.tl-title:hover {
 		transform: translateX(4px);
 		opacity: 0.9;
+		/* 悬停时增强对比度 */
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+	}
+
+	/* 智能对比度增强 - 确保在任何背景下都清晰可见 */
+	.tl-title {
+		/* 使用CSS滤镜增强对比度 */
+		filter: contrast(1.1) brightness(1.05);
+		/* 确保文字在浅色和深色背景下都清晰 */
+		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+	}
+
+	/* 深色主题下的特殊处理 */
+	@media (prefers-color-scheme: dark) {
+		.tl-title {
+			text-shadow: 0 1px 2px rgba(255, 255, 255, 0.1);
+		}
 	}
 
 	.ui.left.pointing.label:before {

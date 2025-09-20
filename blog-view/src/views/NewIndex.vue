@@ -687,6 +687,20 @@ export default {
   color: var(--theme-primary);
 }
 
+/* 日期单独设置变量 */
+.article-date {
+  color: var(--theme-text-meta, #666);
+  font-size: var(--theme-meta-size, 0.875rem);
+  letter-spacing: var(--theme-meta-spacing, 0);
+}
+
+/* 阅读时间单独设置变量 */
+.article-reading-time {
+  color: var(--theme-text-meta, #666);
+  font-size: var(--theme-meta-size, 0.875rem);
+  letter-spacing: var(--theme-meta-spacing, 0);
+}
+
 .article-title {
   font-size: var(--theme-title-size);
   line-height: var(--theme-title-line-height);

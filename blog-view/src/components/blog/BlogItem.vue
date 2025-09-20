@@ -30,13 +30,13 @@
 					<router-link :to="`/category/${item.category.name}`" class="meta-item category-meta">
 						<span style="color:var(--primary-color)">{{ item.category.name }}</span>
 					</router-link>
-					<div class="meta-item">
+					<div class="meta-item article-date">
 						<span>{{ item.createTime | dateFormat('YYYY-MM-DD')}}</span>
 					</div>
-					<div class="meta-item">
+					<div class="meta-item article-reading-time">
 						<span>{{ item.views }} 阅读</span>
 					</div>
-					<div class="meta-item">
+					<div class="meta-item article-words">
 						<span>{{ item.words }} 字</span>
 					</div>
 				</div>
@@ -248,6 +248,27 @@ export default {
 /* 分类单独高亮主题色 */
 .meta-item.category-meta {
 	color: var(--primary-color) !important;
+}
+
+/* 日期单独设置变量 */
+.article-date {
+	color: var(--theme-text-meta, #666) !important;
+	font-size: var(--theme-meta-size, 0.875rem) !important;
+	letter-spacing: var(--theme-meta-spacing, 0) !important;
+}
+
+/* 阅读时间单独设置变量 */
+.article-reading-time {
+	color: var(--theme-text-meta, #666) !important;
+	font-size: var(--theme-meta-size, 0.875rem) !important;
+	letter-spacing: var(--theme-meta-spacing, 0) !important;
+}
+
+/* 字数单独设置变量 */
+.article-words {
+	color: var(--theme-text-meta, #666) !important;
+	font-size: var(--theme-meta-size, 0.875rem) !important;
+	letter-spacing: var(--theme-meta-spacing, 0) !important;
 }
 
 .meta-item:not(:first-child)::before {
