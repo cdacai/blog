@@ -67,31 +67,34 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="ui attached positive message">
-			<div class="time-info">
-				<div class="time-item">
-					<span class="time-label">Created</span>
-					<span class="time-value">{{ blog.createTime | dateFormat('YYYY-MM-DD HH:mm') }}</span>
-				</div>
-				<div class="time-item">
-					<span class="time-label">Updated</span>
-					<span class="time-value">{{ blog.updateTime | dateFormat('YYYY-MM-DD HH:mm') }}</span>
+		
+			<!-- 时间信息和评论区域也包含在主容器中 -->
+			<div class="ui attached positive message">
+				<div class="time-info">
+					<div class="time-item">
+						<span class="time-label">Created</span>
+						<span class="time-value">{{ blog.createTime | dateFormat('YYYY-MM-DD HH:mm') }}</span>
+					</div>
+					<div class="time-item">
+						<span class="time-label">Updated</span>
+						<span class="time-value">{{ blog.updateTime | dateFormat('YYYY-MM-DD HH:mm') }}</span>
+					</div>
 				</div>
 			</div>
+			<div class="ui bottom teal attached segment threaded comments" style="border: none!important;">
+				<CommentList 
+					ref="comment"
+					:page="0"
+					:blog-id="blog.id" 
+					:blog-title="blog.title" 
+					v-if="blog.commentEnabled"
+				/>
+				<h3 class="ui header" v-else>评论已关闭</h3>
+			</div>
 		</div>
-		<div class="ui bottom teal attached segment threaded comments" style="border: none!important;">
-			<CommentList 
-				ref="comment"
-				:page="0"
-				:blog-id="blog.id" 
-				:blog-title="blog.title" 
-				v-if="blog.commentEnabled"
-			/>
-			<h3 class="ui header" v-else>评论已关闭</h3>
-		</div>
+		
+		<!-- Back按钮和置顶标志 -->
 		<Back></Back>
-		<!-- 置顶标志 -->
 		<div class="top-tag" v-if="blog.top" title="置顶文章">
 			<img src="@/assets/icons/top.svg" class="top-icon" alt="置顶">
 		</div>
@@ -256,6 +259,7 @@
 
 .blog-container {
 	background-color: var(--theme-card-bg, rgba(255, 255, 255, 0.82));
+	border: 1px solid var(--theme-card-border, transparent);
 	border-radius: 8px 8px 0 0;
 	padding: 2rem;
 	position: relative;

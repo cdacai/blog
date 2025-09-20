@@ -67,9 +67,13 @@ export default {
         case '赛博': // theme8 使用红色强调色体现赛博朋克风格
           return theme.colors.primary
         case '翡翠': // theme7 使用深色背景
-        case '雅致': // theme2 使用背景色
-        case '自然': // theme5 使用背景色
+        case '雅致': // theme2 使用背景色  
+        case '夜幕': // theme10 使用深色背景
           return theme.colors.background || theme.colors.primary
+        case '自然': // theme5 使用最底层背景颜色
+          return (theme.colors.gradients && theme.colors.gradients.background && theme.colors.gradients.background.color) || theme.colors.background || theme.colors.primary
+        case '琥珀': // theme11 使用首页文章列表中的正文字体颜色
+          return (theme.colors.text && theme.colors.text.secondary) || theme.colors.primary
         default:
           // 其他主题优先使用背景色，如果没有则使用强调色
           if (theme.colors.background) {

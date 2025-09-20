@@ -21,13 +21,13 @@ export const theme9 = {
         card: {
             background: 'rgba(255, 255, 255, 0.9)',
             hover: 'rgba(255, 255, 255, 0.95)',
-            border: 'rgba(255, 107, 157, 0.2)',
+            border: 'transparent',                        // 二次元主题使用透明边框
             glow: '0 0 30px rgba(255, 107, 157, 0.15)'
         },
         sidebar: {
             background: 'rgba(255, 255, 255, 0.85)',
             hover: 'rgba(255, 255, 255, 0.95)',
-            border: 'rgba(255, 107, 157, 0.15)',
+            border: 'transparent',                        // 二次元主题使用透明边框
             glow: '0 0 20px rgba(255, 107, 157, 0.1)',
             boxShadow: '0 8px 32px rgba(255, 107, 157, 0.08)'
         },

@@ -8,123 +8,241 @@
 [![MySQL](https://img.shields.io/badge/MySQL-5.7+-blue.svg)](https://www.mysql.com/)
 [![Redis](https://img.shields.io/badge/Redis-6.0+-red.svg)](https://redis.io/)
 
-A modern blog system based on Spring Boot and Vue, ideal for individuals and teams to quickly build a beautiful and customizable content platform.
-Supports theme switching, article and comment management, album display, data statistics, content moderation, message notifications, scheduled tasks, and more—helping you efficiently operate and beautify your personal blog.
+A personal blog system built with Spring Boot + Vue, featuring complete functionality and simple configuration.
+Includes article management, comment system, album management, theme switching and other common features.
 
-## Why Choose Cai Xiaohu Blog System?
-- Ultra-lightweight, low hardware requirements, suitable for most environments
-- Four built-in beautiful preset themes, one-click switch in admin panel, highly customizable
-- Actively maintained, features continuously upgraded
-- Comprehensive content and interaction experience
+## Key Features
+- Low configuration requirements, easy deployment
+- Provides 8 different theme styles, freely switchable
+- Stable functionality, continuously updated
+- Suitable for personal blog use
 
-## Featured Features
+## Featured Functions
 
-### 1. Theme Switching & Personalization
-- Four built-in beautiful preset themes, one-click switch in admin panel, real-time preview
-- Support for theme saving; upcoming: theme color customization, background pattern toggles, and more personalized options
-- Easily beautify your own blog
+### 1. Theme System
+- Provides 8 different style themes
+- One-click switching in admin panel
+- Support for theme configuration saving
 
-### 2. Message Center
-- Unified collection of comment, like, and report history
-- Support for internal messages and email notifications
-- Message categorization and status management
-
-### 3. Album Management
+### 2. Album Management
 - Image management and one-click insertion
 - Album categorization and batch operations
-- Support for both local and Upyun storage
+- Support for both local and Upyun cloud storage
 
-### 4. Content Security
-- Integration with Baidu Cloud Text Review
+### 3. Content Security
+- Integration with Baidu AI text review
 - Support for content reporting and processing
 - Result notification mechanism
 
-### 5. Storage Solutions
-- Flexible switching between local file system and Upyun object storage
-- Configurable storage strategies
+### 4. Message Notifications
+- Internal message reminders
+- Email notification functionality
+- Unified message management
 
-## Screenshots
-- Theme Switching
-  - ![Theme Switching](./pic/theme-switch.png)
-- Blog Home
-  - ![Blog Home](./pic/blog1.jpg)
-- Article Detail
-  - ![Article Detail](./pic/blog2.jpg)
-- Dynamics
-  - ![Dynamics](./pic/blog3.jpg)
-- Archive
-  - ![Archive](./pic/blog4.jpg)
-- Comment Report
-  - ![Comment Report](./pic/report.png)
-- Message Center
-  - ![Message Center](./pic/msgCenter.png)
-- Admin Dashboard
-  - ![Admin Dashboard](./pic/cms2.jpg)
-- Editor Interface
-  - ![Editor Interface](./pic/cms3.png)
-- Album Management
-  - ![Album Management](./pic/cms4.jpg)
+Preview URLs:
+- Blog Frontend: [https://caixiaohu.com](https://caixiaohu.com)
+- Admin Backend: [https://set.caixiaohu.com](https://set.caixiaohu.com) (Guest username: guest, password: 123456)
+
+## Theme Gallery
+
+System provides 8 different style themes for selection:
+
+<table>
+  <tr>
+    <td align="center">
+      <strong>Elegant Theme</strong><br>
+      <img src="./pic/theme-1-yazhi.png" width="400" alt="Elegant Theme"/>
+    </td>
+    <td align="center">
+      <strong>Minimal Theme</strong><br>
+      <img src="./pic/theme-2-jijian.png" width="400" alt="Minimal Theme"/>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <strong>Natural Theme</strong><br>
+      <img src="./pic/theme-3-ziran.png" width="400" alt="Natural Theme"/>
+    </td>
+    <td align="center">
+      <strong>Jade Theme</strong><br>
+      <img src="./pic/theme-4-feicui.png" width="400" alt="Jade Theme"/>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <strong>Cyber Theme</strong><br>
+      <img src="./pic/theme-5-saibo.png" width="400" alt="Cyber Theme"/>
+    </td>
+    <td align="center">
+      <strong>Anime Theme</strong><br>
+      <img src="./pic/theme-6-erciyuan.png" width="400" alt="Anime Theme"/>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <strong>Nightfall Theme</strong><br>
+      <img src="./pic/theme-7-yemu.png" width="400" alt="Nightfall Theme"/>
+    </td>
+    <td align="center">
+      <strong>Amber Theme</strong><br>
+      <img src="./pic/theme-8-hupo.png" width="400" alt="Amber Theme"/>
+    </td>
+  </tr>
+</table>
+
+*One-click theme switching in admin panel to meet different usage needs*
+
+## Table of Contents
+
+- [Function List](#function-list)
+- [System Screenshots](#system-screenshots)
+- [Quick Start](#quick-start)
+- [Changelog](#changelog)
+- [License](#license)
+- [Acknowledgments](#acknowledgments)
+
+## Function List
+
+**Content Management**
+- Article editing (Markdown support)
+- Dynamic publishing
+- Album management
+- Content review
+
+**Comment System**
+- Comment replies
+- Like functionality
+- Report processing
+- Message notifications
+
+**System Functions**
+- Responsive design
+- Mobile adaptation
+- Theme switching
+- Data statistics
+
+## System Screenshots
+
+### Frontend Pages
+![Blog Homepage](./pic/blog1.jpg)
+![Article Detail](./pic/blog2.jpg)
+![Dynamic Page](./pic/blog3.jpg)
+![Archive Page](./pic/blog4.jpg)
+![Comment Report](./pic/report.png)
+![Message Center](./pic/msgCenter.png)
+
+### Admin Management
+![Login Page](./pic/cms1.png)
+![Management Interface](./pic/cms2.jpg)
+![Article Editor](./pic/cms3.png)
+![Album Management](./pic/cms4.jpg)
 
 ## Quick Start
 
 1. Initialize the database and import table structure (/blog-api/nblog.sql)
 2. Copy and configure /blog-api/src/main/resources/application-dev.properties
-3. Install dependencies and start both frontend (blog-cms) and frontend (blog-view):
+3. Install dependencies and start both frontend (blog-cms) and blog-view:
    ```bash
    npm install
    npm run serve
    ```
 
 ## Environment Requirements
-- **Basic Environment**
-  - JDK: 1.8+ (low requirements, suitable for most computers and servers)
-  - MySQL: 5.7+ (utf8mb4 charset)
-  - Redis: 6.0+
-  - Node.js: 12.x+
-  - Maven: 3.6+
-  - NPM: 6.x+
+- JDK 1.8+
+- MySQL 5.7+ (utf8mb4 charset)
+- Redis 6.0+
+- Node.js 12.x+
+- Maven 3.6+
 
-## Core Configuration
-- **Security Configuration**
-  - `token.secretKey`: JWT key (modify default value)
-  - Default admin: username `Admin`, password `123456`
+## Configuration Guide
 
-- **Storage Configuration**
-  - Local storage: configure `upload.path` and permissions
-  - Upyun: configure `bucketName` and other information
+**Basic Configuration**
+- JWT key: modify `token.secretKey` configuration
+- Default admin: username `Admin`, password `123456`
 
-- **Third-party Services**
-  - Baidu Content Moderation: configure `baidu.content.*` (optional)
-  - Email service: default QQ email, can switch to other providers
+**Storage Configuration**
+- Local storage: configure `upload.path` directory
+- Cloud storage: configure Upyun cloud related information
 
-- **Scheduled Task Configuration**
-  - Use database for task configuration
-  - Table structure included in nblog.sql
+**Optional Configuration**
+- Content review: configure Baidu AI API (optional)
+- Email service: default QQ email, can be changed to other providers
+- Scheduled tasks: configuration stored in database
 
-## Development Environment Setup
-1. Create MySQL database:
+## Deployment Steps
+
+### 1. Database Initialization
+Create MySQL database:
 ```sql
 CREATE DATABASE nblog CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
-Then execute `/blog-api/nblog.sql` to initialize table data
+Import data tables:
+```bash
+mysql -u root -p nblog < /blog-api/nblog.sql
+```
 
-2. Create configuration file `/blog-api/src/main/resources/application-dev.properties` (for production, create `application-prd.properties`)
-3. Copy `/blog-api/src/main/resources/application-dev.properties.template` to `application-dev.properties`
-4. Modify and replace configuration information in `application-dev.properties`
-5. Install and start Redis
-6. Start backend service
-7. Run `npm install` in both `blog-cms` and `blog-view` directories to install dependencies
-8. Run `npm run serve` in both `blog-cms` and `blog-view` directories to start frontend and admin pages
+### 2. Backend Configuration
+Create configuration file `/blog-api/src/main/resources/application-dev.properties` (for production environment, create `application-prd.properties`)
+
+Copy configuration template:
+```bash
+cp /blog-api/src/main/resources/application-dev.properties.template application-dev.properties
+```
+Modify and replace configuration information in `application-dev.properties`
+
+### 3. Start Services
+Install and start Redis, then start backend API service
+
+### 4. Frontend Deployment
+Install dependencies in `blog-cms` and `blog-view` directories respectively:
+```bash
+cd blog-cms && npm install
+cd blog-view && npm install
+```
+
+Start development services in `blog-cms` and `blog-view` directories respectively:
+```bash
+# Admin backend
+cd blog-cms && npm run serve
+
+# Blog frontend  
+cd blog-view && npm run serve
+```
+
+Production build:
+```bash
+# Build admin backend
+cd blog-cms && npm run build
+
+# Build blog frontend
+cd blog-view && npm run build
+```
 
 ## Changelog
 
+### v2.1.0 (2025-09-20)
+- Added 4 new themes (Cyber, Anime, Nightfall, Amber) based on the original 4 themes
+- Continued to improve theme system and switching functionality
+
 ### v2.0.0 (2025-06-09)
-- Added theme saving and switching feature: support for one-click switching and saving of multiple preset themes (4 built-in), improving personalization experience and beautifying your website. Entry: Admin Panel - System Management - Theme Settings
+- Added theme saving and switching functionality, supporting multiple theme templates with one-click switching and saving, enhancing personalization experience. Entry: Admin Panel - System Management - Theme Settings
 
 ### v1.1.0 (2025-05-21)
-- Added message center, unified collection of comment/like/report history
-- Optimized task scheduling system (based on Quartz), preventing constant restarts
-- Optimized navigation paths, updated system icons, improved user interface
+- Added message center functionality
+- Optimized scheduled task system
+- Improved user interface
+
+### v1.0.0 (2025-02-13)
+- Improved frontend interaction functionality
+- Redesigned interface
+- Support for local image storage
+- Added album management
+- Integrated content review
+
+### Development Plan
+- Enhanced theme personalization features
+- Editor functionality upgrades  
+- Dynamic comment functionality improvements
 
 ## License
 
@@ -134,12 +252,10 @@ This project is licensed under the MIT License - see the [LICENSE](./LICENSE) fi
 
 Thanks to the following open source projects:
 - [Spring Boot](https://github.com/spring-projects/spring-boot)
-- [Vue](https://github.com/vuejs/vue)
+- [Vue](https://github.com/vuejs/vue)  
 - [Element UI](https://github.com/ElemeFE/element)
-- And all other open source dependencies mentioned in this README
-- Your star and suggestions are our continuous motivation!
 
 ---
-If you like this project, please give it a star! Your support is our motivation to keep improving! [![GitHub stars](https://img.shields.io/github/stars/cdacai/blog.svg?style=social)](https://github.com/cdacai/blog)
+[![GitHub stars](https://img.shields.io/github/stars/cdacai/blog.svg?style=social)](https://github.com/cdacai/blog)
 
-Feedback and contributions are welcome! 
+If you have any questions, please submit an issue. Thank you for your support! 

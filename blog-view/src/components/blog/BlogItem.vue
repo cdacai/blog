@@ -129,6 +129,7 @@ export default {
 .blog-card {
 	position: relative;
 	background: var(--theme-card-bg, rgba(255, 255, 255, 0.82));
+	border: 1px solid var(--theme-card-border, transparent);
 	border-radius: var(--card-radius, var(--theme-card-radius, 20px)); /* 变量化圆角 */
 	margin-bottom: var(--theme-articles-gap, 3rem) !important;
 	box-shadow: var(--theme-shadow-card, 0 4px 20px rgba(26, 71, 49, 0.04));

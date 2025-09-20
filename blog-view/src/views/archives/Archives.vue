@@ -3,7 +3,7 @@
 		<div class="main-content">
 			<h2 class="article-header">文章归档</h2>
 			<div class="archives-wrapper">
-				<div class="ui attached segment archives-content" style="background: var(--theme-card-bg, rgba(255, 255, 255, 0.82)); border-radius: 1rem; padding: 2rem; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);">
+				<div class="ui attached segment archives-content" style="background: var(--theme-card-bg, rgba(255, 255, 255, 0.82)); border: 1px solid var(--theme-card-border, transparent); border-radius: 1rem; padding: 2rem; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); box-sizing: border-box; width: 100%;">
 					<p style="color: var(--primary-color); text-align: center; margin-bottom: 2rem;">好! 目前共计 {{ count }} 篇日志。 继续努力。</p>
 					<div class="timeline">
 						<div :class="colorObj[index%5]" v-for="(value,key,index) in blogMap" :key="index">
@@ -279,9 +279,15 @@
 		border-color: var(--primary-color);
 	}
 
-	.main-content, .archives-wrapper, .timeline {
+	.main-content, .timeline {
 		max-width: 100vw;
 		overflow-x: hidden;
+		box-sizing: border-box;
+	}
+	
+	.archives-wrapper {
+		max-width: 100vw;
+		overflow-x: visible;
 		box-sizing: border-box;
 	}
 
@@ -292,11 +298,8 @@
 		word-break: break-all;
 	}
 
-	/* 移除ui attached segment的默认边框 */
+	/* 移除ui attached segment的默认边框，但保留主题边框 */
 	.archives-content.ui.attached.segment {
-		border: none !important;
-		border-top: none !important;
-		border-bottom: none !important;
 		margin: 0 !important;
 	}
 </style>

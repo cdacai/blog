@@ -540,7 +540,7 @@ export default {
 
 .nav {
   display: flex;
-  gap: var(--theme-nav-gap);
+  gap: var(--theme-nav-gap, 32px);
   align-items: center;
 }
 
@@ -577,12 +577,12 @@ export default {
   margin-top: var(--theme-content-margin-top, 160px);
 }
 
-.section-title {
-  font-size: var(--title-font-size, var(--theme-title-font-size, 1.5rem));
-  margin-bottom: var(--theme-section-title-margin);
-  color: var(--theme-text-primary);
-  font-weight: var(--theme-section-title-weight);
-  letter-spacing: var(--theme-section-title-spacing);
+.new-index h2.section-title {
+  font-size: var(--title-font-size, var(--theme-title-font-size, 1.5rem)) !important;
+  margin-bottom: 32px !important;
+  color: var(--theme-text-primary) !important;
+  font-weight: var(--theme-section-title-weight, 700) !important;
+  letter-spacing: var(--theme-section-title-spacing, 0) !important;
 }
 
 .article-list {
@@ -595,6 +595,7 @@ export default {
   padding: var(--card-padding, var(--theme-card-padding, 32px));
   background-color: var(--theme-card-bg, #ffffffd1);
   border-radius: var(--card-radius, var(--theme-card-radius, 20px));
+  border: 1px solid var(--theme-card-border, transparent);
   transition: var(--theme-hover-transition);
   font-size: var(--card-font-size, var(--theme-card-font-size, 1rem));
 }
@@ -607,12 +608,12 @@ export default {
 .article-meta {
   display: flex;
   align-items: center;
-  gap: var(--theme-meta-gap);
-  color: var(--theme-text-meta);
-  font-size: var(--theme-meta-size);
-  margin-bottom: var(--theme-article-meta-margin);
+  gap: var(--theme-meta-gap, 12px);
+  color: var(--theme-text-meta, #666);
+  font-size: var(--theme-meta-size, 0.875rem);
+  margin-bottom: var(--theme-article-meta-margin, 1rem);
   font-weight: normal;
-  letter-spacing: var(--theme-meta-spacing);
+  letter-spacing: var(--theme-meta-spacing, 0);
 }
 
 .article-meta > span {
@@ -698,7 +699,7 @@ export default {
   flex: 0 0 var(--theme-sidebar-width, 260px);
   max-width: var(--theme-sidebar-width, 260px);
   min-width: 220px;
-  margin-top: var(--theme-sidebar-margin-top, 32px);
+  margin-top: var(--theme-sidebar-margin-top, 68px);
 }
 
 .sidebar > div,
