@@ -163,7 +163,7 @@
 }
 
 .moment-card {
-	background: rgba(255, 255, 255, 0.82);
+	background: var(--theme-card-bg, rgba(255, 255, 255, 0.82));
 	border-radius: 1rem;
 	padding: 1.5rem;
 	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
@@ -277,7 +277,7 @@
 }
 
 .empty-moments {
-	background: rgba(255, 255, 255, 0.82);
+	background: var(--theme-card-bg, rgba(255, 255, 255, 0.82));
 	border-radius: 1rem;
 	padding: 6rem 2rem;
 	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);

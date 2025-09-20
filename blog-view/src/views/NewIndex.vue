@@ -146,7 +146,7 @@ export default {
       }
       
       const { colors = {}, spacing = {}, typography = {}, borderRadius = {}, transitions = {} } = this.theme
-      const { text = {}, nav = {}, card = {}, gradients = {} } = colors
+      const { text = {}, nav = {}, card = {}, sidebar = {}, gradients = {} } = colors
       // 兼容多种主题结构
       const themeTextPrimary = (text && text.primary) || this.theme.textColor || (this.theme.text && this.theme.text.primary) || '#222'
 
@@ -167,6 +167,9 @@ export default {
         '--theme-card-hover': card.hover || '',
         '--theme-card-border': card.border || '',
         '--theme-card-glow': card.glow || '',
+        '--theme-sidebar-bg': sidebar.background || '',
+        '--theme-sidebar-hover': sidebar.hover || '',
+        '--theme-sidebar-border': sidebar.border || '',
         '--theme-divider': colors.divider || '',
 
         // 间距
@@ -186,6 +189,7 @@ export default {
         '--theme-content-margin-top': spacing.contentMarginTop || '100px',
         '--theme-sidebar-margin-top': (spacing.margin && spacing.margin.sidebar) || '32px',
         '--theme-article-section-width': (spacing.articleSectionWidth) || '1200px',
+        '--theme-sidebar-boxShadow': sidebar.boxShadow || '',
 
         // 内边距
         '--theme-card-padding': (spacing.padding && spacing.padding.card) || '',
@@ -589,7 +593,7 @@ export default {
 
 .article-card {
   padding: var(--card-padding, var(--theme-card-padding, 32px));
-  background-color: #ffffffd1;
+  background-color: var(--theme-card-bg, #ffffffd1);
   border-radius: var(--card-radius, var(--theme-card-radius, 20px));
   transition: var(--theme-hover-transition);
   font-size: var(--card-font-size, var(--theme-card-font-size, 1rem));
@@ -597,7 +601,7 @@ export default {
 
 .article-card:hover {
   transform: translateY(-2px);
-  background-color: #ffffffee;
+  background-color: var(--theme-card-hover, #ffffffee);
 }
 
 .article-meta {
@@ -699,30 +703,24 @@ export default {
 
 .sidebar > div,
 .sidebar-content {
-  background-color: var(--theme-card-bg, #fff);
+  background-color: var(--theme-sidebar-bg, var(--theme-card-bg, #fff));
   border-radius: var(--sidebar-radius, var(--theme-sidebar-radius, 24px));
   padding: var(--sidebar-padding, 32px 32px 28px 32px);
   box-shadow: var(--theme-shadow-card, 0 8px 32px rgba(0,0,0,0.10));
   margin-bottom: 2rem;
+  border: 1px solid var(--theme-sidebar-border, var(--theme-card-border, transparent));
   transition: background 0.3s, box-shadow 0.3s;
 }
 
 .sidebar-content:hover {
-  background-color: var(--theme-card-bg, #ffffffee);
+  background-color: var(--theme-sidebar-hover, var(--theme-card-hover, #ffffffee));
   box-shadow: var(--theme-shadow-hover, 0 12px 40px rgba(0,0,0,0.13));
 }
 
 .about-section,
 .categories-section {
-  background-color: transparent;
-  padding: 0;
+  background-color: var(--theme-sidebar-bg, transparent);
   margin-bottom: 32px;
-  border-radius: 0;
-}
-
-.about-section {
-  padding-bottom: 32px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .about-section h3 {
