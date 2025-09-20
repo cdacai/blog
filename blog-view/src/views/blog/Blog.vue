@@ -373,7 +373,7 @@
 	margin: 2.5rem 0;
 	line-height: 1.8;
 	font-size: 1.05rem;
-	color: var(--text-color);
+	color: var(--theme-text-secondary, var(--text-color));
 }
 
 .typo h1,
@@ -412,6 +412,15 @@
 
 .typo p {
 	margin: 1.25rem 0;
+	color: var(--theme-text-secondary, var(--text-color));
+}
+
+.typo li {
+	color: var(--theme-text-secondary, var(--text-color));
+}
+
+.typo ul, .typo ol {
+	color: var(--theme-text-secondary, var(--text-color));
 }
 
 .typo a {
@@ -437,7 +446,7 @@
 	border-left: 4px solid var(--primary-color);
 	background-color: rgba(var(--primary-color), 0.05);
 	border-radius: 0 8px 8px 0;
-	color: var(--text-color);
+	color: var(--theme-text-secondary, var(--text-color));
 }
 
 .typo code {

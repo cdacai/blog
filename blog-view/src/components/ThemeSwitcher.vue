@@ -97,7 +97,14 @@ export default {
       }
     },
     handleThemeChange(themeName) {
-      this.switchTheme(themeName)
+      // 检查当前是否在NewIndex页面（预览模式）
+      if (this.$route && this.$route.path === '/new') {
+        // NewIndex页面使用预览模式，不影响前台首页
+        this.$store.dispatch('theme/previewTheme', themeName)
+      } else {
+        // 其他页面正常切换主题
+        this.switchTheme(themeName)
+      }
       this.isOpen = false
       document.body.style.overflow = ''
     },
@@ -133,11 +140,8 @@ export default {
     }
   },
   created() {
-    // 从本地存储恢复主题设置
-    const savedTheme = localStorage.getItem('nblog-preferred-theme')
-    if (savedTheme && this.themes[savedTheme]) {
-      this.switchTheme(savedTheme)
-    }
+    // 不再从localStorage初始化主题，等待应用统一从API获取
+    // 主题应该由应用启动时统一从API获取并设置到Store
   },
   mounted() {
     // 添加事件监听

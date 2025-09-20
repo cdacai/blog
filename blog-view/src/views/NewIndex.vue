@@ -82,13 +82,7 @@ import { mapGetters } from 'vuex'
 import ThemeSwitcher from '@/components/ThemeSwitcher.vue'
 import axios from '@/plugins/axios'
 
-// 默认主题配置
-const defaultTheme = {
-  theme: 'theme1',
-  primaryColor: '#2F855A',
-  background: '#fff',
-  textColor: '#222'
-}
+// NewIndex页面完全依赖API接口获取主题配置，不使用任何本地默认配置
 
 export default {
   name: 'NewIndex',
@@ -135,24 +129,36 @@ export default {
       site: null,
       isFullscreen: false, // 全屏状态
       hasToken: false, // 是否有token
-      themeConfig: { ...defaultTheme } // 添加themeConfig属性
+      // themeConfig将完全从Store中的API数据获取，不在这里初始化
     }
   },
   computed: {
     ...mapGetters('theme', ['theme']),
+    // 从Store中获取API返回的主题配置
+    themeConfig() {
+      return this.$store.getters['theme/themeConfig'] || {}
+    },
     rootStyles() {
-      if (!this.theme) {
+      // 优先使用themeConfig（API数据），取不到再使用this.theme
+      const config = this.themeConfig || this.theme || {}
+      if (!config) {
         return {}
       }
       
-      const { colors = {}, spacing = {}, typography = {}, borderRadius = {}, transitions = {} } = this.theme
+      const { colors = {}, spacing = {}, typography = {}, borderRadius = {}, transitions = {} } = config
       const { text = {}, nav = {}, card = {}, sidebar = {}, gradients = {} } = colors
-      // 兼容多种主题结构
-      const themeTextPrimary = (text && text.primary) || this.theme.textColor || (this.theme.text && this.theme.text.primary) || '#222'
+      // 兼容多种主题结构，优先使用themeConfig
+      const themeTextPrimary = (text && text.primary) || 
+                               (this.themeConfig.colors && this.themeConfig.colors.text && this.themeConfig.colors.text.primary) || 
+                               this.themeConfig.textColor || 
+                               (this.themeConfig.text && this.themeConfig.text.primary) ||
+                               (this.theme && this.theme.textColor) || 
+                               (this.theme && this.theme.text && this.theme.text.primary) || 
+                               '#222'
 
       return {
         // 颜色
-        '--theme-primary': colors.primary || this.themeConfig.primaryColor || '#2F855A',
+        '--theme-primary': colors.primary || '#2F855A',
         '--theme-bg': colors.background || '',
         '--theme-bg-gradient': (gradients.background && gradients.background.image) || gradients.background || '',
         '--theme-text-primary': themeTextPrimary,
@@ -280,7 +286,31 @@ export default {
       }
     }
   },
+  watch: {
+    // 监听主题变化，当主题切换时重新应用主题
+    '$store.state.theme.currentTheme'(newTheme, oldTheme) {
+      if (newTheme !== oldTheme) {
+        this.$nextTick(() => {
+          this.applyTheme()
+        })
+      }
+    },
+    // 监听主题配置变化
+    themeConfig: {
+      handler(newConfig, oldConfig) {
+        if (newConfig !== oldConfig) {
+          this.$nextTick(() => {
+            this.applyTheme()
+          })
+        }
+      },
+      deep: true
+    }
+  },
   async created() {
+    // 首先从API获取主题配置，确保主题优先从接口获取
+    await this.$store.dispatch('theme/fetchTheme')
+    
     await Promise.all([
       this.fetchArticles(),
       this.fetchSiteInfo()
@@ -290,14 +320,15 @@ export default {
     const token = urlParams.get('token') || localStorage.getItem('token') || ''
     this.hasToken = !!token
     
-    // 应用主题配置
+    // 应用主题配置（现在使用Store中的配置）
     this.applyTheme()
   },
   methods: {
     // 应用主题配置
     applyTheme() {
       const root = document.documentElement
-      const config = this.themeConfig
+      // 优先使用themeConfig（API数据），取不到再使用this.theme（本地配置）
+      let config = this.themeConfig || this.theme || {}
       
       // 主色
       let mainColor = (config.colors && config.colors.primary) || config.primaryColor || '#2F855A'
@@ -309,6 +340,14 @@ export default {
       // 将十六进制颜色转换为RGB格式并设置--primary-color-rgb变量
       const rgbValues = this.hexToRgb(mainColor) || '47,133,90'
       root.style.setProperty('--primary-color-rgb', rgbValues)
+      
+      // 确保Store中的主题与配置同步
+      if (config.theme) {
+        const currentTheme = this.$store.state.theme.currentTheme
+        if (currentTheme !== config.theme) {
+          this.$store.dispatch('theme/switchTheme', config.theme)
+        }
+      }
     },
     
     // 将十六进制颜色转换为RGB格式
@@ -421,19 +460,31 @@ export default {
     },
     async saveTheme() {
       try {
-        const theme = this.$store.getters['theme/theme']
+        // 获取当前预览的主题配置（Store中的themeConfig）
+        const themeConfig = this.$store.getters['theme/themeConfig']
+        if (!themeConfig) {
+          window.parent.postMessage({ type: 'theme-save', status: 'error', msg: '没有主题配置可保存' }, '*')
+          return
+        }
+        
         // 获取token，优先url参数，其次localStorage
         const urlParams = new URLSearchParams(window.location.search)
         const token = urlParams.get('token') || localStorage.getItem('token') || ''
-        const res = await axios.post('/admin/theme', theme, {
+        
+        // 保存完整的主题配置到API
+        const res = await axios.post('/admin/theme', themeConfig, {
           headers: { Authorization: token }
         })
+        
         if (res && res.code === 200) {
+          // 保存成功后，更新Store中的API配置，确保前台首页能获取到最新配置
+          await this.$store.dispatch('theme/fetchTheme')
           window.parent.postMessage({ type: 'theme-save', status: 'success', msg: res.msg || '主题保存成功' }, '*')
         } else {
           window.parent.postMessage({ type: 'theme-save', status: 'error', msg: (res && res.msg) || '保存失败' }, '*')
         }
       } catch (e) {
+        console.error('保存主题失败:', e)
         window.parent.postMessage({ type: 'theme-save', status: 'error', msg: '保存失败' }, '*')
       }
     },

@@ -73,7 +73,7 @@
 
 <style scoped>
 	.article-header {
-		color: var(--primary-color);
+		color: var(--theme-text-primary, var(--primary-color));
 		font-size: 2rem;
 		font-weight: 600;
 		margin-bottom: 2rem;
@@ -192,7 +192,7 @@
 		padding: 0.5rem 1rem !important;
 		border-radius: 4px !important;
 		transition: all 0.3s ease !important;
-		color: var(--timeline-title-color, #fff) !important;
+		color: var(--theme-text-secondary, var(--theme-text-primary, var(--timeline-title-color, #fff))) !important;
 	}
 
 	.tl-blue .tl-title,

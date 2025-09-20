@@ -126,8 +126,8 @@
 					'--theme-bg': colors.background || '',
 					'--theme-bg-gradient': (gradients.background && gradients.background.image) || gradients.background || '',
 					'--theme-text-primary': themeTextPrimary,
-					'--theme-text-secondary': text.secondary || '',
-					'--theme-text-meta': text.meta || '',
+					'--theme-text-secondary': text.secondary || themeTextPrimary,
+					'--theme-text-meta': text.meta || themeTextPrimary,
 					'--theme-nav-inactive': nav.inactive || '',
 					'--theme-nav-hover': nav.hover || '',
 					'--theme-nav-active': nav.active || '',
@@ -200,9 +200,12 @@
 				});
 			}
 		},
-		created() {
+		async created() {
+			// 前台首页作为主入口，负责统一的主题获取流程
+			await this.initializeTheme()
+			
 			this.getSite()
-      this.applyTheme()
+			await this.applyTheme()
 			// this.getHitokoto()
 			//从localStorage恢复之前的评论信息
 			this.$store.commit(RESTORE_COMMENT_FORM)
@@ -216,6 +219,39 @@
 			this.injectWaveBg(); // 页面初次渲染也注入一次
 		},
 		methods: {
+			// 主题初始化流程：前台首页统一管理主题获取和存储
+			async initializeTheme() {
+				try {
+					// 1. 初次访问，先使用localStorage值或默认主题
+					const savedTheme = localStorage.getItem('nblog-preferred-theme') || 'theme5'
+					this.$store.commit('theme/SET_THEME', savedTheme)
+					
+					// 2. 从API获取主题配置
+					const apiConfig = await this.$store.dispatch('theme/fetchTheme')
+					
+					// 3. 强制使用API获取到的值，存储到Store
+					if (apiConfig && apiConfig.theme) {
+						// API返回了具体的主题配置，使用API的值
+						this.$store.commit('theme/SET_THEME', apiConfig.theme)
+						this.$store.commit('theme/SET_THEME_CONFIG', apiConfig)
+						
+						// 4. 存储到localStorage，供后续访问使用
+						localStorage.setItem('nblog-preferred-theme', apiConfig.theme)
+						
+						console.log('主题初始化完成，使用API配置：', apiConfig.theme)
+					} else {
+						// API没有返回主题配置，继续使用localStorage的值
+						console.log('API未返回主题配置，使用localStorage配置：', savedTheme)
+					}
+				} catch (error) {
+					console.error('主题初始化失败，使用默认配置：', error)
+					// 异常情况下使用默认主题
+					const defaultTheme = 'theme5'
+					this.$store.commit('theme/SET_THEME', defaultTheme)
+					localStorage.setItem('nblog-preferred-theme', defaultTheme)
+				}
+			},
+			
 			getSite() {
 				getSite().then(res => {
 					if (res.code === 200) {
@@ -233,19 +269,26 @@
 			},
 			async applyTheme() {
 			try {
-				const res = await getTheme()
-				let config = res
-				if (res && typeof res === 'string') {
-					try { config = JSON.parse(res) } catch(e) { config = {} }
+				// 优先使用Store中已获取的主题配置
+				let config = this.$store.getters['theme/themeConfig']
+				
+				// 如果Store中没有配置，则直接调用API获取（兜底方案）
+				if (!config) {
+					const res = await getTheme()
+					config = res
+					if (res && typeof res === 'string') {
+						try { config = JSON.parse(res) } catch(e) { config = {} }
+					}
 				}
-				this.themeConfig = config
+				
+				this.themeConfig = config || {}
 
 				// 适配嵌套结构，注入 CSS 变量
 				const root = document.documentElement
 				// 主色
-				let mainColor = (config.colors && config.colors.primary) || config.primaryColor || '#2F855A'
+				let mainColor = (config && config.colors && config.colors.primary) || (config && config.primaryColor) || '#2F855A'
 				// 装饰色
-				let decorationColor = config.decorationColor || mainColor
+				let decorationColor = (config && config.decorationColor) || mainColor
 				root.style.setProperty('--primary-color', mainColor)
 				// 同时设置--theme-primary变量以确保所有元素颜色一致
 				root.style.setProperty('--theme-primary', mainColor)
@@ -253,12 +296,14 @@
 				const rgbValues = this.hexToRgb(mainColor) || '47,133,90'
 				root.style.setProperty('--primary-color-rgb', rgbValues)
 				
-				// 关键修复：更新Vuex store中的主题，确保rootStyles计算属性使用最新主题配置
-				// 如果API返回的主题配置中包含theme字段，使用它更新store
-				if (config.theme && Object.keys(this.themes || {}).includes(config.theme)) {
-					this.$store.dispatch('theme/switchTheme', config.theme)
+				// 如果API返回的主题配置中包含theme字段，确保Store中的主题是最新的
+				if (config && config.theme && Object.keys(this.themes || {}).includes(config.theme)) {
+					const currentTheme = this.$store.state.theme.currentTheme
+					if (currentTheme !== config.theme) {
+						this.$store.dispatch('theme/switchTheme', config.theme)
+					}
 				}
-				root.style.setProperty('--background', (config.colors && config.colors.background) || config.background || '#fff')
+				root.style.setProperty('--background', (config && config.colors && config.colors.background) || (config && config.background) || '#fff')
 				root.style.setProperty('--text-color', (config.colors && config.colors.text && config.colors.text.primary) || config.textColor || (config.text && config.text.primary) || '#222')
 				root.style.setProperty('--decoration-color', decorationColor)
 				root.style.setProperty('--theme-text-primary', (config.colors && config.colors.text && config.colors.text.primary) || config.textColor || (config.text && config.text.primary) || '#222')
@@ -692,6 +737,16 @@
 			max-width: 100%;
 			padding: 0 1.5rem;
 		}
+	}
+
+	.section-title {
+		color: var(--theme-text-primary) !important;
+		font-size: var(--title-font-size, var(--theme-title-font-size, 1.5rem)) !important;
+		font-weight: var(--theme-section-title-weight, 700) !important;
+		margin-bottom: var(--theme-section-title-margin, 32px) !important;
+		letter-spacing: var(--theme-section-title-spacing, 0) !important;
+		padding-bottom: 1rem;
+		position: relative;
 	}
 
 	.article-header {

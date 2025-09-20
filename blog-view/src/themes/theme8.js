@@ -7,7 +7,7 @@ export const theme8 = {
         text: {
             primary: '#00FFFF',
             secondary: '#FF073A',
-            meta: '#8B5CF6',
+            meta: '#00FFAA', // 改为更清晰的青绿色，在黑色背景下更易读
             code: '#00FF41',
             accent: '#FF073A'
         },

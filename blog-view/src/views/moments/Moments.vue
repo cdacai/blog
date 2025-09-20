@@ -130,7 +130,7 @@
 }
 
 .article-header {
-	color: var(--primary-color);
+	color: var(--theme-text-primary, var(--primary-color));
 	font-size: 2rem;
 	font-weight: 600;
 	margin-bottom: 2rem;
@@ -193,12 +193,12 @@
 
 .moment-author {
 	font-weight: 600;
-	color: var(--primary-color);
+	color: var(--theme-text-primary, var(--primary-color));
 }
 
 .moment-time {
 	font-size: 0.875rem;
-	color: var(--text-color);
+	color: var(--theme-text-meta, var(--text-color));
 }
 
 .moment-content {
@@ -207,6 +207,7 @@
 	line-height: 1.8;
 	word-break: break-word;
 	width: 100%;
+	color: var(--theme-text-secondary, var(--theme-text-primary, var(--text-color)));
 }
 
 .moment-content img {
