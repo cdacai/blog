@@ -1,5 +1,24 @@
 <template>
   <div class="new-index" :style="rootStyles" ref="fullscreenRoot">
+    <!-- 添加点状装饰 -->
+    <div class="dot-decoration bottom-left fixed"></div>
+    
+    <!-- 添加色块装饰 -->
+    <div class="color-block top-left fixed"></div>
+    
+    <!-- 添加圆形色块 -->
+    <div class="color-block circle-top-right fixed"></div>
+    <div class="color-block circle-middle-left fixed"></div>
+    
+    <!-- 新增两个装饰元素 -->
+    <div class="color-block small-top-left fixed"></div>
+    <div class="color-block small-bottom-right fixed"></div>
+    
+    <!-- 添加椭圆形色块 -->
+    <div class="color-block oval-top-center fixed"></div>
+    <div class="color-block oval-middle-right fixed"></div>
+    <div class="color-block oval-bottom-left fixed"></div>
+
     <!-- 顶部导航 -->
     <header class="header">
       <div class="header-content">
@@ -145,7 +164,7 @@ export default {
         return {}
       }
       
-      const { colors = {}, spacing = {}, typography = {}, borderRadius = {}, transitions = {} } = config
+      const { colors = {}, spacing = {}, typography = {}, borderRadius = {}, transitions = {}, decoration = {} } = config
       const { text = {}, nav = {}, card = {}, sidebar = {}, gradients = {} } = colors
       // 兼容多种主题结构，优先使用themeConfig
       const themeTextPrimary = (text && text.primary) || 
@@ -176,6 +195,10 @@ export default {
         '--theme-sidebar-bg': sidebar.background || '',
         '--theme-sidebar-hover': sidebar.hover || '',
         '--theme-sidebar-border': sidebar.border || '',
+        // 装饰元素配置
+        '--decoration-blur': (decoration && typeof decoration.blur !== 'undefined') ? `${decoration.blur}px` : '40px',
+        '--theme-decoration-blur': (decoration && typeof decoration.blur !== 'undefined') ? `${decoration.blur}px` : '40px',
+        '--decoration-opacity': (decoration && typeof decoration.opacity !== 'undefined') ? decoration.opacity : '0.7',
         '--theme-divider': colors.divider || '',
 
         // 间距
@@ -321,7 +344,13 @@ export default {
     this.hasToken = !!token
     
     // 应用主题配置（现在使用Store中的配置）
-    this.applyTheme()
+      this.applyTheme()
+      
+      // 删除已存在的波浪背景元素
+      setTimeout(() => {
+        const waveBgs = document.querySelectorAll('.wave-bg');
+        waveBgs.forEach(waveBg => waveBg.remove());
+      }, 100);
   },
   methods: {
     // 应用主题配置
@@ -348,6 +377,14 @@ export default {
           this.$store.dispatch('theme/switchTheme', config.theme)
         }
       }
+      
+      // 动态设置所有波浪SVG背景色
+      this.injectWaveBg()
+    },
+    
+    // 波浪背景效果已移除，避免与其他装饰元素冲突
+    injectWaveBg() {
+      // 空方法，保持方法调用的兼容性
     },
     
     // 将十六进制颜色转换为RGB格式
@@ -557,7 +594,127 @@ export default {
   background-color: var(--theme-bg);
   transition: background 0.3s ease;
   padding-top: 64px;
+  position: relative;
+  overflow: hidden;
 }
+  
+  /* 装饰元素样式 */
+  .dot-decoration,
+  .color-block {
+    position: absolute;
+    border-radius: 50%;
+    z-index: 0;
+    opacity: var(--decoration-opacity, 0.7);
+    filter: blur(var(--decoration-blur));
+    animation: float 8s ease-in-out infinite;
+  }
+  
+  /* 替代装饰元素 - 色块样式 */
+  .color-block.top-right {
+    top: 5%;
+    right: 10%;
+    width: 144px;
+    height: 144px;
+    background-color: var(--theme-primary);
+    opacity: 0.5; /* 降低透明度，避免过度醒目 */
+  }
+  
+  .dot-decoration.bottom-left {
+    bottom: 54px;
+    left: calc(50% - 42.5px - 480px);
+    width: 85px;
+    height: 85px;
+    background-color: var(--theme-primary);
+  }
+  
+  .color-block.top-left {
+    top: 216px;
+    left: calc(50% - 86.5px - 520px);
+    width: 173px;
+    height: 173px;
+    background-color: var(--theme-primary);
+  }
+  
+  .color-block.middle-right {
+    top: 540px;
+    right: calc(50% - 65px - 520px);
+    width: 130px;
+    height: 130px;
+    background-color: var(--theme-primary);
+  }
+  
+  .color-block.circle-top-right {
+    top: 162px;
+    right: calc(50% - 50.5px - 360px);
+    width: 101px;
+    height: 101px;
+    background-color: var(--theme-primary);
+  }
+  
+  .color-block.circle-bottom-center {
+    bottom: 108px;
+    left: calc(50% - 72px);
+    width: 144px;
+    height: 144px;
+    background-color: var(--theme-primary);
+  }
+  
+  .color-block.circle-middle-left {
+    top: 648px;
+    left: calc(50% - 54px - 420px);
+    width: 108px;
+    height: 108px;
+    background-color: var(--theme-primary);
+  }
+  
+  /* 新增两个装饰元素 */
+  .color-block.small-top-left {
+    top: 108px;
+    left: calc(50% - 40px - 420px);
+    width: 80px;
+    height: 80px;
+    background-color: var(--theme-primary);
+  }
+  
+  .color-block.small-bottom-right {
+    bottom: 162px;
+    right: calc(50% - 47.5px - 120px);
+    width: 95px;
+    height: 95px;
+    background-color: var(--theme-primary);
+  }
+  
+  /* 隐藏其他装饰元素 */
+  .color-block.bottom-right,
+  .color-block.oval-top-center,
+  .color-block.oval-middle-right,
+  .color-block.oval-bottom-left {
+    display: none;
+  }
+  
+  
+  @keyframes float {
+    0%, 100% {
+      transform: translate(0, 0);
+    }
+    50% {
+      transform: translate(10px, 10px);
+    }
+  }
+  
+  /* 波浪背景样式 */
+  .wave-bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    bottom: 0;
+    left: 0;
+    background-size: cover;
+    background-position: bottom;
+    background-repeat: no-repeat;
+    opacity: 0.1;
+    z-index: 0;
+  }
 
 .header {
   position: fixed;
@@ -785,7 +942,7 @@ export default {
 
 .about-section,
 .categories-section {
-  background-color: var(--theme-sidebar-bg, transparent);
+  background-color: transparent;
   margin-bottom: 32px;
 }
 
@@ -826,6 +983,7 @@ export default {
 }
 
 .categories-section {
+  background-color: transparent;
   margin-bottom: 0;
 }
 

@@ -1,46 +1,37 @@
 <template>
-	<div class="site" :style="rootStyles">
-		<!-- 添加点状装饰 -->
-		<div class="dot-decoration top-right fixed"></div>
-		<div class="dot-decoration bottom-left fixed"></div>
-		
-		<!-- 添加色块装饰 -->
-		<div class="color-block top-left fixed"></div>
-		<div class="color-block middle-right fixed"></div>
-		<div class="color-block bottom-right fixed"></div>
-		
-		<!-- 添加圆形色块 -->
-		<div class="color-block circle-top-right fixed"></div>
-		<div class="color-block circle-middle-left fixed"></div>
-		<div class="color-block circle-bottom-center fixed"></div>
-		
-		<!-- 添加椭圆形色块 -->
-		<div class="color-block oval-top-center fixed"></div>
-		<div class="color-block oval-middle-right fixed"></div>
-		<div class="color-block oval-bottom-left fixed"></div>
-		
-		<Nav :blog-name="siteInfo.blogName" :category-list="categoryList"/>
-		<div class="main">
-			<div class="container">
-				<div class="content-wrapper">
-					<!-- 主内容区恢复router-view渲染 -->
-					<div class="main-content">
-						<h2 class="section-title" v-if="$route.name === 'home'">最新文章</h2>
-						<router-view :category-list="categoryList" :tag-list="tagList"/>
-					</div>
-					<!-- 侧边栏结构和样式与NewIndex.vue一致 -->
-					<aside class="sidebar">
-						<div class="sidebar-content">
-							<Introduction :category-list="categoryList"/>
-						</div>
-					</aside>
-				</div>
-			</div>
-		</div>
-		<Footer :site-info="siteInfo" :badges="badges" :new-blog-list="newBlogList"/>
-		<BlogPasswordDialog/>
-		<Tocbot v-if="$route.meta.tocbot"/>
-	</div>
+  <div class="site" :style="rootStyles">
+    <!-- 装饰元素 -->
+    <div class="dot-decoration bottom-left"></div>
+    <div class="color-block top-left"></div>
+    <div class="color-block circle-top-right"></div>
+    <div class="color-block circle-middle-left"></div>
+    
+    <!-- 新增两个装饰元素 -->
+    <div class="color-block small-top-left"></div>
+    <div class="color-block small-bottom-right"></div>
+    
+    <Nav :blog-name="siteInfo.blogName" :category-list="categoryList"/>
+    <div class="main">
+      <div class="container">
+        <div class="content-wrapper">
+          <!-- 主内容区 -->
+          <div class="main-content">
+            <h2 class="section-title" v-if="$route.name === 'home'">最新文章</h2>
+            <router-view :category-list="categoryList" :tag-list="tagList"/>
+          </div>
+          <!-- 侧边栏结构和样式与NewIndex.vue一致 -->
+          <aside class="sidebar">
+            <div class="sidebar-content">
+              <Introduction :category-list="categoryList"/>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+    <Footer :site-info="siteInfo" :badges="badges" :new-blog-list="newBlogList"/>
+    <BlogPasswordDialog/>
+    <Tocbot v-if="$route.meta.tocbot"/>
+  </div>
 </template>
 
 <script>
@@ -294,6 +285,12 @@
 				// 注入主题尺寸参数，适配多层嵌套结构
 				root.style.setProperty('--card-radius', (config.borderRadius && config.borderRadius.card) || '20px')
 				root.style.setProperty('--button-radius', (config.borderRadius && config.borderRadius.button) || '8px')
+				
+				// 装饰元素配置
+				root.style.setProperty('--decoration-blur', (config.decoration && typeof config.decoration.blur !== 'undefined') ? `${config.decoration.blur}px` : '40px')
+				root.style.setProperty('--decoration-opacity', (config.decoration && typeof config.decoration.opacity !== 'undefined') ? config.decoration.opacity : '0.7')
+				// 同时设置--theme-decoration-blur以便CSS中引用
+				root.style.setProperty('--theme-decoration-blur', (config.decoration && typeof config.decoration.blur !== 'undefined') ? `${config.decoration.blur}px` : '40px')
 				root.style.setProperty('--sidebar-radius', (config.borderRadius && config.borderRadius.sidebar) || '20px')
 				root.style.setProperty('--card-padding', (config.spacing && config.spacing.padding && config.spacing.padding.card) || '32px')
 				root.style.setProperty('--sidebar-padding', (config.spacing && config.spacing.padding && config.spacing.padding.sidebar) || '32px')
@@ -394,6 +391,8 @@
     background-color: var(--theme-bg);
     color: var(--text-color);
     transition: background 0.3s, color 0.3s;
+    position: relative;
+    overflow: hidden;
 	}
 
 	.main {
@@ -500,7 +499,6 @@
 
 	.about-section,
 	.categories-section {
-		background-color: var(--theme-sidebar-bg, transparent);
 		margin-bottom: 32px;
 	}
 
@@ -808,6 +806,102 @@
 		padding: var(--button-padding, 12px 24px);
 		font-size: var(--button-font-size, 1rem);
 		transition: all 0.2s;
+	}
+
+	/* 装饰元素样式 */
+	/* 装饰元素配置变量 */
+	/* 使用主题配置的装饰效果 */	
+	.dot-decoration,
+	.color-block {
+		position: absolute;
+		border-radius: 50%;
+		z-index: 0;
+		opacity: var(--decoration-opacity, 0.7);
+		filter: blur(var(--decoration-blur));
+		animation: float 8s ease-in-out infinite;
+	}
+	
+	.dot-decoration.top-right {
+    top: 54px;
+    right: calc(50% - 72px - 360px);
+    width: 144px;
+    height: 144px;
+    background-color: var(--primary-color);
+  }
+  
+  .dot-decoration.bottom-left {
+    bottom: 54px;
+    left: calc(50% - 57.5px - 480px);
+    width: 115px;
+    height: 115px;
+    background-color: var(--primary-color);
+  }
+  
+  .color-block.top-left {
+    top: 216px;
+    left: calc(50% - 86.5px - 520px);
+    width: 173px;
+    height: 173px;
+    background-color: var(--primary-color);
+  }
+  
+  .color-block.middle-right {
+    top: 540px;
+    right: calc(50% - 65px - 520px);
+    width: 130px;
+    height: 130px;
+    background-color: var(--primary-color);
+  }
+  
+  .color-block.circle-top-right {
+    top: 162px;
+    right: calc(50% - 50.5px - 360px);
+    width: 101px;
+    height: 101px;
+    background-color: var(--primary-color);
+  }
+  
+  /* 新增的两个装饰元素 */
+  .color-block.circle-bottom-center {
+    bottom: 108px;
+    left: calc(50% - 72px);
+    width: 144px;
+    height: 144px;
+    background-color: var(--primary-color);
+  }
+  
+  .color-block.circle-middle-left {
+    top: 648px;
+    left: calc(50% - 54px - 420px);
+    width: 108px;
+    height: 108px;
+    background-color: var(--primary-color);
+  }
+  
+  /* 新增两个装饰元素 */
+  .color-block.small-top-left {
+    top: 108px;
+    left: calc(50% - 40px - 420px);
+    width: 80px;
+    height: 80px;
+    background-color: var(--primary-color);
+  }
+  
+  .color-block.small-bottom-right {
+    bottom: 162px;
+    right: calc(50% - 47.5px - 120px);
+    width: 95px;
+    height: 95px;
+    background-color: var(--theme-primary);
+  }
+	
+	@keyframes float {
+		0%, 100% {
+			transform: translate(0, 0);
+		}
+		50% {
+			transform: translate(10px, 10px);
+		}
 	}
 
 	/* === 卡片和侧边栏样式严格同步NewIndex.vue === */

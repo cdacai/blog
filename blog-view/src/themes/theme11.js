@@ -93,6 +93,11 @@ export const theme11 = {
             }
         }
     },
+    // 装饰元素配置
+    decoration: {
+        blur: 40,
+        opacity: 0.7
+    },
     typography: {
         fontFamily: {
             primary: '"Crimson Text", "Times New Roman", Georgia, serif',

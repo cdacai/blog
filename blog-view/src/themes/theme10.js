@@ -1,81 +1,86 @@
-// 方案10：夜幕风格 - 暗黑护眼主题
+// 方案10：夜幕风格 - 璀璨星空主题
 export const theme10 = {
     name: '夜幕',
     colors: {
-        primary: '#60A5FA',               // 明亮蓝色
-        background: '#0A0A0F',            // 更深的黑色背景
+        primary: '#3B82F6',               // 深蓝色主色调（替换紫色）
+        background: '#040406',            // 几乎纯黑的背景色
         text: {
-            primary: '#E2E8F0',           // 亮灰色主文字
-            secondary: '#60A5FA',         // 蓝色次要文字
+            primary: '#F8FAFC',           // 更亮的白色文字
+            secondary: '#3B82F6',         // 蓝色次要文字
             meta: '#94A3B8',              // 中灰色元信息
             code: '#F8FAFC',              // 近白色代码文字
-            accent: '#38BDF8'             // 天蓝色强调色
+            accent: '#06B6D4'             // 青色强调色（增加活力）
         },
         nav: {
             inactive: 'rgba(148, 163, 184, 0.8)',
-            hover: 'rgba(96, 165, 250, 0.9)',
-            active: '#60A5FA',
-            background: 'rgba(10, 10, 15, 0.95)',
-            border: 'rgba(96, 165, 250, 0.2)'
+            hover: 'rgba(59, 130, 246, 0.9)',
+            active: '#3B82F6',
+            background: 'rgba(4, 4, 6, 0.85)',
+            border: 'rgba(59, 130, 246, 0.2)'
         },
         card: {
-            background: 'transparent',                // 卡片背景透明
-            hover: 'rgba(96, 165, 250, 0.1)',       // 悬停时淡蓝色
-            border: 'rgba(96, 165, 250, 0.4)',      // 更明显的蓝色边框
-            shadow: '0 8px 32px rgba(96, 165, 250, 0.15)' // 蓝色月光阴影
+            background: 'rgba(15, 23, 42, 0.7)',   // 深蓝紫色半透明背景
+            hover: 'rgba(59, 130, 246, 0.15)',     // 悬停时淡蓝色
+            border: 'rgba(59, 130, 246, 0.3)',     // 蓝色边框
+            shadow: '0 8px 32px rgba(59, 130, 246, 0.2)' // 蓝色光晕
         },
         sidebar: {
-            background: 'transparent',                 // 侧边栏背景透明
-            border: 'rgba(96, 165, 250, 0.4)',       // 更明显的蓝边框
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
+            background: 'rgba(15, 23, 42, 0.7)',
+            border: 'rgba(59, 130, 246, 0.3)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)'
         },
         button: {
             primary: {
-                background: '#60A5FA',
-                hover: '#3B82F6',
+                background: '#3B82F6',
+                hover: '#2563EB',
                 text: '#0F1419'
             },
             secondary: {
-                background: 'rgba(96, 165, 250, 0.1)',
-                hover: 'rgba(96, 165, 250, 0.2)',
-                border: 'rgba(96, 165, 250, 0.3)',
-                text: '#60A5FA'
+                background: 'rgba(59, 130, 246, 0.1)',
+                hover: 'rgba(59, 130, 246, 0.2)',
+                border: 'rgba(59, 130, 246, 0.3)',
+                text: '#3B82F6'
             }
         },
         link: {
-            default: '#60A5FA',
-            hover: '#38BDF8',
-            visited: '#8B5CF6'
+            default: '#3B82F6',
+            hover: '#06B6D4',
+            visited: '#2563EB'
         },
         border: {
-            light: 'rgba(96, 165, 250, 0.2)',
-            medium: 'rgba(96, 165, 250, 0.4)',
-            strong: 'rgba(96, 165, 250, 0.6)'
+            light: 'rgba(59, 130, 246, 0.2)',
+            medium: 'rgba(59, 130, 246, 0.3)',
+            strong: 'rgba(59, 130, 246, 0.5)'
         },
         status: {
             success: '#10B981',
             warning: '#F59E0B',
             error: '#EF4444',
-            info: '#06B6D4'
+            info: '#3B82F6'
         },
         gradients: {
             background: {
                 type: 'radial',
-                direction: 'ellipse at 30% 20%',
-                colors: ['rgba(96, 165, 250, 0.35)', 'rgba(56, 189, 248, 0.25)', 'rgba(6, 182, 212, 0.15)', 'rgba(96, 165, 250, 0.08)', 'transparent'],
-                color: '#0A0A0F'  // 主背景色用于主题切换器
+                direction: 'ellipse at top right',
+                colors: ['rgba(59, 130, 246, 0.25)', 'rgba(6, 182, 212, 0.15)', 'rgba(37, 99, 235, 0.1)', 'transparent'],
+                color: '#040406'  // 主背景色用于主题切换器
             },
             card: {
                 type: 'linear',
                 direction: '135deg',
-                colors: ['rgba(96, 165, 250, 0.08)', 'rgba(56, 189, 248, 0.05)', 'transparent']
+                colors: ['rgba(59, 130, 246, 0.1)', 'rgba(6, 182, 212, 0.08)', 'rgba(15, 23, 42, 0.8)']
             },
             button: {
                 type: 'linear',
                 direction: '135deg',
-                colors: ['#60A5FA', '#3B82F6']
+                colors: ['#3B82F6', '#2563EB']
             }
         }
+    },
+    // 装饰元素配置
+    decoration: {
+        blur: 40,
+        opacity: 0.7
     },
     typography: {
         fontFamily: {
@@ -223,15 +228,14 @@ export const theme10 = {
     },
     components: {
         card: {
-            background: 'transparent',
-            hover: 'rgba(96, 165, 250, 0.1)',
-            border: 'rgba(96, 165, 250, 0.4)',
+            background: 'rgba(15, 23, 42, 0.7)',
+            hover: 'rgba(59, 130, 246, 0.15)',
+            border: 'rgba(59, 130, 246, 0.3)',
             radius: '16px',
             padding: '24px',
-            shadow: '0 8px 32px rgba(96, 165, 250, 0.15)',
-            moonlight: `
-                radial-gradient(circle at 30% 30%, rgba(96, 165, 250, 0.12) 0%, transparent 60%),
-                radial-gradient(circle at 70% 70%, rgba(56, 189, 248, 0.08) 0%, transparent 60%)
+            shadow: '0 8px 32px rgba(59, 130, 246, 0.2)',
+            starfield: `
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 18 -7'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E")
             `
         },
         button: {
@@ -262,19 +266,30 @@ export const theme10 = {
         }
     },
     customProperties: {
-        // 夜幕主题特有的CSS变量
-        '--night-moonlight': '0 0 50px rgba(96, 165, 250, 0.6), 0 0 100px rgba(56, 189, 248, 0.3)',
-        '--night-surface': 'transparent',
-        '--night-surface-hover': 'rgba(96, 165, 250, 0.1)',
-        '--night-border': 'rgba(96, 165, 250, 0.4)',
-        '--night-text': '#E2E8F0',
+        // 夜幕主题特有的CSS变量 - 星空效果增强
+        '--night-moonlight': '0 0 50px rgba(59, 130, 246, 0.6), 0 0 100px rgba(6, 182, 212, 0.3)',
+        '--night-surface': 'rgba(15, 23, 42, 0.7)',
+        '--night-surface-hover': 'rgba(59, 130, 246, 0.15)',
+        '--night-border': 'rgba(59, 130, 246, 0.3)',
+        '--night-text': '#F8FAFC',
         '--night-text-muted': '#94A3B8',
-        '--night-accent': '#60A5FA',
+        '--night-accent': '#3B82F6',
         '--night-backdrop': 'blur(10px)',
-        '--night-crystal': `
-            radial-gradient(circle at 30% 30%, rgba(96, 165, 250, 0.12) 0%, transparent 60%),
-            radial-gradient(circle at 70% 70%, rgba(56, 189, 248, 0.08) 0%, transparent 60%)
+        '--night-stars': `
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cfilter id='stars'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 18 -7'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23stars)' opacity='0.08'/%3E%3C/svg%3E")
         `,
-        '--night-glow-enhanced': '0 0 40px rgba(96, 165, 250, 1.0)'
+        '--night-constellation': `
+            radial-gradient(circle at 30% 30%, rgba(59, 130, 246, 0.15) 0%, transparent 60%),
+            radial-gradient(circle at 70% 70%, rgba(6, 182, 212, 0.12) 0%, transparent 60%)
+        `,
+        '--night-glow-enhanced': '0 0 40px rgba(59, 130, 246, 1.0)',
+        // 星空动画效果
+        '--star-flicker': `
+            @keyframes starFlicker {
+                0%, 100% { opacity: 0.7; }
+                50% { opacity: 1; }
+            }
+        `,
+        '--twinkle-animation': 'starFlicker 3s ease-in-out infinite'
     }
 }

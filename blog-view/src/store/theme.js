@@ -44,8 +44,17 @@ const theme = {
         switchTheme({ commit }, themeName) {
             commit('SET_THEME', themeName)
             localStorage.setItem('nblog-preferred-theme', themeName)
-            // 不要直接覆盖themeConfig，因为前台首页依赖API数据
-            // themeConfig应该只通过API获取和更新
+            // 获取选中的主题配置
+            const selectedTheme = getTheme(themeName)
+            if (selectedTheme) {
+                // 构造完整的主题配置对象
+                const themeConfig = {
+                    theme: themeName,
+                    ...selectedTheme
+                }
+                // 更新themeConfig以确保前台首页能正确应用主题配置
+                commit('SET_THEME_CONFIG', themeConfig)
+            }
         },
         
         // 新增：用于NewIndex页面临时预览主题的action
@@ -56,7 +65,6 @@ const theme = {
             if (selectedTheme) {
                 const themeConfig = {
                     theme: themeName,
-                    colors: selectedTheme.colors,
                     ...selectedTheme
                 }
                 commit('SET_THEME_CONFIG', themeConfig)
@@ -69,4 +77,4 @@ const theme = {
     }
 }
 
-export default theme 
+export default theme

@@ -7,6 +7,7 @@ import { theme8 } from './theme8.js'
 import { theme9 } from './theme9.js'
 import { theme10 } from './theme10.js'
 import { theme11 } from './theme11.js'
+import { theme12 } from './theme12.js'
 import { zIndex } from './config.js'
 
 // 导出所有主题
@@ -18,7 +19,8 @@ export const themes = {
     theme8,
     theme9,
     theme10,
-    theme11
+    theme11,
+    theme12
 }
 
 // 获取主题

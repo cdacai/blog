@@ -142,7 +142,6 @@
 
 .about-section,
 .categories-section {
-  background-color: var(--theme-sidebar-bg, transparent);
   margin-bottom: 32px;
 }
 

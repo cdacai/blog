@@ -76,6 +76,11 @@ export const theme5 = {
             info: '#3B82F6'
         }
     },
+    // 装饰元素配置
+    decoration: {
+        blur: 60,
+        opacity: 0.7
+    },
     spacing: {
         headerHeight: '56px',
         headerTop: '24px',

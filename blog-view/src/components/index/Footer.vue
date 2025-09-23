@@ -3,7 +3,6 @@
 		<!-- 添加页脚装饰色块 -->
 		<div class="color-block footer-circle-left"></div>
 		<div class="color-block footer-circle-right"></div>
-		<div class="color-block footer-oval-center"></div>
 		
 		<div class="ui center aligned container">
 			<!-- <div class="ui inverted divided stackable grid"> -->

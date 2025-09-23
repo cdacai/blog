@@ -63,6 +63,11 @@ export const theme8 = {
             overlay: 'linear-gradient(135deg, rgba(255, 7, 58, 0.05) 0%, rgba(139, 92, 246, 0.05) 50%, rgba(0, 255, 255, 0.05) 100%)'
         }
     },
+    // 装饰元素配置
+    decoration: {
+        blur: 80,
+        opacity: 0.7
+    },
     typography: {
         fontFamily: {
             primary: "'JetBrains Mono', 'Consolas', 'Monaco', 'Courier New', monospace",

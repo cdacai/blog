@@ -63,6 +63,11 @@ export const theme9 = {
             overlay: 'linear-gradient(135deg, rgba(255, 107, 157, 0.03) 0%, rgba(192, 132, 252, 0.03) 50%, rgba(96, 165, 250, 0.03) 100%)'
         }
     },
+    // 装饰元素配置
+    decoration: {
+        blur: 40,
+        opacity: 0.7
+    },
     typography: {
         fontFamily: {
             primary: "'Comic Neue', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif",

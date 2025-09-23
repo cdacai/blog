@@ -1,8 +1,6 @@
 <template>
 	<div ref="nav" class="theme5-nav">
 		<!-- 添加导航栏色块装饰 -->
-		<div class="color-block nav-block-1"></div>
-		<div class="color-block nav-block-2"></div>
 		<div class="color-block circle-nav"></div>
 		
 		<div class="nav-container">
@@ -194,36 +192,11 @@
 }
 
 /* 导航栏色块样式 */
-.color-block.nav-block-1 {
-	position: absolute;
-	top: 20px;
-	right: 10%;
-	width: 80px;
-	height: 80px;
-	background-color: var(--decoration-color, #ffffff);	
-	transform: rotate(15deg);
-	border-radius: 10px;
-	opacity: 0.15;
-	z-index: -1;
-}
-
-.color-block.nav-block-2 {
-	position: absolute;
-	top: 40px;
-	left: 15%;
-	width: 60px;
-	height: 60px;
-	background-color: var(--decoration-color, #ffffff);
-	transform: rotate(-10deg);
-	border-radius: 10px;
-	opacity: 0.15;
-	z-index: -1;
-}
 
 .color-block.circle-nav {
 	position: absolute;
-	top: 30px;
-	left: 40%;
+	top: 86px;
+	left: 75%;
 	width: 70px;
 	height: 70px;
 	background-color: var(--decoration-color, #ffffff);
