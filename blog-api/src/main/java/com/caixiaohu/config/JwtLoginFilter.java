@@ -17,6 +17,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import com.caixiaohu.entity.LoginLog;
 import com.caixiaohu.entity.User;
 import com.caixiaohu.exception.BadRequestException;
+import com.caixiaohu.constant.JwtConstants;
 import com.caixiaohu.model.vo.Result;
 import com.caixiaohu.service.LoginLogService;
 import com.caixiaohu.util.IpAddressUtils;
@@ -42,12 +43,16 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
 
 	LoginLogService loginLogService;
 	ThreadLocal<String> currentUsername = new ThreadLocal<>();
+	private final String adminCommentCookieDomain;
+	private final boolean adminCommentCookieSecure;
 
 	protected JwtLoginFilter(String defaultFilterProcessesUrl, AuthenticationManager authenticationManager,
-			LoginLogService loginLogService) {
+			LoginLogService loginLogService, String adminCommentCookieDomain, boolean adminCommentCookieSecure) {
 		super(new AntPathRequestMatcher(defaultFilterProcessesUrl));
 		setAuthenticationManager(authenticationManager);
 		this.loginLogService = loginLogService;
+		this.adminCommentCookieDomain = adminCommentCookieDomain;
+		this.adminCommentCookieSecure = adminCommentCookieSecure;
 	}
 
 	@Override
@@ -89,6 +94,7 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
 		Map<String, Object> map = new HashMap<>(4);
 		map.put("user", user);
 		map.put("token", jwt);
+		addAdminCommentCookie(response, authResult);
 		Result result = Result.ok("登录成功", map);
 		PrintWriter out = response.getWriter();
 		out.write(JacksonUtils.writeValueAsString(result));
@@ -96,6 +102,25 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
 		out.close();
 		LoginLog log = handleLog(request, true, "登录成功");
 		loginLogService.saveLoginLog(log);
+	}
+
+	private void addAdminCommentCookie(HttpServletResponse response, Authentication authResult) {
+		String adminCommentToken = JwtUtils.generateToken(
+				JwtConstants.ADMIN_PREFIX + authResult.getName(),
+				authResult.getAuthorities()
+		);
+		StringBuilder cookie = new StringBuilder();
+		cookie.append(JwtConstants.ADMIN_COMMENT_COOKIE)
+				.append("=")
+				.append(adminCommentToken)
+				.append("; Path=/; HttpOnly; SameSite=Lax");
+		if (!StringUtils.isEmpty(adminCommentCookieDomain)) {
+			cookie.append("; Domain=").append(adminCommentCookieDomain);
+		}
+		if (adminCommentCookieSecure) {
+			cookie.append("; Secure");
+		}
+		response.addHeader("Set-Cookie", cookie.toString());
 	}
 
 	@Override

@@ -19,4 +19,5 @@ public class SiteSettingConstants {
 	public static final String FAVORITE = "favorite";
 	public static final String ROLL_TEXT = "rollText";
 	public static final String SELF_INTRODUCTION = "selfIntroduction";
+	public static final String ADMIN_COMMENT_AVATAR = "adminCommentAvatar";
 }

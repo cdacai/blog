@@ -13,5 +13,7 @@ public interface SiteSettingService {
 
 	String getWebTitleSuffix();
 
+	String getAdminCommentAvatar();
+
 	void updateSiteSetting(List<LinkedHashMap> siteSettings, List<Integer> deleteIds);
 }

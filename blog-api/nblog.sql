@@ -87,7 +87,7 @@ CREATE TABLE `comment`  (
   `id` bigint(0) NOT NULL AUTO_INCREMENT,
   `nickname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '昵称',
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '邮箱',
-  `content` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '评论内容',
+  `content` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '评论内容',
   `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '头像(图片路径)',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '评论时间',
   `ip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '评论者ip地址',
@@ -279,7 +279,7 @@ INSERT INTO `site_setting` VALUES (4, 'footerImgUrl', '页脚图片路径', '/im
 INSERT INTO `site_setting` VALUES (5, 'copyright', 'Copyright', '{\"title\":\"Copyright © 2019 - 2022\",\"siteName\":\"Observe\'S BLOG\"}', 1);
 INSERT INTO `site_setting` VALUES (6, 'beian', 'ICP备案号', '', 1);
 INSERT INTO `site_setting` VALUES (7, 'reward', '赞赏码', '/img/reward.jpg', 1);
-INSERT INTO `site_setting` VALUES (8, 'commentAdminFlag', '博主评论标识', '咕咕', 1);
+INSERT INTO `site_setting` VALUES (8, 'commentAdminFlag', '博主评论标识', '站长', 1);
 INSERT INTO `site_setting` VALUES (9, 'playlistServer', '播放器平台', 'netease', 1);
 INSERT INTO `site_setting` VALUES (10, 'playlistId', '播放器歌单', '3071528549', 1);
 INSERT INTO `site_setting` VALUES (11, 'avatar', '头像', '/img/avatar.jpg', 2);
@@ -304,6 +304,7 @@ INSERT INTO `site_setting` VALUES (29, 'badge', '徽标', '{\"title\":\"jsDelivr
 INSERT INTO `site_setting` VALUES (30, 'badge', '徽标', '{\"color\":\"lightgray\",\"subject\":\"CC\",\"title\":\"本站点采用 CC BY 4.0 国际许可协议进行许可\",\"url\":\"https://creativecommons.org/licenses/by/4.0/\",\"value\":\"BY 4.0\"}', 3);
 INSERT INTO `site_setting` VALUES (31, 'friendContent', '友链页面信息', '随机排序，不分先后。欢迎交换友链~(￣▽￣)~*\n\n* 昵称：Observe\n* 一句话：游龙当归海，海不迎我自来也。\n* 网址：[https://caixiaohu.com](https://www.caixiaohu.com)\n* 头像URL：[https://www.caixiaohu.com/img/avatar.jpg](https://www.caixiaohu.com/img/avatar.jpg)\n\n仅凭个人喜好添加友链，请在收到我的回复邮件后再于贵站添加本站链接。原则上已添加的友链不会删除，如果你发现自己被移除了，恕不另行通知，只需和我一样做就好。\n\n', 4);
 INSERT INTO `site_setting` VALUES (32, 'friendCommentEnabled', '友链页面评论开关', '1', 4);
+INSERT INTO `site_setting` VALUES (33, 'adminCommentAvatar', '站长评论头像', '/img/comment-avatar/1.jpg', 1);
 
 -- ----------------------------
 -- Table structure for tag

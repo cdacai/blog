@@ -57,6 +57,8 @@ log.param.response-success-data-max-length=100
 # JWT配置
 token.expireTime=259200000
 token.secretKey=${TOKEN_SECRET_KEY}
+token.admin-comment-cookie-domain=
+token.admin-comment-cookie-secure=false
 
 # 评论配置
 comment.notify.channel=mail

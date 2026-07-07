@@ -1,12 +1,13 @@
 import {
 	SAVE_COMMENT_RESULT,
+	SAVE_ADMIN_COMMENT_STATUS,
 	SET_PARENT_COMMENT_ID,
 	RESET_COMMENT_FORM,
 	SET_BLOG_PASSWORD_DIALOG_VISIBLE,
 	SET_BLOG_PASSWORD_FORM
 } from "./mutations-types";
 
-import {getCommentListByQuery, submitComment} from "@/api/comment";
+import {getAdminCommentStatus as fetchAdminCommentStatus, getCommentListByQuery, submitComment} from "@/api/comment";
 import {Message, Notification} from "element-ui";
 import router from "../router";
 import tvMapper from '@/plugins/tvMapper.json'
@@ -15,6 +16,16 @@ import paopaoMapper from '@/plugins/paopaoMapper.json'
 import sanitizeHtml from 'sanitize-html'
 
 export default {
+	getAdminCommentStatus({commit}) {
+		const adminToken = window.localStorage.getItem('adminToken') || ''
+		return fetchAdminCommentStatus(adminToken).then(res => {
+			if (res.code === 200) {
+				commit(SAVE_ADMIN_COMMENT_STATUS, res.data)
+			}
+		}).catch(() => {
+			commit(SAVE_ADMIN_COMMENT_STATUS, {admin: false})
+		})
+	},
 	getCommentList({commit, rootState}) {
 		//密码保护的文章，需要发送密码验证通过后保存在localStorage的Token
 		const blogToken = window.localStorage.getItem(`blog${rootState.commentQuery.blogId}`)
@@ -96,12 +107,12 @@ export default {
 			})
 		})
 	},
-	goBlogPage({commit}, blog) {
+	goBlogPage({commit, rootState}, blog) {
 		if (blog.privacy) {
 			const adminToken = window.localStorage.getItem('adminToken')
 			const blogToken = window.localStorage.getItem(`blog${blog.id}`)
 			//对于密码保护文章，博主身份Token和经过密码验证后的Token都可以跳转路由，再由后端验证Token有效性
-			if (adminToken || blogToken) {
+			if (adminToken || rootState.adminCommentStatus.admin || blogToken) {
 				return router.push(`/blog/${blog.id}`)
 			}
 			commit(SET_BLOG_PASSWORD_FORM, {blogId: blog.id, password: ''})

@@ -7,8 +7,18 @@
 						<span>基础设置</span>
 					</div>
 					<el-form label-position="right" label-width="100px">
-						<el-form-item :label="item.nameZh" v-for="item in typeMap.type1" :key="item.id">
-							<el-input v-model="item.value" size="mini"></el-input>
+						<el-form-item :label="item.nameZh" v-for="item in typeMap.type1" :key="item.id || item.key">
+							<div v-if="item.nameEn==='adminCommentAvatar'" class="avatar-picker">
+								<div
+									v-for="avatar in adminCommentAvatars"
+									:key="avatar"
+									class="avatar-option"
+									:class="{ active: item.value === avatar }"
+									@click="item.value = avatar">
+									<img :src="avatar" alt="">
+								</div>
+							</div>
+							<el-input v-else v-model="item.value" size="mini"></el-input>
 						</el-form-item>
 					</el-form>
 				</el-card>
@@ -88,6 +98,14 @@
 			return {
 				deleteIds: [],
 				typeMap: {},
+				adminCommentAvatars: [
+					'/img/comment-avatar/1.jpg',
+					'/img/comment-avatar/2.jpg',
+					'/img/comment-avatar/3.jpg',
+					'/img/comment-avatar/4.jpg',
+					'/img/comment-avatar/5.jpg',
+					'/img/comment-avatar/6.jpg'
+				],
 			}
 		},
 		created() {
@@ -97,6 +115,15 @@
 			getData() {
 				getSiteSettingData().then(res => {
 					this.typeMap = res.data
+					if (!this.typeMap.type1.some(item => item.nameEn === 'adminCommentAvatar')) {
+						this.typeMap.type1.push({
+							key: Date.now(),
+							nameEn: 'adminCommentAvatar',
+							nameZh: '站长评论头像',
+							type: 1,
+							value: '/img/comment-avatar/1.jpg'
+						})
+					}
 					res.data.type3.forEach(item => {
 						item.value = JSON.parse(item.value)
 					})
@@ -190,6 +217,37 @@
 
 .el-form-item {
 	margin-bottom: 18px;
+}
+
+.avatar-picker {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+}
+
+.avatar-option {
+	width: 44px;
+	height: 44px;
+	padding: 2px;
+	border: 2px solid transparent;
+	border-radius: 50%;
+	cursor: pointer;
+	transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.avatar-option.active {
+	border-color: #409eff;
+}
+
+.avatar-option:hover {
+	transform: translateY(-1px);
+}
+
+.avatar-option img {
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	object-fit: cover;
 }
 
 /* 移动端适配 */

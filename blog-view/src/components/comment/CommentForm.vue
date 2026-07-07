@@ -13,7 +13,12 @@
 		</h3>
 		<el-form :model="commentForm" :rules="formRules" ref="formRef" size="small" class="comment-form">
 			<!-- 昵称和邮箱放在第一行 -->
-			<div class="form-row">
+			<div class="admin-reply-info" v-if="isAdminCommenter">
+				<img :src="adminCommentStatus.avatar || '/img/avatar.jpg'" alt="站长头像">
+				<span>{{ adminCommentStatus.nickname || '站长' }}正在以站长身份回复</span>
+			</div>
+
+			<div class="form-row" v-if="!isAdminCommenter">
 				<el-form-item prop="nickname" class="form-item">
 					<el-input 
 						v-model="commentForm.nickname" 
@@ -87,7 +92,7 @@
 			<!-- 底部操作栏 -->
 			<div class="form-footer">
 				<div class="form-actions">
-					<div class="notice-switch">
+					<div class="notice-switch" v-if="!isAdminCommenter">
 						<span class="switch-label">订阅回复</span>
 						<el-switch
 							v-model="commentForm.notice"
@@ -116,7 +121,10 @@
 	export default {
 		name: "CommentForm",
 		computed: {
-			...mapState(['parentCommentId', 'commentForm', 'commentQuery']),
+			...mapState(['parentCommentId', 'commentForm', 'commentQuery', 'adminCommentStatus']),
+			isAdminCommenter() {
+				return this.adminCommentStatus.admin || !!window.localStorage.getItem('adminToken')
+			},
 			primaryColor() {
 				return getComputedStyle(document.documentElement).getPropertyValue('--primary-color') || '#2F855A'
 			}
@@ -178,9 +186,9 @@
 			},
 			postForm() {
 				const adminToken = window.localStorage.getItem('adminToken')
-				if (adminToken) {
+				if (this.isAdminCommenter) {
 					//博主登录后，localStorage中会存储token，在后端设置属性，可以不校验昵称、邮箱
-					if (this.commentForm.content === '' || this.commentForm.content.length > 250) {
+					if (this.commentForm.content === '' || this.commentForm.content.length > 500) {
 						this.$notify({
 							title: '评论失败',
 							message: '评论内容有误',
@@ -188,13 +196,13 @@
 						})
 						return
 					}
-					this.$store.dispatch('submitCommentForm', adminToken)
+					this.$store.dispatch('submitCommentForm', adminToken || '')
 					return
 				}
 				
 				const blogToken = window.localStorage.getItem(`blog${this.commentQuery.blogId}`)
 				this.$refs.formRef.validate(valid => {
-					if (!valid || this.commentForm.content === '' || this.commentForm.content.length > 250) {
+					if (!valid || this.commentForm.content === '' || this.commentForm.content.length > 500) {
 						this.$notify({
 							title: '评论失败',
 							message: '请正确填写评论',
@@ -248,6 +256,26 @@
 	display: flex;
 	gap: 1rem;
 	margin-bottom: 1rem;
+}
+
+.admin-reply-info {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 1rem;
+	padding: 10px 12px;
+	border: 1px solid rgba(47, 133, 90, 0.18);
+	border-radius: 6px;
+	background: rgba(47, 133, 90, 0.06);
+	color: #2d3748;
+	font-size: 14px;
+}
+
+.admin-reply-info img {
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	object-fit: cover;
 }
 
 .form-item {
@@ -511,4 +539,3 @@
 	border-color: #dcdfe6 !important;
 }
 </style>
-

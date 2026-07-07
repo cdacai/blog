@@ -180,6 +180,7 @@
 			
 			this.getSite()
 			await this.applyTheme()
+			this.$store.dispatch('getAdminCommentStatus')
 			// this.getHitokoto()
 			//从localStorage恢复之前的评论信息
 			this.$store.commit(RESTORE_COMMENT_FORM)
@@ -1134,4 +1135,3 @@
 	  opacity: 1;
 	}
 </style>
-

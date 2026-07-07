@@ -21,6 +21,7 @@
 
 <script>
 import {changeAccount} from "@/api/account";
+import {logout as logoutApi} from "@/api/login";
 
 export default {
 	name: "Setting",
@@ -45,9 +46,11 @@ export default {
 			})
 		},
 		logout() {
-			window.localStorage.removeItem('token')
-			window.localStorage.removeItem('user')
-			this.$router.push('/login')
+			logoutApi().finally(() => {
+				window.localStorage.removeItem('token')
+				window.localStorage.removeItem('user')
+				this.$router.push('/login')
+			})
 		}
 	}
 }

@@ -21,6 +21,8 @@ public interface SiteSettingMapper {
 
 	String getWebTitleSuffix();
 
+	String getValueByNameEn(String nameEn);
+
 	int updateSiteSetting(SiteSetting siteSetting);
 
 	int deleteSiteSettingById(Integer id);

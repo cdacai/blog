@@ -26,6 +26,16 @@ export function submitComment(token, form) {
 	})
 }
 
+export function getAdminCommentStatus(token = '') {
+	return axios({
+		url: 'comment/admin/status',
+		method: 'GET',
+		headers: {
+			Authorization: token,
+		}
+	})
+}
+
 export function reportComment(data) {
 	return axios({
 		url: '/reports/comment',

@@ -2,6 +2,7 @@ import {
 	SAVE_SITE_INFO,
 	SAVE_INTRODUCTION,
 	SAVE_COMMENT_RESULT,
+	SAVE_ADMIN_COMMENT_STATUS,
 	SET_COMMENT_QUERY_PAGE_NUM,
 	SET_PARENT_COMMENT_ID,
 	RESET_COMMENT_FORM,
@@ -29,6 +30,13 @@ export default {
 		state.closeComment = data.closeComment
 		state.commentTotalPage = data.comments.totalPage
 		state.comments = data.comments.list
+	},
+	[SAVE_ADMIN_COMMENT_STATUS](state, status) {
+		state.adminCommentStatus = Object.assign({
+			admin: false,
+			nickname: '',
+			avatar: ''
+		}, status)
 	},
 	[SET_COMMENT_QUERY_PAGE](state, page) {
 		state.commentQuery.page = page

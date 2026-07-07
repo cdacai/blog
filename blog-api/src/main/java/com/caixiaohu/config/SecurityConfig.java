@@ -35,6 +35,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	MyAuthenticationEntryPoint myAuthenticationEntryPoint;
 	@Value("${blog.cors.origins}")
 	private String allowedOriginsStr;
+	@Value("${token.admin-comment-cookie-domain:}")
+	private String adminCommentCookieDomain;
+	@Value("${token.admin-comment-cookie-secure:false}")
+	private boolean adminCommentCookieSecure;
 
 	private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
@@ -60,11 +64,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 				.antMatchers("/admin/webTitleSuffix").permitAll()
 				.antMatchers("/admin/login").permitAll()
+				.antMatchers("/admin/logout").permitAll()
 				.antMatchers(HttpMethod.GET, "/admin/**").hasAnyRole("admin", "visitor")
 				.antMatchers("/admin/**").hasRole("admin")
 				.anyRequest().permitAll()
 				.and()
-				.addFilterBefore(new JwtLoginFilter("/admin/login", authenticationManager(), loginLogService),
+				.addFilterBefore(new JwtLoginFilter("/admin/login", authenticationManager(), loginLogService,
+								adminCommentCookieDomain, adminCommentCookieSecure),
 						UsernamePasswordAuthenticationFilter.class)
 				.addFilterBefore(new JwtFilter(), UsernamePasswordAuthenticationFilter.class)
 				.exceptionHandling().authenticationEntryPoint(myAuthenticationEntryPoint);

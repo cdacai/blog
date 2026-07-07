@@ -1,6 +1,7 @@
 package com.caixiaohu.controller;
 
 import com.caixiaohu.annotation.AccessLimit;
+import com.caixiaohu.constant.CommentConstants;
 import com.caixiaohu.constant.JwtConstants;
 import com.caixiaohu.entity.CommentReport;
 import com.caixiaohu.entity.User;
@@ -9,7 +10,9 @@ import com.caixiaohu.model.dto.Comment;
 import com.caixiaohu.model.vo.PageComment;
 import com.caixiaohu.model.vo.PageResult;
 import com.caixiaohu.model.vo.Result;
+import com.caixiaohu.service.AdminCommentAuthService;
 import com.caixiaohu.service.CommentService;
+import com.caixiaohu.service.SiteSettingService;
 import com.caixiaohu.service.impl.UserServiceImpl;
 import com.caixiaohu.util.IpAddressUtils;
 import com.caixiaohu.util.JwtUtils;
@@ -46,6 +49,10 @@ public class CommentController {
 	@Autowired
 	UserServiceImpl userService;
 	@Autowired
+	AdminCommentAuthService adminCommentAuthService;
+	@Autowired
+	SiteSettingService siteSettingService;
+	@Autowired
 	CommentUtils commentUtils;
 
 	/**
@@ -63,7 +70,8 @@ public class CommentController {
 			@RequestParam(defaultValue = "") Long blogId,
 			@RequestParam(defaultValue = "1") Integer pageNum,
 			@RequestParam(defaultValue = "10") Integer pageSize,
-			@RequestHeader(value = "Authorization", defaultValue = "") String jwt) {
+			@RequestHeader(value = "Authorization", defaultValue = "") String jwt,
+			HttpServletRequest request) {
 		CommentOpenStateEnum openState = commentUtils.judgeCommentState(page, blogId);
 		switch (openState) {
 			case NOT_FOUND:
@@ -72,7 +80,9 @@ public class CommentController {
 				return Result.create(403, "评论已关闭");
 			case PASSWORD:
 				// 文章受密码保护，需要验证Token
-				if (JwtUtils.judgeTokenIsExist(jwt)) {
+				if (adminCommentAuthService.resolveAdmin(jwt, request).isPresent()) {
+					break;
+				} else if (JwtUtils.judgeTokenIsExist(jwt)) {
 					try {
 						String subject = JwtUtils.getTokenBody(jwt).getSubject();
 						if (subject.startsWith(JwtConstants.ADMIN_PREFIX)) {
@@ -126,7 +136,8 @@ public class CommentController {
 			HttpServletRequest request,
 			@RequestHeader(value = "Authorization", defaultValue = "") String jwt) {
 		// 评论内容合法性校验
-		if (StringUtils.isEmpty(comment.getContent()) || comment.getContent().length() > 250 ||
+		if (StringUtils.isEmpty(comment.getContent()) ||
+				comment.getContent().length() > CommentConstants.COMMENT_CONTENT_MAX_LENGTH ||
 				comment.getPage() == null || comment.getParentCommentId() == null) {
 			return Result.error("参数有误");
 		}
@@ -134,6 +145,7 @@ public class CommentController {
 		boolean isVisitorComment = false;
 		// 父评论
 		com.caixiaohu.entity.Comment parentComment = null;
+		User adminUser = adminCommentAuthService.resolveAdmin(jwt, request).orElse(null);
 		// 对于有指定父评论的评论，应该以父评论为准，只判断页面可能会被绕过"评论开启状态检测"
 		if (comment.getParentCommentId() != -1) {
 			// 当前评论为子评论
@@ -158,7 +170,10 @@ public class CommentController {
 			case PASSWORD:
 				// 文章受密码保护
 				// 验证Token合法性
-				if (JwtUtils.judgeTokenIsExist(jwt)) {
+				if (adminUser != null) {
+					commentUtils.setAdminComment(comment, request, adminUser);
+					isVisitorComment = false;
+				} else if (JwtUtils.judgeTokenIsExist(jwt)) {
 					String subject;
 					try {
 						subject = JwtUtils.getTokenBody(jwt).getSubject();
@@ -198,7 +213,10 @@ public class CommentController {
 			case OPEN:
 				// 评论正常开放
 				// 有Token则为博主评论，或文章原先为密码保护，后取消保护，但客户端仍存在Token
-				if (JwtUtils.judgeTokenIsExist(jwt)) {
+				if (adminUser != null) {
+					commentUtils.setAdminComment(comment, request, adminUser);
+					isVisitorComment = false;
+				} else if (JwtUtils.judgeTokenIsExist(jwt)) {
 					String subject;
 					try {
 						subject = JwtUtils.getTokenBody(jwt).getSubject();
@@ -242,5 +260,19 @@ public class CommentController {
 		commentService.saveComment(comment);
 		commentUtils.judgeSendNotify(comment, isVisitorComment, parentComment);
 		return Result.ok("评论成功");
+	}
+
+	@GetMapping("/comment/admin/status")
+	public Result adminStatus(HttpServletRequest request,
+			@RequestHeader(value = "Authorization", defaultValue = "") String jwt) {
+		User admin = adminCommentAuthService.resolveAdmin(jwt, request).orElse(null);
+		Map<String, Object> map = new HashMap<>(4);
+		map.put("admin", admin != null);
+		if (admin != null) {
+			String adminCommentAvatar = siteSettingService.getAdminCommentAvatar();
+			map.put("nickname", admin.getNickname());
+			map.put("avatar", StringUtils.isEmpty(adminCommentAvatar) ? admin.getAvatar() : adminCommentAvatar);
+		}
+		return Result.ok("请求成功", map);
 	}
 }

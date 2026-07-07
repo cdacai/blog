@@ -159,6 +159,11 @@ public class SiteSettingServiceImpl implements SiteSettingService {
 		return siteSettingMapper.getWebTitleSuffix();
 	}
 
+	@Override
+	public String getAdminCommentAvatar() {
+		return siteSettingMapper.getValueByNameEn(SiteSettingConstants.ADMIN_COMMENT_AVATAR);
+	}
+
 	@Transactional(rollbackFor = Exception.class)
 	@Override
 	public void updateSiteSetting(List<LinkedHashMap> siteSettings, List<Integer> deleteIds) {

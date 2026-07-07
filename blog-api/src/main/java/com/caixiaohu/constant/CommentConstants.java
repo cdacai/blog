@@ -8,6 +8,11 @@ package com.caixiaohu.constant;
  */
 public class CommentConstants {
 	/**
+	 * 评论内容最大字符数，包含边界值
+	 */
+	public static final int COMMENT_CONTENT_MAX_LENGTH = 500;
+
+	/**
 	 * 评论提醒方式-Telegram
 	 */
 	public static final String TELEGRAM = "tg";

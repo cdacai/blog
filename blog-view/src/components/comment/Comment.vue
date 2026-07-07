@@ -12,7 +12,7 @@
 				<div class="comment-header">
 					<div class="user-info">
 						<a class="nickname" :href="comment.website!=''&&comment.website!=null?comment.website:null" target="_blank" rel="external nofollow noopener">{{ comment.nickname }}</a>
-						<div class="ui black left pointing label" v-if="comment.adminComment">{{ $store.state.siteInfo.commentAdminFlag }}</div>
+						<div class="ui black left pointing label" v-if="comment.adminComment">站长</div>
 						<div class="metadata">
 							<strong class="date">{{ comment.createTime | dateFormat('YYYY-MM-DD HH:mm') }}</strong>
 						</div>
@@ -42,7 +42,7 @@
 						<div class="comment-header">
 							<div class="user-info">
 								<a class="nickname" :href="reply.website!=''&&reply.website!=null?reply.website:null" target="_blank" rel="external nofollow noopener">{{ reply.nickname }}</a>
-								<div class="ui black left pointing label" v-if="reply.adminComment">{{ $store.state.siteInfo.commentAdminFlag }}</div>
+								<div class="ui black left pointing label" v-if="reply.adminComment">站长</div>
 								<div class="metadata">
 									<strong class="date">{{ reply.createTime | dateFormat('YYYY-MM-DD HH:mm') }}</strong>
 								</div>
@@ -192,18 +192,46 @@
 
 	.ui.comments .comment .text {
 		white-space: pre-wrap !important;
-		line-height: 1.5;
+		line-height: 1.7;
+		display: inline-block;
+		max-width: 100%;
+		margin: 0.75rem 0;
+		padding: 0.35rem 0.55rem;
+		border-radius: 6px;
+		background: rgba(255, 255, 255, 0.72);
+		backdrop-filter: blur(2px);
+		-webkit-backdrop-filter: blur(2px);
+		color: #111827 !important;
+		font-size: 1rem;
+		font-weight: 600;
+		text-shadow:
+			0 1px 0 rgba(255, 255, 255, 0.98),
+			0 0 4px rgba(255, 255, 255, 0.92),
+			0 0 10px rgba(255, 255, 255, 0.82),
+			0 1px 2px rgba(0, 0, 0, 0.18);
+		box-shadow: 0 1px 4px rgba(15, 23, 42, 0.08);
 	}
 
 	.ui.comments .comment .text a {
 		cursor: pointer;
 		margin-right: 8px;
 		font-weight: bolder;
-		color: rgba(0, 0, 0, .87);
+		color: #0f172a !important;
+		text-decoration: underline;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 2px;
 	}
 
 	.ui.comments .comment .text div {
 		display: inline;
+	}
+
+	.ui.comments .comment .text :deep(img) {
+		max-height: 1.5em;
+		margin: 0 2px;
+		vertical-align: -0.25em;
+		filter: none;
+		text-shadow: none;
 	}
 
 	.label {
@@ -369,10 +397,7 @@
 	}
 
 	.text {
-		color: #4a5568;
-		line-height: 1.7;
-		margin: 0.75rem 0;
-		font-size: 1rem;
+		color: #111827;
 	}
 
 	.report-btn {

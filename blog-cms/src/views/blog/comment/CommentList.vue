@@ -81,7 +81,7 @@
 					<el-input v-model="editForm.ip"></el-input>
 				</el-form-item>
 				<el-form-item label="评论内容" prop="content">
-					<el-input v-model="editForm.content" type="textarea" maxlength="250" :rows="5" show-word-limit></el-input>
+					<el-input v-model="editForm.content" type="textarea" maxlength="500" :rows="5" show-word-limit></el-input>
 				</el-form-item>
 			</el-form>
 			<!--底部-->
@@ -140,7 +140,7 @@
 					],
 					content: [
 						{required: true, message: '请输入评论内容', trigger: 'blur'},
-						{max: 255, message: '评论内容不可多于255个字符', trigger: 'blur'}
+						{max: 500, message: '评论内容不可多于500个字符', trigger: 'blur'}
 					],
 				}
 			}

@@ -46,6 +46,7 @@
 	import Breadcrumb from '@/components/Breadcrumb'
 	import SvgIcon from '@/components/SvgIcon'
 	import { getUnreadCount, markRead } from '@/api/notification'
+	import { logout as logoutApi } from '@/api/login'
 
 	export default {
 		components: {
@@ -82,10 +83,12 @@
 				}
 			},
 			logout() {
-				window.localStorage.removeItem('token')
-				window.localStorage.removeItem('user')
-				this.$router.push('/login')
-				this.msgSuccess('退出成功')
+				logoutApi().finally(() => {
+					window.localStorage.removeItem('token')
+					window.localStorage.removeItem('user')
+					this.$router.push('/login')
+					this.msgSuccess('退出成功')
+				})
 			},
 			async handleNotificationClick(type) {
 				this.$store.commit('notification/SET_HAS_NEW_MESSAGE', false)

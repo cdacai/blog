@@ -17,6 +17,11 @@ export default {
 	closeComment: 0,
 	commentTotalPage: 0,
 	comments: [],
+	adminCommentStatus: {
+		admin: false,
+		nickname: '',
+		avatar: ''
+	},
 	parentCommentId: -1,
 	commentForm: {
 		content: '',

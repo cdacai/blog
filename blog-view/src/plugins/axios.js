@@ -9,6 +9,7 @@ console.log('Current baseURL:', baseURL)
 const request = axios.create({
 	baseURL,
 	timeout: 10000,
+	withCredentials: true,
 })
 
 // 请求拦截

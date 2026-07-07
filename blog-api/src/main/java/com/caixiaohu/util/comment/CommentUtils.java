@@ -17,6 +17,7 @@ import com.caixiaohu.service.AboutService;
 import com.caixiaohu.service.BlogService;
 import com.caixiaohu.service.FriendService;
 import com.caixiaohu.service.RedisService;
+import com.caixiaohu.service.SiteSettingService;
 import com.caixiaohu.service.UserService;
 import com.caixiaohu.util.HashUtils;
 import com.caixiaohu.util.IpAddressUtils;
@@ -50,6 +51,8 @@ public class CommentUtils {
 	private FriendService friendService;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private SiteSettingService siteSettingService;
 	@Autowired
 	private RedisService redisService;
 
@@ -238,7 +241,8 @@ public class CommentUtils {
 		comment.setAdminComment(true);
 		comment.setCreateTime(new Date());
 		comment.setPublished(true);
-		comment.setAvatar(admin.getAvatar());
+		String adminCommentAvatar = siteSettingService.getAdminCommentAvatar();
+		comment.setAvatar(StringUtils.isEmpty(adminCommentAvatar) ? admin.getAvatar() : adminCommentAvatar);
 		comment.setWebsite("/");
 		comment.setNickname(admin.getNickname());
 		comment.setEmail(admin.getEmail());
