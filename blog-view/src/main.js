@@ -53,6 +53,7 @@ import {
   Pagination,
   Tag,
   Dialog,
+  Notification,
   MessageBox,
   Message,
   Loading,
@@ -132,6 +133,7 @@ Vue.prototype.$alert = MessageBox.alert
 Vue.prototype.$confirm = MessageBox.confirm
 Vue.prototype.$prompt = MessageBox.prompt
 Vue.prototype.$message = Message
+Vue.prototype.$notify = Notification
 
 // 注册其他插件
 Vue.use(Viewer)

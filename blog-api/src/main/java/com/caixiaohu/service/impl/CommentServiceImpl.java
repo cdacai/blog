@@ -63,11 +63,30 @@ public class CommentServiceImpl implements CommentService {
 		List<Comment> comments = getListByPageAndParentCommentId(page, blogId, parentCommentId, pageNum);
 		List<PageComment> pageComments = new ArrayList<>();
 		for (Comment comment : comments) {
-			PageComment pageComment = new PageComment();
-			BeanUtils.copyProperties(comment, pageComment);
+			PageComment pageComment = buildPageComment(comment, null);
+			flattenReplyComments(comment, pageComment.getReplyComments());
 			pageComments.add(pageComment);
 		}
 		return pageComments;
+	}
+
+	private PageComment buildPageComment(Comment comment, Comment parentComment) {
+		PageComment pageComment = new PageComment();
+		BeanUtils.copyProperties(comment, pageComment, "parentCommentId", "replyComments");
+		if (comment.getParentCommentId() != null) {
+			pageComment.setParentCommentId(String.valueOf(comment.getParentCommentId()));
+		}
+		if (parentComment != null) {
+			pageComment.setParentCommentNickname(parentComment.getNickname());
+		}
+		return pageComment;
+	}
+
+	private void flattenReplyComments(Comment parentComment, List<PageComment> pageComments) {
+		for (Comment replyComment : parentComment.getReplyComments()) {
+			pageComments.add(buildPageComment(replyComment, parentComment));
+			flattenReplyComments(replyComment, pageComments);
+		}
 	}
 
 	@Override

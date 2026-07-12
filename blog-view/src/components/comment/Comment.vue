@@ -196,27 +196,16 @@
 		display: inline-block;
 		max-width: 100%;
 		margin: 0.75rem 0;
-		padding: 0.35rem 0.55rem;
-		border-radius: 6px;
-		background: rgba(255, 255, 255, 0.72);
-		backdrop-filter: blur(2px);
-		-webkit-backdrop-filter: blur(2px);
-		color: #111827 !important;
+		color: var(--theme-text-secondary, #4b5563) !important;
 		font-size: 1rem;
-		font-weight: 600;
-		text-shadow:
-			0 1px 0 rgba(255, 255, 255, 0.98),
-			0 0 4px rgba(255, 255, 255, 0.92),
-			0 0 10px rgba(255, 255, 255, 0.82),
-			0 1px 2px rgba(0, 0, 0, 0.18);
-		box-shadow: 0 1px 4px rgba(15, 23, 42, 0.08);
+		font-weight: 500;
 	}
 
 	.ui.comments .comment .text a {
 		cursor: pointer;
 		margin-right: 8px;
 		font-weight: bolder;
-		color: #0f172a !important;
+		color: var(--primary-color, #2F855A) !important;
 		text-decoration: underline;
 		text-decoration-thickness: 1px;
 		text-underline-offset: 2px;
@@ -231,7 +220,6 @@
 		margin: 0 2px;
 		vertical-align: -0.25em;
 		filter: none;
-		text-shadow: none;
 	}
 
 	.label {
@@ -397,7 +385,7 @@
 	}
 
 	.text {
-		color: #111827;
+		color: var(--theme-text-secondary, #4b5563);
 	}
 
 	.report-btn {
