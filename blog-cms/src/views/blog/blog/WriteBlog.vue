@@ -36,7 +36,10 @@
 					:ishljs="true"
 					:autofocus="false"
 					:tabSize="4"
-					class="content-editor"
+					:toolbars-background="adminEditorToolbarsBackground"
+					:editor-background="adminEditorBackground"
+					:preview-background="adminEditorPreviewBackground"
+					:class="['content-editor', adminEditorAppearanceClass]"
 				/>
 				<div class="editor-status">
 					<div class="word-count">字数统计：{{ form.words }} 字</div>
@@ -109,6 +112,10 @@
 						:ishljs="true"
 						:autofocus="false"
 						:tabSize="4"
+						:toolbars-background="adminEditorToolbarsBackground"
+						:editor-background="adminEditorBackground"
+						:preview-background="adminEditorPreviewBackground"
+						:class="adminEditorAppearanceClass"
 						:style="{height: '300px'}"
 					/>
 				</template>
@@ -195,6 +202,7 @@
 	import { compressAndUploadImage } from '@/utils/imageUtils'
 	import { countWords, extractDescription } from '@/utils/textUtils'
 	import settings from '@/settings'
+	import editorAppearance from '@/mixins/editorAppearance'
 
 	// 草稿相关常量
 	const DRAFT_KEY_PREFIX = 'blog_draft_'
@@ -203,6 +211,7 @@
 
 	export default {
 		name: "WriteBlog",
+		mixins: [editorAppearance],
 		components: {
 			Breadcrumb,
 			AlbumManager

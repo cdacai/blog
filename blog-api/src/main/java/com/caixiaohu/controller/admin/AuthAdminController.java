@@ -22,7 +22,8 @@ public class AuthAdminController {
 	public Result logout(HttpServletResponse response) {
 		StringBuilder cookie = new StringBuilder();
 		cookie.append(JwtConstants.ADMIN_COMMENT_COOKIE)
-				.append("=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax");
+				.append("=; Path=/; Max-Age=0; HttpOnly; SameSite=")
+				.append(adminCommentCookieSecure ? "None" : "Lax");
 		if (!StringUtils.isEmpty(adminCommentCookieDomain)) {
 			cookie.append("; Domain=").append(adminCommentCookieDomain);
 		}

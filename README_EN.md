@@ -39,6 +39,17 @@ Includes article management, comment system, album management, theme switching a
 - Email notification functionality
 - Unified message management
 
+### 5. Administrator Comment Mode
+- After signing in to the admin panel, the administrator can reply on the public blog without entering a nickname or email address
+- Administrator comments display an "Administrator" badge, and the avatar can be selected from existing avatars under Site Management
+- Supports an HttpOnly identity cookie shared between `set.caixiaohu.com` and `www.caixiaohu.com`
+- Comment content accepts 1–500 characters, including exactly 500 characters
+
+### 6. Admin Editing Workspace Appearance
+- The article and moment editing pages support system, light, and dark appearances across the navbar, forms, inputs, toolbars, popups, and Markdown editors
+- System mode is the default, and the setting is stored as `site_setting.adminEditorAppearance`
+- This setting affects only the article and moment editing pages; other admin pages and the public blog theme remain unchanged
+
 Preview URLs:
 - Blog Frontend: [https://caixiaohu.com](https://caixiaohu.com)
 - Admin Backend: [https://set.caixiaohu.com](https://set.caixiaohu.com) (Guest username: guest, password: 123456)
@@ -111,6 +122,9 @@ System provides 8 different style themes for selection:
 
 **Comment System**
 - Comment replies
+- Administrator replies without visitor fields and with an administrator badge
+- Selectable administrator comment avatar
+- 1–500 character validation
 - Like functionality
 - Report processing
 - Message notifications
@@ -119,6 +133,7 @@ System provides 8 different style themes for selection:
 - Responsive design
 - Mobile adaptation
 - Theme switching
+- Light and dark appearance for article and moment editing workspaces
 - Data statistics
 
 ## System Screenshots
@@ -139,13 +154,19 @@ System provides 8 different style themes for selection:
 
 ## Quick Start
 
-1. Initialize the database and import table structure (/blog-api/nblog.sql)
-2. Copy and configure /blog-api/src/main/resources/application-dev.properties
-3. Install dependencies and start both frontend (blog-cms) and blog-view:
+1. On a fresh environment, import `blog-api/nblog.sql`. It creates the `nblog` database, 35 application and Quartz tables, and required seed data.
+2. Start local MySQL and a passwordless local Redis, then verify that the datasource in the production base configuration can connect to the local database.
+3. Start the backend from `blog-api` with the development overrides:
+   ```powershell
+   mvn spring-boot:run "-Dspring-boot.run.profiles=prd,dev"
+   ```
+4. Install dependencies and start `blog-cms` and `blog-view` separately:
    ```bash
    npm install
    npm run serve
    ```
+
+Do not reverse the `prd,dev` order. `prd` supplies the complete base properties, and `dev` overrides local Redis, CORS, cookie, and storage settings last.
 
 ## Environment Requirements
 - JDK 1.8+
@@ -159,6 +180,8 @@ System provides 8 different style themes for selection:
 **Basic Configuration**
 - JWT key: modify `token.secretKey` configuration
 - Default admin: username `Admin`, password `123456`
+- Local backend: use the combined `prd,dev` profiles and do not remove the production Redis password
+- Production backend: use only the `prd` profile
 
 **Storage Configuration**
 - Local storage: configure `upload.path` directory
@@ -172,26 +195,29 @@ System provides 8 different style themes for selection:
 ## Deployment Steps
 
 ### 1. Database Initialization
-Create MySQL database:
-```sql
-CREATE DATABASE nblog CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-```
-Import data tables:
+For a fresh deployment, import the complete initialization file directly:
 ```bash
-mysql -u root -p nblog < /blog-api/nblog.sql
+mysql -u root -p < blog-api/nblog.sql
 ```
+
+`nblog.sql` drops and recreates tables with the same names. Never run it against an existing production database that contains data. Existing databases must use the incremental scripts under `blog-api/src/main/resources/db`.
 
 ### 2. Backend Configuration
-Create configuration file `/blog-api/src/main/resources/application-dev.properties` (for production environment, create `application-prd.properties`)
-
-Copy configuration template:
-```bash
-cp /blog-api/src/main/resources/application-dev.properties.template application-dev.properties
-```
-Modify and replace configuration information in `application-dev.properties`
+Configure MySQL, Redis, CORS, JWT, cookie domain, and external service secrets in the production `application-prd.properties`. Local differences are stored in `application-dev.properties`, which contains no passwords.
 
 ### 3. Start Services
-Install and start Redis, then start backend API service
+Local development:
+
+```powershell
+cd blog-api
+mvn spring-boot:run "-Dspring-boot.run.profiles=prd,dev"
+```
+
+Production:
+
+```bash
+java -jar blog-api-0.0.1.jar --spring.profiles.active=prd
+```
 
 ### 4. Frontend Deployment
 Install dependencies in `blog-cms` and `blog-view` directories respectively:
@@ -219,6 +245,13 @@ cd blog-view && npm run build
 ```
 
 ## Changelog
+
+### v2.2.0 (2026-08-07)
+- Added administrator comment mode, administrator badges, and a selectable comment avatar
+- Standardized comment length validation to 1–500 characters
+- Fixed administrator identity loss in nested replies and corrected cross-subdomain cookie behavior
+- Added system, light, and dark appearances for article and moment editing workspaces
+- Completed single-file database initialization, incremental upgrades, and the local `prd,dev` startup workflow
 
 ### v2.1.0 (2025-09-20)
 - Added 4 new themes (Cyber, Anime, Nightfall, Amber) based on the original 4 themes
@@ -258,4 +291,4 @@ Thanks to the following open source projects:
 ---
 [![GitHub stars](https://img.shields.io/github/stars/cdacai/blog.svg?style=social)](https://github.com/cdacai/blog)
 
-If you have any questions, please submit an issue. Thank you for your support! 
+If you have any questions, please submit an issue. Thank you for your support!

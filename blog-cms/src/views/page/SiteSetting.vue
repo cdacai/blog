@@ -8,7 +8,15 @@
 					</div>
 					<el-form label-position="right" label-width="100px">
 						<el-form-item :label="item.nameZh" v-for="item in typeMap.type1" :key="item.id || item.key">
-							<div v-if="item.nameEn==='adminCommentAvatar'" class="avatar-picker">
+							<el-radio-group
+								v-if="item.nameEn==='adminEditorAppearance'"
+								v-model="item.value"
+								size="mini">
+								<el-radio-button label="system">跟随系统（默认）</el-radio-button>
+								<el-radio-button label="light">亮色</el-radio-button>
+								<el-radio-button label="dark">暗黑</el-radio-button>
+							</el-radio-group>
+							<div v-else-if="item.nameEn==='adminCommentAvatar'" class="avatar-picker">
 								<div
 									v-for="avatar in adminCommentAvatars"
 									:key="avatar"
@@ -115,6 +123,15 @@
 			getData() {
 				getSiteSettingData().then(res => {
 					this.typeMap = res.data
+					if (!this.typeMap.type1.some(item => item.nameEn === 'adminEditorAppearance')) {
+						this.typeMap.type1.push({
+							key: `${Date.now()}-admin-editor-appearance`,
+							nameEn: 'adminEditorAppearance',
+							nameZh: '后台外观',
+							type: 1,
+							value: 'system'
+						})
+					}
 					if (!this.typeMap.type1.some(item => item.nameEn === 'adminCommentAvatar')) {
 						this.typeMap.type1.push({
 							key: Date.now(),

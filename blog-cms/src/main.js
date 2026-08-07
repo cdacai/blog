@@ -18,6 +18,7 @@ import './util/dateTimeFormatUtils.js'
 //mavonEditor
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
+import '@/assets/styles/editor-appearance.scss'
 //v-viewer
 import 'viewerjs/dist/viewer.css'
 import Viewer from 'v-viewer'

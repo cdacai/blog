@@ -113,7 +113,8 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
 		cookie.append(JwtConstants.ADMIN_COMMENT_COOKIE)
 				.append("=")
 				.append(adminCommentToken)
-				.append("; Path=/; HttpOnly; SameSite=Lax");
+				.append("; Path=/; HttpOnly; SameSite=")
+				.append(adminCommentCookieSecure ? "None" : "Lax");
 		if (!StringUtils.isEmpty(adminCommentCookieDomain)) {
 			cookie.append("; Domain=").append(adminCommentCookieDomain);
 		}

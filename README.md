@@ -39,6 +39,17 @@
 - 邮件通知功能
 - 消息统一管理
 
+### 5. 站长评论模式
+- 后台登录后，可在博客前台免填昵称和邮箱回复评论
+- 站长评论显示“站长”标签，头像可在“站点管理”中从现有头像选择
+- 支持跨 `set.caixiaohu.com` 和 `www.caixiaohu.com` 的 HttpOnly 身份 Cookie
+- 评论内容限制为 1–500 个字符，包含 500 个字符
+
+### 6. 后台编辑工作区外观
+- 写文章和写动态页面支持跟随系统、亮色和暗黑模式，范围包含顶部导航、表单、输入框、工具栏、弹出控件和 Markdown 编辑器
+- 默认跟随系统，设置保存在 `site_setting.adminEditorAppearance`
+- 仅影响后台写文章和写动态页面，不改变其他后台页面及博客前台主题
+
 预览地址：
 - 博客前台：[https://caixiaohu.com](https://caixiaohu.com)
 - 管理后台：[https://set.caixiaohu.com](https://set.caixiaohu.com)（访客用户名：guest，密码：123456）
@@ -112,6 +123,9 @@
 
 **评论系统**
 - 评论回复
+- 站长免填资料回复与站长标签
+- 站长评论头像选择
+- 1–500 字符长度校验
 - 点赞功能
 - 举报处理
 - 消息通知
@@ -120,6 +134,7 @@
 - 响应式设计
 - 移动端适配
 - 主题切换
+- 后台文章和动态编辑工作区明暗外观
 - 数据统计
 
 ## 系统截图
@@ -140,13 +155,19 @@
 
 ## 快速开始
 
-1. 初始化数据库并导入表结构（/blog-api/nblog.sql）
-2. 复制并配置 /blog-api/src/main/resources/application-dev.properties
-3. 前后端（blog-cms、blog-view）分别安装依赖并启动：
+1. 全新环境导入 `blog-api/nblog.sql`；该文件会创建 `nblog`、35 张业务及 Quartz 表和必要初始数据。
+2. 启动本地 MySQL 和无密码 Redis，确认生产基础配置中的数据库连接可用。
+3. 在 `blog-api` 目录使用开发覆盖启动后端：
+   ```powershell
+   mvn spring-boot:run "-Dspring-boot.run.profiles=prd,dev"
+   ```
+4. 在 `blog-cms`、`blog-view` 目录分别安装依赖并启动：
    ```bash
    npm install
    npm run serve
    ```
+
+`prd,dev` 的顺序不能交换：`prd` 提供完整基础属性，`dev` 最后覆盖本地 Redis、CORS、Cookie 和存储配置。
 
 ## 环境要求
 - JDK 1.8+
@@ -160,6 +181,8 @@
 **基础配置**
 - JWT密钥：修改`token.secretKey`配置项
 - 默认管理员：用户名`Admin`，密码`123456`
+- 本地后端：使用 `prd,dev` profile 组合，不要修改生产 Redis 密码
+- 生产后端：仅使用 `prd` profile
 
 **存储配置**
 - 本地存储：配置`upload.path`路径
@@ -173,26 +196,29 @@
 ## 部署步骤
 
 ### 1. 数据库初始化
-创建MySQL数据库：
-```sql
-CREATE DATABASE nblog CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-```
-导入数据表：
+全新部署直接导入完整初始化文件：
 ```bash
-mysql -u root -p nblog < /blog-api/nblog.sql
+mysql -u root -p < blog-api/nblog.sql
 ```
+
+`nblog.sql` 会删除并重建同名表，不能用于已有数据的生产库。已有数据库必须按 [API 部署指南](./blog-api/deployment-guide.md) 执行增量脚本。
 
 ### 2. 后端配置
-创建配置文件`/blog-api/src/main/resources/application-dev.properties`（生产环境需要创建`application-prd.properties`）
-
-复制配置文件模板：
-```bash
-cp /blog-api/src/main/resources/application-dev.properties.template application-dev.properties
-```
-修改替换`application-dev.properties`中的配置信息
+生产环境配置 `application-prd.properties`中的 MySQL、Redis、CORS、JWT、Cookie 域和外部服务密钥。本地差异已放在 `application-dev.properties`，不包含密码。
 
 ### 3. 启动服务
-安装Redis并启动，然后启动后端服务
+本地开发：
+
+```powershell
+cd blog-api
+mvn spring-boot:run "-Dspring-boot.run.profiles=prd,dev"
+```
+
+生产环境：
+
+```bash
+java -jar blog-api-0.0.1.jar --spring.profiles.active=prd
+```
 
 ### 4. 前端部署
 分别在`blog-cms`和`blog-view`目录下执行`npm install`安装依赖：
@@ -220,6 +246,13 @@ cd blog-view && npm run build
 ```
 
 ## 更新日志
+
+### v2.2.0 (2026-08-07)
+- 新增站长评论模式、站长标签和可选评论头像
+- 评论长度统一为 1–500 个字符
+- 修复多层回复时站长身份丢失和跨子域 Cookie 判定
+- 新增后台文章和动态编辑工作区跟随系统/亮色/暗黑外观
+- 完善单文件数据库初始化、增量升级和本地 `prd,dev` 启动方式
 
 ### v2.1.0 (2025-09-20)
 - 在原有4套主题基础上新增4套主题（赛博、二次元、夜幕、琥珀）

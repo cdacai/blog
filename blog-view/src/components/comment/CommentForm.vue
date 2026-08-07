@@ -158,9 +158,17 @@
 			this.paopaoMapper = paopaoMapper
 		},
 		mounted() {
-			this.textarea = document.querySelector('.el-form textarea')
+			this.textarea = this.$el.querySelector('textarea')
 		},
 		methods: {
+			async refreshAdminCommentStatus() {
+				if (!window.localStorage.getItem('adminToken')) {
+					await this.$store.dispatch('getAdminCommentStatus', {preserveAdmin: true})
+				}
+			},
+			canPostAsAdmin() {
+				return this.adminCommentStatus.admin || !!window.localStorage.getItem('adminToken')
+			},
 			showEmojiBox() {
 				this.start = this.textarea.selectionStart
 				this.end = this.textarea.selectionEnd
@@ -184,9 +192,10 @@
 				this.textarea.focus()
 				this.textarea.setSelectionRange(this.start, this.end)
 			},
-			postForm() {
+			async postForm() {
 				const adminToken = window.localStorage.getItem('adminToken')
-				if (this.isAdminCommenter) {
+				await this.refreshAdminCommentStatus()
+				if (this.canPostAsAdmin()) {
 					//博主登录后，localStorage中会存储token，在后端设置属性，可以不校验昵称、邮箱
 					if (this.commentForm.content === '' || this.commentForm.content.length > 500) {
 						this.$notify({

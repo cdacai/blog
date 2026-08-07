@@ -16,14 +16,22 @@ import paopaoMapper from '@/plugins/paopaoMapper.json'
 import sanitizeHtml from 'sanitize-html'
 
 export default {
-	getAdminCommentStatus({commit}) {
+	getAdminCommentStatus({commit, rootState}, options = {}) {
 		const adminToken = window.localStorage.getItem('adminToken') || ''
 		return fetchAdminCommentStatus(adminToken).then(res => {
 			if (res.code === 200) {
+				if (options.preserveAdmin && rootState.adminCommentStatus.admin && !res.data.admin) {
+					return rootState.adminCommentStatus
+				}
 				commit(SAVE_ADMIN_COMMENT_STATUS, res.data)
+				return res.data
 			}
 		}).catch(() => {
+			if (options.preserveAdmin && rootState.adminCommentStatus.admin) {
+				return rootState.adminCommentStatus
+			}
 			commit(SAVE_ADMIN_COMMENT_STATUS, {admin: false})
+			return {admin: false}
 		})
 	},
 	getCommentList({commit, rootState}) {

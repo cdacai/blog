@@ -19,6 +19,10 @@
 					:ishljs="true"
 					:autofocus="false"
 					:tabSize="4"
+					:toolbars-background="adminEditorToolbarsBackground"
+					:editor-background="adminEditorBackground"
+					:preview-background="adminEditorPreviewBackground"
+					:class="adminEditorAppearanceClass"
 					:style="{height: '300px'}"
 				/>
 			</el-form-item>
@@ -56,9 +60,11 @@
 	import AlbumManager from '@/views/album/AlbumManager';
 	import { getAlbumList } from '@/api/album';
 	import settings from '@/settings';
+	import editorAppearance from '@/mixins/editorAppearance';
 
 	export default {
 		name: "WriteMoment",
+		mixins: [editorAppearance],
 		components: {
 			Breadcrumb,
 			AlbumManager

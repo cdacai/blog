@@ -1,4 +1,6 @@
 SET NAMES utf8mb4;
+CREATE DATABASE IF NOT EXISTS `nblog` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `nblog`;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
@@ -305,6 +307,7 @@ INSERT INTO `site_setting` VALUES (30, 'badge', '徽标', '{\"color\":\"lightgra
 INSERT INTO `site_setting` VALUES (31, 'friendContent', '友链页面信息', '随机排序，不分先后。欢迎交换友链~(￣▽￣)~*\n\n* 昵称：Observe\n* 一句话：游龙当归海，海不迎我自来也。\n* 网址：[https://caixiaohu.com](https://www.caixiaohu.com)\n* 头像URL：[https://www.caixiaohu.com/img/avatar.jpg](https://www.caixiaohu.com/img/avatar.jpg)\n\n仅凭个人喜好添加友链，请在收到我的回复邮件后再于贵站添加本站链接。原则上已添加的友链不会删除，如果你发现自己被移除了，恕不另行通知，只需和我一样做就好。\n\n', 4);
 INSERT INTO `site_setting` VALUES (32, 'friendCommentEnabled', '友链页面评论开关', '1', 4);
 INSERT INTO `site_setting` VALUES (33, 'adminCommentAvatar', '站长评论头像', '/img/comment-avatar/1.jpg', 1);
+INSERT INTO `site_setting` VALUES (34, 'adminEditorAppearance', '后台外观', 'system', 1);
 
 -- ----------------------------
 -- Table structure for tag
@@ -457,34 +460,6 @@ CREATE TABLE `album_image` (
   PRIMARY KEY (`id`),
   KEY `idx_album_id` (`album_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='相册图片表';
-
-SET FOREIGN_KEY_CHECKS = 1;
-
--- ----------------------------
--- Quartz 默认定时任务 TASK_1 初始化，防止启动报错（幂等处理）
--- ----------------------------
-DELETE FROM qrtz_cron_triggers WHERE SCHED_NAME='BlogScheduler' AND TRIGGER_NAME='TASK_1' AND TRIGGER_GROUP='DEFAULT';
-DELETE FROM qrtz_triggers WHERE SCHED_NAME='BlogScheduler' AND TRIGGER_NAME='TASK_1' AND TRIGGER_GROUP='DEFAULT';
-DELETE FROM qrtz_job_details WHERE SCHED_NAME='BlogScheduler' AND JOB_NAME='TASK_1' AND JOB_GROUP='DEFAULT';
-INSERT INTO qrtz_job_details (SCHED_NAME, JOB_NAME, JOB_GROUP, DESCRIPTION, JOB_CLASS_NAME, IS_DURABLE, IS_NONCONCURRENT, IS_UPDATE_DATA, REQUESTS_RECOVERY, JOB_DATA)
-VALUES ('BlogScheduler', 'TASK_1', 'DEFAULT', '默认任务1', 'com.caixiaohu.util.quartz.ScheduleJob', '1', '1', '0', '0', NULL);
-INSERT INTO qrtz_triggers (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP, JOB_NAME, JOB_GROUP, DESCRIPTION, NEXT_FIRE_TIME, PREV_FIRE_TIME, PRIORITY, TRIGGER_STATE, TRIGGER_TYPE, START_TIME, END_TIME, CALENDAR_NAME, MISFIRE_INSTR, JOB_DATA)
-VALUES ('BlogScheduler', 'TASK_1', 'DEFAULT', 'TASK_1', 'DEFAULT', '默认任务1', NULL, NULL, NULL, 'WAITING', 'CRON', 0, NULL, NULL, NULL, NULL);
-INSERT INTO qrtz_cron_triggers (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP, CRON_EXPRESSION, TIME_ZONE_ID)
-VALUES ('BlogScheduler', 'TASK_1', 'DEFAULT', '0 0 1 * * ?', 'Asia/Shanghai');
-
--- ----------------------------
--- Quartz 默认定时任务 TASK_2 初始化，防止启动报错（幂等处理）
--- ----------------------------
-DELETE FROM qrtz_cron_triggers WHERE SCHED_NAME='BlogScheduler' AND TRIGGER_NAME='TASK_2' AND TRIGGER_GROUP='DEFAULT';
-DELETE FROM qrtz_triggers WHERE SCHED_NAME='BlogScheduler' AND TRIGGER_NAME='TASK_2' AND TRIGGER_GROUP='DEFAULT';
-DELETE FROM qrtz_job_details WHERE SCHED_NAME='BlogScheduler' AND JOB_NAME='TASK_2' AND JOB_GROUP='DEFAULT';
-INSERT INTO qrtz_job_details (SCHED_NAME, JOB_NAME, JOB_GROUP, DESCRIPTION, JOB_CLASS_NAME, IS_DURABLE, IS_NONCONCURRENT, IS_UPDATE_DATA, REQUESTS_RECOVERY, JOB_DATA)
-VALUES ('BlogScheduler', 'TASK_2', 'DEFAULT', '默认任务2', 'com.caixiaohu.util.quartz.ScheduleJob', '1', '1', '0', '0', NULL);
-INSERT INTO qrtz_triggers (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP, JOB_NAME, JOB_GROUP, DESCRIPTION, NEXT_FIRE_TIME, PREV_FIRE_TIME, PRIORITY, TRIGGER_STATE, TRIGGER_TYPE, START_TIME, END_TIME, CALENDAR_NAME, MISFIRE_INSTR, JOB_DATA)
-VALUES ('BlogScheduler', 'TASK_2', 'DEFAULT', 'TASK_2', 'DEFAULT', '默认任务2', NULL, NULL, NULL, 'WAITING', 'CRON', 0, NULL, NULL, NULL, NULL);
-INSERT INTO qrtz_cron_triggers (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP, CRON_EXPRESSION, TIME_ZONE_ID)
-VALUES ('BlogScheduler', 'TASK_2', 'DEFAULT', '0 0 0 * * ?', 'Asia/Shanghai');
 
 -- ----------------------------
 -- Table structure for site_config
@@ -698,3 +673,25 @@ CREATE TABLE `qrtz_scheduler_state` (
   `CHECKIN_INTERVAL` bigint(13) NOT NULL,
   PRIMARY KEY (`SCHED_NAME`,`INSTANCE_NAME`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Quartz 默认定时任务 TASK_1 初始化
+-- ----------------------------
+INSERT INTO qrtz_job_details (SCHED_NAME, JOB_NAME, JOB_GROUP, DESCRIPTION, JOB_CLASS_NAME, IS_DURABLE, IS_NONCONCURRENT, IS_UPDATE_DATA, REQUESTS_RECOVERY, JOB_DATA)
+VALUES ('BlogScheduler', 'TASK_1', 'DEFAULT', '默认任务1', 'com.caixiaohu.util.quartz.ScheduleJob', '1', '1', '0', '0', NULL);
+INSERT INTO qrtz_triggers (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP, JOB_NAME, JOB_GROUP, DESCRIPTION, NEXT_FIRE_TIME, PREV_FIRE_TIME, PRIORITY, TRIGGER_STATE, TRIGGER_TYPE, START_TIME, END_TIME, CALENDAR_NAME, MISFIRE_INSTR, JOB_DATA)
+VALUES ('BlogScheduler', 'TASK_1', 'DEFAULT', 'TASK_1', 'DEFAULT', '默认任务1', NULL, NULL, NULL, 'WAITING', 'CRON', 0, NULL, NULL, NULL, NULL);
+INSERT INTO qrtz_cron_triggers (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP, CRON_EXPRESSION, TIME_ZONE_ID)
+VALUES ('BlogScheduler', 'TASK_1', 'DEFAULT', '0 0 1 * * ?', 'Asia/Shanghai');
+
+-- ----------------------------
+-- Quartz 默认定时任务 TASK_2 初始化
+-- ----------------------------
+INSERT INTO qrtz_job_details (SCHED_NAME, JOB_NAME, JOB_GROUP, DESCRIPTION, JOB_CLASS_NAME, IS_DURABLE, IS_NONCONCURRENT, IS_UPDATE_DATA, REQUESTS_RECOVERY, JOB_DATA)
+VALUES ('BlogScheduler', 'TASK_2', 'DEFAULT', '默认任务2', 'com.caixiaohu.util.quartz.ScheduleJob', '1', '1', '0', '0', NULL);
+INSERT INTO qrtz_triggers (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP, JOB_NAME, JOB_GROUP, DESCRIPTION, NEXT_FIRE_TIME, PREV_FIRE_TIME, PRIORITY, TRIGGER_STATE, TRIGGER_TYPE, START_TIME, END_TIME, CALENDAR_NAME, MISFIRE_INSTR, JOB_DATA)
+VALUES ('BlogScheduler', 'TASK_2', 'DEFAULT', 'TASK_2', 'DEFAULT', '默认任务2', NULL, NULL, NULL, 'WAITING', 'CRON', 0, NULL, NULL, NULL, NULL);
+INSERT INTO qrtz_cron_triggers (SCHED_NAME, TRIGGER_NAME, TRIGGER_GROUP, CRON_EXPRESSION, TIME_ZONE_ID)
+VALUES ('BlogScheduler', 'TASK_2', 'DEFAULT', '0 0 0 * * ?', 'Asia/Shanghai');
+
+SET FOREIGN_KEY_CHECKS = 1;

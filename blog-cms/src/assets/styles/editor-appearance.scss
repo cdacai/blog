@@ -1,0 +1,445 @@
+$editor-dark-canvas: #171b20;
+$editor-dark-panel: #252b32;
+$editor-dark-bg: #1f252c;
+$editor-dark-preview: #242b33;
+$editor-dark-toolbar: #2d353f;
+$editor-dark-surface: #343d48;
+$editor-dark-hover: #3d4854;
+$editor-dark-border: #4a5664;
+$editor-dark-border-strong: #637182;
+$editor-dark-text: #edf0f3;
+$editor-dark-muted: #aeb7c2;
+$editor-dark-accent: #7eadd8;
+$editor-dark-sidebar: #1b2026;
+$editor-dark-submenu: #171b20;
+
+body.admin-editor-dark-active {
+	background-color: $editor-dark-canvas;
+}
+
+.admin-editor-dark-active #app,
+.admin-editor-dark-active .app-wrapper,
+.admin-editor-dark-active .main-container,
+.admin-editor-dark-active .app-main {
+	background-color: $editor-dark-canvas !important;
+	color: $editor-dark-text;
+}
+
+.admin-editor-dark-active .navbar {
+	background-color: $editor-dark-panel !important;
+	box-shadow: 0 1px 0 $editor-dark-border !important;
+	color: $editor-dark-text;
+}
+
+.admin-editor-dark-active .sidebar-container,
+.admin-editor-dark-active .sidebar-container .el-menu {
+	background-color: $editor-dark-sidebar !important;
+}
+
+.admin-editor-dark-active .sidebar-logo-container {
+	background-color: $editor-dark-submenu !important;
+	box-shadow: inset 0 -1px 0 $editor-dark-border;
+}
+
+.admin-editor-dark-active .sidebar-container .el-menu-item,
+.admin-editor-dark-active .sidebar-container .el-submenu__title {
+	background-color: transparent !important;
+	color: $editor-dark-muted !important;
+}
+
+.admin-editor-dark-active #app .sidebar-container .nest-menu .el-submenu > .el-submenu__title,
+.admin-editor-dark-active #app .sidebar-container .el-submenu .el-menu-item {
+	background-color: $editor-dark-submenu !important;
+}
+
+.admin-editor-dark-active #app .sidebar-container .el-submenu.is-opened > .el-submenu__title {
+	background-color: $editor-dark-bg !important;
+	color: $editor-dark-text !important;
+}
+
+.admin-editor-dark-active #app .sidebar-container .el-menu-item:hover,
+.admin-editor-dark-active #app .sidebar-container .el-submenu__title:hover {
+	background-color: $editor-dark-hover !important;
+	color: $editor-dark-text !important;
+}
+
+.admin-editor-dark-active #app .sidebar-container .el-menu-item.is-active,
+.admin-editor-dark-active #app .sidebar-container .is-active > .el-submenu__title {
+	background-color: rgba(126, 173, 216, 0.13) !important;
+	color: $editor-dark-accent !important;
+}
+
+.admin-editor-dark-active .el-menu--vertical .el-menu--popup,
+.admin-editor-dark-active .el-menu--vertical > .el-menu {
+	background-color: $editor-dark-submenu !important;
+	border: 1px solid $editor-dark-border;
+	box-shadow: 0 10px 28px rgba(7, 10, 13, 0.28);
+}
+
+.admin-editor-dark-active .el-menu--vertical .el-menu-item,
+.admin-editor-dark-active .el-menu--vertical .el-submenu__title {
+	background-color: transparent !important;
+	color: $editor-dark-muted !important;
+}
+
+.admin-editor-dark-active .el-menu--vertical .el-menu-item:hover,
+.admin-editor-dark-active .el-menu--vertical .el-submenu__title:hover {
+	background-color: $editor-dark-hover !important;
+	color: $editor-dark-text !important;
+}
+
+.admin-editor-dark-active .el-menu--vertical .el-menu-item.is-active {
+	background-color: rgba(126, 173, 216, 0.13) !important;
+	color: $editor-dark-accent !important;
+}
+
+.admin-editor-dark-active .navbar .hamburger-container:hover {
+	background-color: $editor-dark-hover !important;
+}
+
+.admin-editor-dark-active .navbar .svg-icon,
+.admin-editor-dark-active .app-breadcrumb .el-breadcrumb__inner,
+.admin-editor-dark-active .app-breadcrumb .el-breadcrumb__separator,
+.admin-editor-dark-active .app-breadcrumb .no-redirect {
+	color: $editor-dark-muted !important;
+	fill: currentColor;
+}
+
+.admin-editor-dark-active .app-breadcrumb a .el-breadcrumb__inner,
+.admin-editor-dark-active .app-breadcrumb a {
+	color: $editor-dark-text !important;
+}
+
+.admin-editor-dark-active .el-form {
+	background-color: $editor-dark-panel !important;
+	color: $editor-dark-text;
+	box-shadow: 0 8px 24px rgba(7, 10, 13, 0.18) !important;
+}
+
+.admin-editor-dark-active .el-form-item__label,
+.admin-editor-dark-active .el-checkbox__label,
+.admin-editor-dark-active .el-radio__label,
+.admin-editor-dark-active .el-switch__label,
+.admin-editor-dark-active .editor-status,
+.admin-editor-dark-active .word-count,
+.admin-editor-dark-active .last-save-time {
+	color: $editor-dark-text !important;
+}
+
+.admin-editor-dark-active .editor-status,
+.admin-editor-dark-active .word-count,
+.admin-editor-dark-active .last-save-time {
+	color: $editor-dark-muted !important;
+}
+
+.admin-editor-dark-active .el-input__inner,
+.admin-editor-dark-active .el-textarea__inner,
+.admin-editor-dark-active .el-input-group__append,
+.admin-editor-dark-active .el-input-group__prepend {
+	background-color: $editor-dark-bg !important;
+	border-color: $editor-dark-border !important;
+	color: $editor-dark-text !important;
+}
+
+.admin-editor-dark-active .el-input__inner:hover,
+.admin-editor-dark-active .el-textarea__inner:hover,
+.admin-editor-dark-active .el-select:hover .el-input__inner {
+	border-color: $editor-dark-border-strong !important;
+}
+
+.admin-editor-dark-active .el-input__inner:focus,
+.admin-editor-dark-active .el-textarea__inner:focus,
+.admin-editor-dark-active .el-select .el-input.is-focus .el-input__inner {
+	border-color: $editor-dark-accent !important;
+}
+
+.admin-editor-dark-active .el-input.is-disabled .el-input__inner,
+.admin-editor-dark-active .el-textarea.is-disabled .el-textarea__inner {
+	background-color: $editor-dark-toolbar !important;
+	color: $editor-dark-muted !important;
+}
+
+.admin-editor-dark-active .el-input__inner::placeholder,
+.admin-editor-dark-active .el-textarea__inner::placeholder {
+	color: #77818d !important;
+}
+
+.admin-editor-dark-active .el-input__prefix,
+.admin-editor-dark-active .el-input__suffix,
+.admin-editor-dark-active .el-select .el-tag,
+.admin-editor-dark-active .el-select .el-tag .el-tag__close {
+	color: $editor-dark-muted !important;
+}
+
+.admin-editor-dark-active .el-select .el-tag {
+	background-color: $editor-dark-surface !important;
+	border-color: $editor-dark-border !important;
+}
+
+.admin-editor-dark-active .editor-toolbar {
+	background-color: $editor-dark-toolbar !important;
+	border: 1px solid $editor-dark-border;
+}
+
+.admin-editor-dark-active .editor-toolbar .el-button,
+.admin-editor-dark-active .el-form .el-button--default {
+	background-color: $editor-dark-surface !important;
+	border-color: $editor-dark-border !important;
+	color: $editor-dark-text !important;
+}
+
+.admin-editor-dark-active .editor-toolbar .el-button:hover,
+.admin-editor-dark-active .el-form .el-button--default:hover {
+	background-color: $editor-dark-hover !important;
+	border-color: $editor-dark-border-strong !important;
+}
+
+.admin-editor-dark-active .el-dialog,
+.admin-editor-dark-active .el-message-box,
+.admin-editor-dark-active .el-select-dropdown,
+.admin-editor-dark-active .el-picker-panel {
+	background-color: $editor-dark-panel !important;
+	border-color: $editor-dark-border !important;
+	color: $editor-dark-text !important;
+}
+
+.admin-editor-dark-active .el-dialog__header,
+.admin-editor-dark-active .el-dialog__footer,
+.admin-editor-dark-active .el-message-box__header,
+.admin-editor-dark-active .el-message-box__content,
+.admin-editor-dark-active .el-picker-panel__footer {
+	background-color: $editor-dark-panel !important;
+	border-color: $editor-dark-border !important;
+	color: $editor-dark-text !important;
+}
+
+.admin-editor-dark-active .el-dialog__title,
+.admin-editor-dark-active .el-message-box__title,
+.admin-editor-dark-active .el-message-box__message,
+.admin-editor-dark-active .el-select-dropdown__item,
+.admin-editor-dark-active .el-date-table th,
+.admin-editor-dark-active .el-date-table td,
+.admin-editor-dark-active .el-picker-panel__icon-btn,
+.admin-editor-dark-active .el-date-picker__header-label,
+.admin-editor-dark-active .el-time-spinner__item {
+	color: $editor-dark-text !important;
+}
+
+.admin-editor-dark-active .el-select-dropdown__item.hover,
+.admin-editor-dark-active .el-select-dropdown__item:hover,
+.admin-editor-dark-active .el-time-spinner__item:hover:not(.disabled):not(.active) {
+	background-color: $editor-dark-hover !important;
+}
+
+.admin-editor-dark-active .el-select-dropdown__item.selected,
+.admin-editor-dark-active .el-date-table td.available:hover,
+.admin-editor-dark-active .el-date-table td.current:not(.disabled) span {
+	color: $editor-dark-accent !important;
+}
+
+.admin-editor-dark-active .el-picker-panel__content,
+.admin-editor-dark-active .el-time-panel,
+.admin-editor-dark-active .el-time-panel__content::after,
+.admin-editor-dark-active .el-time-panel__content::before,
+.admin-editor-dark-active .el-time-panel__footer {
+	background-color: $editor-dark-preview !important;
+	border-color: $editor-dark-border !important;
+}
+
+.v-note-wrapper.admin-editor-dark {
+	background-color: $editor-dark-bg !important;
+	border-color: $editor-dark-border !important;
+	color: $editor-dark-text !important;
+}
+
+.v-note-wrapper.admin-editor-dark .v-note-op {
+	background: $editor-dark-toolbar !important;
+	border-bottom-color: $editor-dark-border !important;
+}
+
+.v-note-wrapper.admin-editor-dark .v-note-op .op-icon {
+	color: $editor-dark-muted !important;
+}
+
+.v-note-wrapper.admin-editor-dark .v-note-op .op-icon:hover,
+.v-note-wrapper.admin-editor-dark .v-note-op .op-icon.selected {
+	color: $editor-dark-text !important;
+	background-color: $editor-dark-hover !important;
+}
+
+.v-note-wrapper.admin-editor-dark .v-note-op .popup-dropdown {
+	background-color: $editor-dark-surface !important;
+	border-color: $editor-dark-border !important;
+	box-shadow: 0 8px 24px rgba(7, 10, 13, 0.24) !important;
+}
+
+.v-note-wrapper.admin-editor-dark .v-note-op .popup-dropdown .dropdown-item {
+	color: $editor-dark-muted !important;
+}
+
+.v-note-wrapper.admin-editor-dark .v-note-op .popup-dropdown .dropdown-item:hover {
+	color: $editor-dark-text !important;
+	background-color: $editor-dark-hover !important;
+}
+
+.v-note-wrapper.admin-editor-dark .v-note-op .op-icon-divider,
+.v-note-wrapper.admin-editor-dark .v-note-edit,
+.v-note-wrapper.admin-editor-dark .v-note-show {
+	border-color: $editor-dark-border !important;
+}
+
+.v-note-wrapper.admin-editor-dark .content-input-wrapper,
+.v-note-wrapper.admin-editor-dark .content-input,
+.v-note-wrapper.admin-editor-dark .content-input textarea,
+.v-note-wrapper.admin-editor-dark .auto-textarea-wrapper textarea {
+	background-color: $editor-dark-bg !important;
+	color: $editor-dark-text !important;
+	caret-color: $editor-dark-accent;
+	scrollbar-color: $editor-dark-border-strong $editor-dark-bg;
+	scrollbar-width: thin;
+}
+
+.v-note-wrapper.admin-editor-dark .v-show-content,
+.v-note-wrapper.admin-editor-dark .v-show-content-html {
+	scrollbar-color: $editor-dark-border-strong $editor-dark-preview;
+	scrollbar-width: thin;
+}
+
+.v-note-wrapper.admin-editor-dark textarea::-webkit-scrollbar,
+.v-note-wrapper.admin-editor-dark .v-show-content::-webkit-scrollbar,
+.v-note-wrapper.admin-editor-dark .v-show-content-html::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+.v-note-wrapper.admin-editor-dark textarea::-webkit-scrollbar-track {
+	background-color: $editor-dark-bg;
+}
+
+.v-note-wrapper.admin-editor-dark .v-show-content::-webkit-scrollbar-track,
+.v-note-wrapper.admin-editor-dark .v-show-content-html::-webkit-scrollbar-track {
+	background-color: $editor-dark-preview;
+}
+
+.v-note-wrapper.admin-editor-dark textarea::-webkit-scrollbar-thumb,
+.v-note-wrapper.admin-editor-dark .v-show-content::-webkit-scrollbar-thumb,
+.v-note-wrapper.admin-editor-dark .v-show-content-html::-webkit-scrollbar-thumb {
+	background-color: $editor-dark-border-strong;
+	border: 2px solid transparent;
+	border-radius: 8px;
+	background-clip: padding-box;
+}
+
+.v-note-wrapper.admin-editor-dark textarea::placeholder {
+	color: $editor-dark-muted !important;
+}
+
+.v-note-wrapper.admin-editor-dark .v-show-content,
+.v-note-wrapper.admin-editor-dark .v-show-content-html,
+.v-note-wrapper.admin-editor-dark .v-note-read-model,
+.v-note-wrapper.admin-editor-dark .v-note-read-content {
+	background-color: $editor-dark-preview !important;
+	color: $editor-dark-text !important;
+}
+
+.v-note-wrapper.admin-editor-dark .markdown-body,
+.v-note-wrapper.admin-editor-dark .markdown-body p,
+.v-note-wrapper.admin-editor-dark .markdown-body li,
+.v-note-wrapper.admin-editor-dark .markdown-body h1,
+.v-note-wrapper.admin-editor-dark .markdown-body h2,
+.v-note-wrapper.admin-editor-dark .markdown-body h3,
+.v-note-wrapper.admin-editor-dark .markdown-body h4,
+.v-note-wrapper.admin-editor-dark .markdown-body h5,
+.v-note-wrapper.admin-editor-dark .markdown-body h6 {
+	color: $editor-dark-text !important;
+}
+
+.v-note-wrapper.admin-editor-dark .markdown-body a {
+	color: $editor-dark-accent !important;
+}
+
+.v-note-wrapper.admin-editor-dark .markdown-body code,
+.v-note-wrapper.admin-editor-dark .markdown-body pre,
+.v-note-wrapper.admin-editor-dark .markdown-body kbd {
+	background-color: $editor-dark-surface !important;
+	color: $editor-dark-text !important;
+	border-color: $editor-dark-border !important;
+}
+
+.v-note-wrapper.admin-editor-dark .markdown-body blockquote {
+	color: #c8ced6 !important;
+	background-color: $editor-dark-toolbar !important;
+	border-left-color: $editor-dark-border-strong !important;
+}
+
+.v-note-wrapper.admin-editor-dark .markdown-body table th,
+.v-note-wrapper.admin-editor-dark .markdown-body table td {
+	border-color: $editor-dark-border !important;
+}
+
+.v-note-wrapper.admin-editor-dark .markdown-body table tr,
+.v-note-wrapper.admin-editor-dark .markdown-body table tr:nth-child(2n) {
+	background-color: $editor-dark-preview !important;
+}
+
+.v-note-wrapper.admin-editor-dark .markdown-body hr {
+	border-bottom-color: $editor-dark-border !important;
+}
+
+.v-note-wrapper.admin-editor-dark .v-note-navigation-wrapper {
+	background-color: rgba(34, 40, 47, 0.98) !important;
+	border-color: $editor-dark-border !important;
+	color: $editor-dark-text !important;
+}
+
+.v-note-wrapper.admin-editor-dark .v-note-navigation-title {
+	border-bottom-color: $editor-dark-border !important;
+}
+
+.v-note-wrapper.admin-editor-dark .v-note-navigation-content h1,
+.v-note-wrapper.admin-editor-dark .v-note-navigation-content h2,
+.v-note-wrapper.admin-editor-dark .v-note-navigation-content h3,
+.v-note-wrapper.admin-editor-dark .v-note-navigation-content h4,
+.v-note-wrapper.admin-editor-dark .v-note-navigation-content h5,
+.v-note-wrapper.admin-editor-dark .v-note-navigation-content h6,
+.v-note-wrapper.admin-editor-dark .v-note-navigation-close {
+	color: $editor-dark-accent !important;
+}
+
+.v-note-wrapper.admin-editor-dark .v-note-navigation-content h1:hover,
+.v-note-wrapper.admin-editor-dark .v-note-navigation-content h2:hover,
+.v-note-wrapper.admin-editor-dark .v-note-navigation-content h3:hover,
+.v-note-wrapper.admin-editor-dark .v-note-navigation-content h4:hover,
+.v-note-wrapper.admin-editor-dark .v-note-navigation-content h5:hover,
+.v-note-wrapper.admin-editor-dark .v-note-navigation-content h6:hover,
+.v-note-wrapper.admin-editor-dark .v-note-navigation-close:hover {
+	color: #9bc1e5 !important;
+}
+
+.v-note-wrapper.admin-editor-dark ::selection {
+	background-color: rgba(126, 173, 216, 0.3);
+}
+
+.admin-editor-dark-active .v-note-help-content,
+.admin-editor-dark-active .v-note-help-show {
+	background-color: $editor-dark-preview !important;
+	color: $editor-dark-text !important;
+	border-color: $editor-dark-border !important;
+}
+
+.admin-editor-dark-active .v-note-help-content .markdown-body,
+.admin-editor-dark-active .v-note-help-content .markdown-body p,
+.admin-editor-dark-active .v-note-help-content .markdown-body li,
+.admin-editor-dark-active .v-note-help-content .markdown-body h1,
+.admin-editor-dark-active .v-note-help-content .markdown-body h2,
+.admin-editor-dark-active .v-note-help-content .markdown-body h3 {
+	color: $editor-dark-text !important;
+}
+
+.admin-editor-dark-active .v-note-help-content > i {
+	color: $editor-dark-muted !important;
+}
+
+.admin-editor-dark-active .v-note-help-content > i:hover {
+	color: $editor-dark-text !important;
+}

@@ -120,7 +120,8 @@
 			}
 		},
 		methods: {
-			setReply(id) {
+			async setReply(id) {
+				await this.$store.dispatch('getAdminCommentStatus', {preserveAdmin: true})
 				this.$store.commit(SET_PARENT_COMMENT_ID, id)
 			},
 			handleReport(comment) {
