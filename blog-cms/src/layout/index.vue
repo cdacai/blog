@@ -14,15 +14,17 @@
 <script>
 import { Navbar, Sidebar, AppMain } from './components'
 import ResizeMixin from './mixin/ResizeHandler'
+import editorAppearance from '@/mixins/editorAppearance'
 
 export default {
   name: 'Layout',
+  adminAppearanceHost: true,
   components: {
     Navbar,
     Sidebar,
     AppMain
   },
-  mixins: [ResizeMixin],
+  mixins: [ResizeMixin, editorAppearance],
   computed: {
     sidebar() {
       return this.$store.state.app.sidebar

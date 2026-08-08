@@ -98,6 +98,7 @@
 	import Breadcrumb from "@/components/Breadcrumb";
 	import {getSiteSettingData, update} from "@/api/siteSetting";
 	import _ from 'lodash'
+	const {normalizeAdminEditorAppearance} = require('@/utils/editorAppearance')
 
 	export default {
 		name: "SiteSetting",
@@ -218,6 +219,11 @@
 				updateArr.push(...result.type2)
 				updateArr.push(...result.type3)
 				update(updateArr, this.deleteIds).then(res => {
+					const appearanceSetting = result.type1.find(item => item.nameEn === 'adminEditorAppearance')
+					this.$store.dispatch('settings/changeSetting', {
+						key: 'adminEditorAppearance',
+						value: normalizeAdminEditorAppearance(appearanceSetting && appearanceSetting.value),
+					})
 					this.deleteIds = []
 					this.getData()
 					this.msgSuccess(res.msg)

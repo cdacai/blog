@@ -8,6 +8,8 @@ const state = {
 	fixedHeader: fixedHeader,
 	sidebarLogo: sidebarLogo,
 	defaultOpeneds: defaultOpeneds,
+	adminEditorAppearance: 'system',
+	systemPrefersDarkEditor: false,
 }
 
 const mutations = {

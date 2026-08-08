@@ -2,7 +2,7 @@
 	<div>
 		<el-form :model="form" :rules="formRules" ref="formRef" label-position="top">
 			<el-row :gutter="20">
-				<el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+				<el-col class="article-title-column" :xs="24" :sm="24" :md="18" :lg="16" :xl="16">
 					<el-form-item label="文章标题" prop="title">
 						<el-input v-model="form.title" placeholder="请输入标题"></el-input>
 					</el-form-item>
@@ -701,12 +701,10 @@
 .editor-toolbar {
 	margin-bottom: 10px;
 	display: flex;
-	justify-content: space-between;
 	align-items: center;
-	padding: 0 10px;
-	background-color: #f5f7fa;
-	border-radius: 4px;
-	height: 40px;
+	padding: 0;
+	background-color: transparent;
+	height: auto;
 }
 
 /* 编辑器基础样式 */
@@ -986,7 +984,7 @@
 	/* 工具栏移动端样式 */
 	.editor-toolbar {
 		height: auto;
-		padding: 8px;
+		padding: 0;
 		flex-wrap: wrap;
 		gap: 8px;
 	}
@@ -1197,7 +1195,7 @@
 @media screen and (max-width: 768px) {
 	.editor-toolbar {
 		height: auto;
-		padding: 8px;
+		padding: 0;
 		flex-wrap: wrap;
 		gap: 8px;
 		

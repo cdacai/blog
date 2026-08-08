@@ -45,10 +45,10 @@ Includes article management, comment system, album management, theme switching a
 - Supports an HttpOnly identity cookie shared between `set.caixiaohu.com` and `www.caixiaohu.com`
 - Comment content accepts 1–500 characters, including exactly 500 characters
 
-### 6. Admin Editing Workspace Appearance
-- The article and moment editing pages support system, light, and dark appearances across the navbar, forms, inputs, toolbars, popups, and Markdown editors
+### 6. Admin Interface Appearance
+- [EXTEND] Dark mode covers the entire admin interface, including navigation, dashboard, lists, tables, forms, pagination, dialogs, notifications, album management, and Markdown editors
 - System mode is the default, and the setting is stored as `site_setting.adminEditorAppearance`
-- This setting affects only the article and moment editing pages; other admin pages and the public blog theme remain unchanged
+- This setting applies only to `blog-cms` administration and does not change the public blog theme
 
 Preview URLs:
 - Blog Frontend: [https://caixiaohu.com](https://caixiaohu.com)
@@ -133,7 +133,7 @@ System provides 8 different style themes for selection:
 - Responsive design
 - Mobile adaptation
 - Theme switching
-- Light and dark appearance for article and moment editing workspaces
+- Light and dark appearance across the entire admin interface
 - Data statistics
 
 ## System Screenshots
@@ -250,7 +250,7 @@ cd blog-view && npm run build
 - Added administrator comment mode, administrator badges, and a selectable comment avatar
 - Standardized comment length validation to 1–500 characters
 - Fixed administrator identity loss in nested replies and corrected cross-subdomain cookie behavior
-- Added system, light, and dark appearances for article and moment editing workspaces
+- [EXTEND] Added system, light, and dark appearances across the entire admin interface
 - Completed single-file database initialization, incremental upgrades, and the local `prd,dev` startup workflow
 
 ### v2.1.0 (2025-09-20)

@@ -91,11 +91,13 @@
 	import 'echarts/map/js/world'
 	import 'echarts/map/js/china'
 	import {getDashboard} from "@/api/dashboard";
+	import editorAppearance from '@/mixins/editorAppearance'
 	//城市经纬度数据来自 https://github.com/Naccl/region2coord
 	import geoCoordMap from '@/util/city2coord.json'
 
 	export default {
 		name: "Dashboard",
+		mixins: [editorAppearance],
 		components: {SvgIcon},
 		data() {
 			return {
@@ -499,10 +501,97 @@
 				}
 			}
 		},
+		watch: {
+			resolvedAdminEditorAppearance: {
+				immediate: true,
+				handler() {
+					this.applyDashboardChartAppearance()
+					this.$nextTick(this.refreshDashboardCharts)
+				}
+			}
+		},
 		mounted() {
 			this.getData()
 		},
 		methods: {
+			createChartGradient(startColor, endColor) {
+				return {
+					type: 'linear',
+					x: 0,
+					y: 0,
+					x2: 1,
+					y2: 1,
+					colorStops: [
+						{offset: 0, color: startColor},
+						{offset: 1, color: endColor}
+					]
+				}
+			},
+			applyDashboardChartAppearance() {
+				const isDark = this.resolvedAdminEditorAppearance === 'dark'
+				const textColor = isDark ? '#aeb5bd' : '#333'
+				const strongTextColor = isDark ? '#edf0f2' : '#333'
+				const borderColor = isDark ? '#444b53' : '#dcdfe6'
+				const panelColor = isDark ? '#23262a' : '#fff'
+				const tooltipBackground = isDark ? 'rgba(35, 38, 42, 0.96)' : 'rgba(255, 255, 255, 0.96)'
+
+				;[this.categoryOption, this.tagOption].forEach(option => {
+					option.backgroundColor = 'transparent'
+					option.title.textStyle = {color: strongTextColor, fontWeight: 'normal'}
+					option.legend.textStyle = {color: textColor}
+					option.tooltip.backgroundColor = tooltipBackground
+					option.tooltip.borderColor = borderColor
+					option.tooltip.textStyle = {color: strongTextColor}
+				})
+
+				this.mapOption.backgroundColor = isDark
+					? '#23262a'
+					: this.createChartGradient('#f6f8fc', '#fff')
+				this.mapOption.title.textStyle.color = strongTextColor
+				this.mapOption.geo.label.normal.color = textColor
+				this.mapOption.geo.itemStyle.normal.areaColor = isDark
+					? this.createChartGradient('#30353b', '#292d32')
+					: this.createChartGradient('#e8f4ff', '#cce6ff')
+				this.mapOption.geo.itemStyle.normal.borderColor = isDark
+					? borderColor
+					: this.createChartGradient('#1890ff', '#0076ff')
+				this.mapOption.geo.itemStyle.normal.shadowColor = isDark
+					? 'rgba(7, 9, 11, 0.24)'
+					: 'rgba(24,144,255,0.2)'
+				this.mapOption.geo.itemStyle.emphasis.areaColor = isDark
+					? this.createChartGradient('#393f46', '#30353b')
+					: this.createChartGradient('#cce7ff', '#a3d2ff')
+				this.mapOption.geo.itemStyle.emphasis.shadowColor = isDark
+					? 'rgba(7, 9, 11, 0.32)'
+					: 'rgba(24,144,255,0.3)'
+				this.mapOption.series[1].label.color = strongTextColor
+				this.mapOption.series[1].label.textBorderColor = panelColor
+				Object.keys(this.mapOption.toolbox.feature).forEach(key => {
+					const feature = this.mapOption.toolbox.feature[key]
+					feature.iconStyle = Object.assign({}, feature.iconStyle, {borderColor: textColor})
+				})
+
+				const axes = [this.visitRecordOption.xAxis, this.visitRecordOption.yAxis]
+				axes.forEach(axis => {
+					axis.axisLabel = {color: textColor}
+					axis.axisLine = {lineStyle: {color: borderColor}}
+					axis.splitLine = {lineStyle: {color: borderColor, opacity: isDark ? 0.45 : 1}}
+				})
+				this.visitRecordOption.backgroundColor = 'transparent'
+				this.visitRecordOption.legend.textStyle = {color: textColor}
+				this.visitRecordOption.tooltip.backgroundColor = tooltipBackground
+				this.visitRecordOption.tooltip.borderColor = borderColor
+				this.visitRecordOption.tooltip.textStyle = {color: strongTextColor}
+				this.visitRecordOption.series[1].itemStyle.normal.areaStyle.color = isDark
+					? 'rgba(120, 166, 209, 0.12)'
+					: '#f3f8ff'
+			},
+			refreshDashboardCharts() {
+				if (this.categoryEcharts) this.categoryEcharts.setOption(this.categoryOption, true)
+				if (this.tagEcharts) this.tagEcharts.setOption(this.tagOption, true)
+				if (this.mapEcharts) this.mapEcharts.setOption(this.mapOption, true)
+				if (this.visitRecordEcharts) this.visitRecordEcharts.setOption(this.visitRecordOption, true)
+			},
 			toggleSideBar() {
 				this.$store.dispatch('app/toggleSideBar')
 			},
@@ -589,7 +678,7 @@
 				})
 			},
 			initCategoryEcharts() {
-				this.categoryEcharts = echarts.init(this.$refs.categoryEcharts, 'light')
+				this.categoryEcharts = echarts.init(this.$refs.categoryEcharts, this.resolvedAdminEditorAppearance)
 				this.categoryOption.series[0].radius = [30, 110]
 				this.categoryEcharts.setOption(this.categoryOption)
 				window.addEventListener('resize', () => {
@@ -597,7 +686,7 @@
 				})
 			},
 			initTagEcharts() {
-				this.tagEcharts = echarts.init(this.$refs.tagEcharts, 'light')
+				this.tagEcharts = echarts.init(this.$refs.tagEcharts, this.resolvedAdminEditorAppearance)
 				this.tagOption.series[0].radius = [30, 110]
 				this.tagEcharts.setOption(this.tagOption)
 				window.addEventListener('resize', () => {
@@ -605,7 +694,7 @@
 				})
 			},
 			initMapEcharts() {
-				this.mapEcharts = echarts.init(this.$refs.mapEcharts);
+				this.mapEcharts = echarts.init(this.$refs.mapEcharts, this.resolvedAdminEditorAppearance);
 				this.mapOption.geo.map = 'world';
 				
 				// 计算所有访客位置的边界
@@ -706,7 +795,7 @@
 				return res;
 			},
 			initVisitRecordEcharts() {
-				this.visitRecordEcharts = echarts.init(this.$refs.visitRecordEcharts)
+				this.visitRecordEcharts = echarts.init(this.$refs.visitRecordEcharts, this.resolvedAdminEditorAppearance)
 				this.visitRecordOption.grid = {
 					left: 10,
 					right: 20,
