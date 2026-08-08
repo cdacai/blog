@@ -48,7 +48,7 @@ logging.level.com.caixiaohu.interceptor.RequestLogInterceptor=info
 logging.level.com.caixiaohu.service.impl.CommentServiceImpl=info
 logging.level.com.caixiaohu.service.impl.BaiduContentServiceImpl=info
 logging.level.root=info
-logging.level.com.caixiaohu=debug
+logging.level.com.caixiaohu=info
 logging.pattern.console=%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) %cyan(%logger{50}) - %msg%n
 
 # 请求响应日志配置
@@ -61,6 +61,11 @@ token.expireTime=604800000
 token.secretKey=${TOKEN_SECRET_KEY}
 token.admin-comment-cookie-domain=.caixiaohu.com
 token.admin-comment-cookie-secure=true
+
+# 登录安全配置
+security.login-limit.account-max-failures=5
+security.login-limit.ip-max-failures=20
+security.login-limit.window-seconds=900
 
 # 评论配置
 comment.notify.channel=mail

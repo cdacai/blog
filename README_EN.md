@@ -182,6 +182,8 @@ Do not reverse the `prd,dev` order. `prd` supplies the complete base properties,
 - Default admin: username `Admin`, password `123456`
 - Local backend: use the combined `prd,dev` profiles and do not remove the production Redis password
 - Production backend: use only the `prd` profile
+- [EXTEND] Login security: further attempts are blocked until the window ends after 5 failures for one account or 20 failures from one IP within 15 minutes; tune this with `security.login-limit.*`
+- [EXTEND] Successful and failed login responses use `Cache-Control: no-store`; production package logging is set to `info`, and startup no longer generates or prints a test password hash
 
 **Storage Configuration**
 - Local storage: configure `upload.path` directory

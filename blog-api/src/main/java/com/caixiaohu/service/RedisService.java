@@ -34,6 +34,8 @@ public interface RedisService {
 
 	void incrementByKey(String key, int increment);
 
+	long incrementByKey(String key, int increment, long expireSeconds);
+
 	void saveObjectToValue(String key, Object object);
 
 	void saveValueToSet(String key, String value);

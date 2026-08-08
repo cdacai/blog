@@ -6,6 +6,9 @@ package com.caixiaohu.constant;
  * @Date: 2020-09-27
  */
 public class RedisKeyConstants {
+	public static final String LOGIN_FAILURE_ACCOUNT_PREFIX = "security:login:account:";
+	public static final String LOGIN_FAILURE_IP_PREFIX = "security:login:ip:";
+
 	/**
 	 * 首页博客简介列表 分页对象key
 	 * homeBlogInfoList : {{1,"第一页的缓存"},{2,"第二页的缓存"}}

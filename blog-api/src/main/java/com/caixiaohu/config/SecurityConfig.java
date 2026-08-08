@@ -16,6 +16,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.caixiaohu.service.LoginLogService;
+import com.caixiaohu.service.LoginAttemptService;
 import com.caixiaohu.service.impl.UserServiceImpl;
 
 import java.util.Arrays;
@@ -31,6 +32,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	UserServiceImpl userService;
 	@Autowired
 	LoginLogService loginLogService;
+	@Autowired
+	LoginAttemptService loginAttemptService;
 	@Autowired
 	MyAuthenticationEntryPoint myAuthenticationEntryPoint;
 	@Value("${blog.cors.origins}")
@@ -70,7 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.anyRequest().permitAll()
 				.and()
 				.addFilterBefore(new JwtLoginFilter("/admin/login", authenticationManager(), loginLogService,
-								adminCommentCookieDomain, adminCommentCookieSecure),
+								loginAttemptService, adminCommentCookieDomain, adminCommentCookieSecure),
 						UsernamePasswordAuthenticationFilter.class)
 				.addFilterBefore(new JwtFilter(), UsernamePasswordAuthenticationFilter.class)
 				.exceptionHandling().authenticationEntryPoint(myAuthenticationEntryPoint);

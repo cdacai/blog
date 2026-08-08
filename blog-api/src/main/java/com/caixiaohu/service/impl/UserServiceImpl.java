@@ -31,15 +31,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-	public UserServiceImpl() {
-		// 在启动时打印出密码哈希，用于调试
-		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		String hash = encoder.encode("123456");
-		log.info("==========================================");
-		log.info("Debug - NEW Password hash for '123456': {}", hash);
-		log.info("==========================================");
-	}
-
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		log.info("Attempting to load user by username: {}", username);

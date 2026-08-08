@@ -111,6 +111,11 @@ WHERE name_en IN ('commentAdminFlag', 'adminCommentAvatar', 'adminEditorAppearan
 - `token.admin-comment-cookie-domain=.caixiaohu.com`
 - `token.admin-comment-cookie-secure=true`
 - `token.secretKey` 使用足够长的随机密钥
+- [EXTEND] `security.login-limit.account-max-failures=5`
+- [EXTEND] `security.login-limit.ip-max-failures=20`
+- [EXTEND] `security.login-limit.window-seconds=900`
+
+登录安全改动只使用 Redis 保存临时计数，不涉及数据库表结构或初始数据，因此已有数据库不需要执行 SQL。
 
 生产 Redis 配置了密码时，应先验证：
 
@@ -157,6 +162,8 @@ java -jar blog-api-0.0.1.jar --spring.profiles.active=prd
 4. 后台“站点管理”可保存站长评论头像和后台外观。
 5. 从后台登录后，在前台完成多层站长回复测试。
 6. 验证 500 字符评论成功、501 字符被拒绝。
+7. 后台登录响应包含 `Cache-Control: no-store`，启动日志不再打印测试密码哈希。
+8. 连续输错同一账户密码 5 次后，第 6 次返回“登录尝试过于频繁，请稍后再试”，15 分钟后自动恢复；生产验证后可删除 Redis 中 `security:login:*` 测试键立即解除限制。
 
 ## 七、常见错误
 

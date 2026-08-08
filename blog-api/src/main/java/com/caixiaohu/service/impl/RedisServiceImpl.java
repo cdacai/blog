@@ -111,6 +111,21 @@ public class RedisServiceImpl implements RedisService {
 	}
 
 	@Override
+	public long incrementByKey(String key, int increment, long expireSeconds) {
+		if (increment <= 0) {
+			throw new IllegalArgumentException("递增因子必须大于0");
+		}
+		Long count = jsonRedisTemplate.opsForValue().increment(key, increment);
+		if (count == null) {
+			throw new IllegalStateException("Redis计数失败");
+		}
+		if (count == increment) {
+			jsonRedisTemplate.expire(key, expireSeconds, TimeUnit.SECONDS);
+		}
+		return count;
+	}
+
+	@Override
 	public void saveObjectToValue(String key, Object object) {
 		jsonRedisTemplate.opsForValue().set(key, object);
 	}

@@ -183,6 +183,8 @@
 - 默认管理员：用户名`Admin`，密码`123456`
 - 本地后端：使用 `prd,dev` profile 组合，不要修改生产 Redis 密码
 - 生产后端：仅使用 `prd` profile
+- [EXTEND] 登录安全：同一账户 15 分钟内失败 5 次或同一 IP 失败 20 次后，后续登录会被限制至窗口结束；可通过 `security.login-limit.*` 调整
+- [EXTEND] 登录接口的成功和失败响应均使用 `Cache-Control: no-store`，生产环境包级日志为 `info`，不再在启动时生成或打印测试密码哈希
 
 **存储配置**
 - 本地存储：配置`upload.path`路径
